@@ -1,11 +1,11 @@
-# MetaSignal
+# Metricoin
 
-MetaSignal is a premium Bitcoin-first crypto market dashboard built with React, Vite, TypeScript, TanStack Query, Zustand, Tailwind CSS, React Hook Form, Zod, and Lightweight Charts. The app is designed to feel like a polished trading terminal rather than a tutorial demo, with real-time market streaming, live portfolio calculations, responsive layouts, theme support, alerts, and portfolio-quality visual polish.
+Metricoin is a premium Bitcoin-first crypto market dashboard built with React, Vite, TypeScript, TanStack Query, Zustand, Tailwind CSS, React Hook Form, Zod, and Lightweight Charts. The app is designed to feel like a polished trading terminal rather than a tutorial demo, with real-time market streaming, live portfolio calculations, responsive layouts, theme support, alerts, and portfolio-quality visual polish.
 
 ## Highlights
 
 - Real-time websocket market updates with reconnect handling and connection status badges
-- MetaSignal uses a Bitcoin-first dashboard architecture that scales cleanly to more assets
+- Metricoin uses a Bitcoin-first dashboard architecture that scales cleanly to more assets
 - Decimal-based portfolio math for cost basis, PnL, ROI, break-even, allocation, and fee impact
 - React Router route split across Dashboard, Markets, Coin Details, Portfolio, Transactions, Watchlist, Settings, and 404
 - TanStack Query for REST market data, Zustand for app and portfolio state, React Hook Form + Zod for typed forms

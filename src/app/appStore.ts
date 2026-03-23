@@ -50,7 +50,7 @@ export const useAppStore = create<AppState>()(
         })),
     }),
     {
-      name: 'metasignal-app',
+      name: 'metricoin-app',
       partialize: (state) => ({
         themePreference: state.themePreference,
         favoriteAssetIds: state.favoriteAssetIds,

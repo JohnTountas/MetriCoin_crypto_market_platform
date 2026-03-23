@@ -8,7 +8,7 @@ import { Card } from '@/shared/components/ui/Card';
 const NotFoundPage = () => (
   <div className="grid min-h-[60vh] place-items-center">
     <Helmet>
-      <title>404 | MetaSignal</title>
+      <title>404 | Metricoin</title>
     </Helmet>
 
     <Card className="surface max-w-xl p-8 text-center">

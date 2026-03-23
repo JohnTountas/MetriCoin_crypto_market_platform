@@ -5,7 +5,7 @@ import { PreferencesPanel } from '@/features/settings/ui/PreferencesPanel';
 const SettingsPage = () => (
   <div className="space-y-6">
     <Helmet>
-      <title>Settings | MetaSignal</title>
+      <title>Settings | Metricoin</title>
     </Helmet>
 
     <PreferencesPanel />

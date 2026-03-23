@@ -22,7 +22,7 @@ export const Sidebar = ({ mobile = false }: SidebarProps) => {
       <div className="space-y-4">
         <div className="space-y-1">
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-cyan-200/70">
-            MetaSignal
+            Metricoin
           </p>
           <h1 className="font-display text-2xl font-semibold text-white">Institutional-grade market view</h1>
         </div>

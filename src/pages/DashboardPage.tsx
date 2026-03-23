@@ -18,9 +18,9 @@ const DashboardPage = () => {
   return (
     <div className="space-y-6">
       <Helmet>
-        <title>Dashboard | MetaSignal</title>
+        <title>Dashboard | Metricoin</title>
         <meta
-          content="Live MetaSignal dashboard with real-time Bitcoin pricing, professional crypto market analytics, and portfolio intelligence."
+          content="Live Metricoin dashboard with real-time Bitcoin pricing, professional crypto market analytics, and portfolio intelligence."
           name="description"
         />
       </Helmet>

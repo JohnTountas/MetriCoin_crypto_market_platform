@@ -13,7 +13,7 @@ const baseCommands = [
   {
     id: 'dashboard',
     label: 'Dashboard',
-    description: 'Jump to the live MetaSignal command center.',
+    description: 'Jump to the live Metricoin command center.',
     path: ROUTES.dashboard,
     keywords: ['home', 'dashboard', 'overview'],
   },

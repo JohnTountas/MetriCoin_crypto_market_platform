@@ -19,7 +19,7 @@ export const DashboardHero = ({ snapshot, summary, assetId }: DashboardHeroProps
     <div className="grid gap-8 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
       <div className="space-y-6">
         <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-cyan-200/70">MetaSignal terminal</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-cyan-200/70">Metricoin terminal</p>
           <h1 className="max-w-3xl font-display text-4xl font-semibold leading-tight text-white sm:text-5xl">
             Premium crypto market intelligence with live portfolio math and execution-ready clarity.
           </h1>

@@ -43,7 +43,7 @@ export const Topbar = () => {
             Live execution context
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-3">
-            <h2 className="font-display text-2xl font-semibold text-white">MetaSignal market dashboard</h2>
+            <h2 className="font-display text-2xl font-semibold text-white">Metricoin market dashboard</h2>
             <Badge tone={statusToneMap[connectionStatus]}>
               <Radio className={cn('h-3.5 w-3.5', connectionStatus === 'connected' && 'animate-pulse-glow')} />
               {connectionStatus}

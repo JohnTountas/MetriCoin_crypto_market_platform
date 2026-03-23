@@ -6,7 +6,7 @@ import { TransactionHistory } from '@/entities/portfolio/ui/TransactionHistory';
 const TransactionsPage = () => (
   <div className="space-y-6">
     <Helmet>
-      <title>Transactions | MetaSignal</title>
+      <title>Transactions | Metricoin</title>
     </Helmet>
 
     <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">

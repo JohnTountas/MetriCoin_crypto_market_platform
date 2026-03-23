@@ -24,7 +24,7 @@ const CoinDetailsPage = () => {
   return (
     <div className="space-y-6">
       <Helmet>
-        <title>{ASSET_LOOKUP[normalizedAssetId]?.name} | MetaSignal</title>
+        <title>{ASSET_LOOKUP[normalizedAssetId]?.name} | Metricoin</title>
       </Helmet>
 
       <CoinAnalyticsPanel assetId={normalizedAssetId} />

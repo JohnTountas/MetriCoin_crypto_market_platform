@@ -139,7 +139,7 @@ export const PreferencesPanel = () => {
               const url = URL.createObjectURL(blob);
               const anchor = document.createElement('a');
               anchor.href = url;
-              anchor.download = 'metasignal-snapshot.json';
+              anchor.download = 'metricoin-snapshot.json';
               anchor.click();
               URL.revokeObjectURL(url);
             }}

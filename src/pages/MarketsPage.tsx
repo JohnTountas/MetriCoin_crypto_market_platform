@@ -7,9 +7,9 @@ import { SectionHeading } from '@/shared/components/ui/SectionHeading';
 const MarketsPage = () => (
   <div className="space-y-6">
     <Helmet>
-      <title>Markets | MetaSignal</title>
+      <title>Markets | Metricoin</title>
       <meta
-        content="Track live crypto market snapshots, spreads, volume, and market-cap context with MetaSignal's premium Bitcoin-first UI."
+        content="Track live crypto market snapshots, spreads, volume, and market-cap context with Metricoin's premium Bitcoin-first UI."
         name="description"
       />
     </Helmet>

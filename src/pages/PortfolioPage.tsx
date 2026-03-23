@@ -15,7 +15,7 @@ const PortfolioPage = () => {
   return (
     <div className="space-y-6">
       <Helmet>
-        <title>Portfolio | MetaSignal</title>
+        <title>Portfolio | Metricoin</title>
       </Helmet>
 
       <PortfolioSummaryGrid

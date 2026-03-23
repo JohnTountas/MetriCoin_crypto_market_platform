@@ -114,7 +114,7 @@ export const useMarketStore = create<MarketState>()(
         }),
     }),
     {
-      name: 'metasignal-market',
+      name: 'metricoin-market',
       partialize: (state) => ({
         selectedAssetId: state.selectedAssetId,
         activeTimeframe: state.activeTimeframe,
