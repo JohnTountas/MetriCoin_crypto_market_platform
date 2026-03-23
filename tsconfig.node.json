@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": [
+    "vite.config.ts",
+    "vitest.config.ts",
+    "tailwind.config.ts",
+    "playwright.config.ts",
+    "e2e/**/*.ts",
+    "postcss.config.cjs",
+    "prettier.config.cjs",
+    ".eslintrc.cjs"
+  ]
+}
