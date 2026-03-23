@@ -2,12 +2,11 @@ import { Command, Search, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppStore } from '@/app/appStore';
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { useHotkeys } from '@/hooks/shared/useHotkeys';
-import { Input } from '@/shared/components/ui/Input';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
-import { ROUTES } from '@/shared/constants/routes';
+import { useAppStore } from '@/app';
+import { useMarketStore } from '@/entities';
+import { useHotkeys } from '@/hooks';
+import { Input } from '@/shared/components/ui';
+import { ROUTES, TRACKED_ASSETS } from '@/shared/constants';
 
 const baseCommands = [
   {

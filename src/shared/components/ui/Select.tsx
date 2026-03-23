@@ -1,6 +1,6 @@
 import type { SelectHTMLAttributes } from 'react';
 
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 
 type SelectProps = SelectHTMLAttributes<HTMLSelectElement>;
 
@@ -15,4 +15,3 @@ export const Select = ({ className, children, ...props }: SelectProps) => (
     {children}
   </select>
 );
-

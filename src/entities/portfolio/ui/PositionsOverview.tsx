@@ -1,12 +1,17 @@
 import { ArrowDownRight, ArrowUpRight, Wallet } from 'lucide-react';
 
-import { Card } from '@/shared/components/ui/Card';
-import { EmptyState } from '@/shared/components/ui/EmptyState';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
-import { ASSET_LOOKUP } from '@/shared/constants/assets';
-import { cn } from '@/shared/lib/cn';
-import { formatCurrency, formatPercent, formatPrice, formatQuantity } from '@/shared/lib/formatters';
-import type { PositionMetrics } from '@/shared/types/portfolio';
+import {
+  ASSET_LOOKUP,
+  Card,
+  cn,
+  EmptyState,
+  formatCurrency,
+  formatPercent,
+  formatPrice,
+  formatQuantity,
+  type PositionMetrics,
+  SectionHeading,
+} from '@/shared';
 
 type PositionsOverviewProps = {
   positions: PositionMetrics[];

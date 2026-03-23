@@ -1,6 +1,6 @@
-import { ASSET_LOOKUP } from '@/shared/constants/assets';
-import { formatCurrency } from '@/shared/lib/formatters';
-import type { PositionMetrics } from '@/shared/types/portfolio';
+import { ASSET_LOOKUP } from '@/shared/constants';
+import { formatCurrency } from '@/shared/lib';
+import type { PositionMetrics } from '@/shared/types';
 
 type AllocationDonutProps = {
   positions: PositionMetrics[];

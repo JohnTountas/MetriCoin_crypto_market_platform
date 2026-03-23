@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { PreferencesPanel } from '@/features/settings/ui/PreferencesPanel';
+import { PreferencesPanel } from '@/features';
 
 const SettingsPage = () => (
   <div className="space-y-6">

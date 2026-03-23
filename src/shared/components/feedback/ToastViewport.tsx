@@ -1,10 +1,9 @@
 import { AlertCircle, Bell, CheckCircle2, TriangleAlert } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
-import { useAppStore } from '@/app/appStore';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { cn } from '@/shared/lib/cn';
+import { useAppStore } from '@/app';
+import { Button, Card } from '@/shared/components/ui';
+import { cn } from '@/shared/lib';
 
 const iconMap = {
   info: Bell,
@@ -79,4 +78,3 @@ export const ToastViewport = () => {
     </div>
   );
 };
-

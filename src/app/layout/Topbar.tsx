@@ -1,12 +1,9 @@
 import { Command, Menu, MoonStar, Radio, SunMedium } from 'lucide-react';
 
-import { useAppStore } from '@/app/appStore';
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { useTheme } from '@/hooks/app/useTheme';
-import { Badge } from '@/shared/components/ui/Badge';
-import { Button } from '@/shared/components/ui/Button';
-import { cn } from '@/shared/lib/cn';
-import { formatTimestamp } from '@/shared/lib/formatters';
+import { useAppStore } from '@/app';
+import { useMarketStore } from '@/entities';
+import { useTheme } from '@/hooks';
+import { Badge, Button, cn, formatTimestamp } from '@/shared';
 
 const statusToneMap = {
   connected: 'positive',

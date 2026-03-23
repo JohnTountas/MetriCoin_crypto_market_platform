@@ -1,8 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
-import { MarketsTable } from '@/features/markets/ui/MarketsTable';
-import { Card } from '@/shared/components/ui/Card';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
+import { MarketsTable } from '@/features';
+import { Card, SectionHeading } from '@/shared';
 
 const MarketsPage = () => (
   <div className="space-y-6">

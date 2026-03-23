@@ -3,11 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import { PositionsOverview } from '@/entities/portfolio/ui/PositionsOverview';
 import { TransactionForm } from '@/entities/portfolio/ui/TransactionForm';
 import { TransactionHistory } from '@/entities/portfolio/ui/TransactionHistory';
-import { PortfolioSummaryGrid } from '@/features/dashboard/ui/PortfolioSummaryGrid';
-import { usePortfolioMetrics } from '@/hooks/portfolio/usePortfolioMetrics';
-import { AllocationDonut } from '@/shared/components/charts/AllocationDonut';
-import { Card } from '@/shared/components/ui/Card';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
+import { PortfolioSummaryGrid } from '@/features';
+import { usePortfolioMetrics } from '@/hooks';
+import { AllocationDonut, Card, SectionHeading } from '@/shared';
 
 const PortfolioPage = () => {
   const { summary, positions, bestPerformer, worstPerformer } = usePortfolioMetrics();

@@ -1,4 +1,4 @@
-import type { AssetMeta, Timeframe } from '@/shared/types/market';
+import type { AssetMeta, Timeframe } from '@/shared/types';
 
 export const TRACKED_ASSETS: AssetMeta[] = [
   {

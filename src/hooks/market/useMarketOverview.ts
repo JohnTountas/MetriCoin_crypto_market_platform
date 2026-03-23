@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-import { marketProvider } from '@/api/market/provider';
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
+import { marketProvider } from '@/API';
+import { useMarketStore } from '@/entities';
+import { TRACKED_ASSETS } from '@/shared/constants';
 
 export const useMarketOverview = () => {
   const bootstrapSnapshots = useMarketStore((state) => state.bootstrapSnapshots);

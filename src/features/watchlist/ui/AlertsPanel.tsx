@@ -2,16 +2,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { BellRing, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
-import { usePortfolioStore } from '@/entities/portfolio/model/portfolioStore';
-import { alertFormSchema, type AlertFormValues } from '@/entities/portfolio/model/schemas';
-import { Badge } from '@/shared/components/ui/Badge';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { Input } from '@/shared/components/ui/Input';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
-import { Select } from '@/shared/components/ui/Select';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
-import { formatPrice, formatTimestamp } from '@/shared/lib/formatters';
+import { alertFormSchema, type AlertFormValues, usePortfolioStore } from '@/entities';
+import {
+  Badge,
+  Button,
+  Card,
+  formatPrice,
+  formatTimestamp,
+  Input,
+  SectionHeading,
+  Select,
+  TRACKED_ASSETS,
+} from '@/shared';
 
 type AlertsPanelProps = {
   assetId?: string;

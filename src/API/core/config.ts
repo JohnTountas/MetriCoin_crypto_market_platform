@@ -1,4 +1,4 @@
-import type { MarketProviderMode } from '@/shared/types/market';
+import type { MarketProviderMode } from '@/shared/types';
 
 const readEnv = (key: keyof ImportMetaEnv) => {
   const value: unknown = import.meta.env[key];

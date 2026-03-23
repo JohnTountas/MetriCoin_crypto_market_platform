@@ -11,7 +11,7 @@ import {
 } from 'lightweight-charts';
 import { useEffect, useRef } from 'react';
 
-import type { MarketCandle } from '@/shared/types/market';
+import type { MarketCandle } from '@/shared/types';
 
 type MarketPriceChartProps = {
   candles: MarketCandle[];
@@ -128,4 +128,3 @@ export const MarketPriceChart = ({
     />
   );
 };
-

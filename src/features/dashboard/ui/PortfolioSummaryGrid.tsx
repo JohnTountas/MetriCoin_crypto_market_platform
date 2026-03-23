@@ -1,8 +1,13 @@
 import { BadgeDollarSign, Gauge, ShieldCheck, Sparkles } from 'lucide-react';
 
-import { StatCard } from '@/shared/components/ui/StatCard';
-import { formatCurrency, formatPercent, formatPrice } from '@/shared/lib/formatters';
-import type { PortfolioSummary, PositionMetrics } from '@/shared/types/portfolio';
+import {
+  formatCurrency,
+  formatPercent,
+  formatPrice,
+  type PortfolioSummary,
+  type PositionMetrics,
+  StatCard,
+} from '@/shared';
 
 type PortfolioSummaryGridProps = {
   summary: PortfolioSummary;
@@ -51,4 +56,3 @@ export const PortfolioSummaryGrid = ({
     />
   </div>
 );
-

@@ -1,11 +1,11 @@
-import { appConfig } from '@/api/core/config';
+import { appConfig } from '@/API/core';
 import type {
   AssetTimeSeries,
   MarketSnapshot,
   MarketTickerMessage,
   StreamConnectionStatus,
   Timeframe,
-} from '@/shared/types/market';
+} from '@/shared/types';
 
 import { coinbaseMarketProvider } from './marketRest';
 import { mockMarketProvider } from './mockProvider';
@@ -29,4 +29,3 @@ export type MarketDataProvider = {
 
 export const marketProvider: MarketDataProvider =
   appConfig.providerMode === 'mock' ? mockMarketProvider : coinbaseMarketProvider;
-

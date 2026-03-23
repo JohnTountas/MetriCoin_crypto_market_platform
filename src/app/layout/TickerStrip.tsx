@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
-import { cn } from '@/shared/lib/cn';
-import { formatPercent, formatPrice } from '@/shared/lib/formatters';
+import { useMarketStore } from '@/entities';
+import { cn, formatPercent, formatPrice, TRACKED_ASSETS } from '@/shared';
 
 export const TickerStrip = () => {
   const snapshots = useMarketStore((state) => state.snapshots);
@@ -54,4 +52,3 @@ export const TickerStrip = () => {
     </div>
   );
 };
-

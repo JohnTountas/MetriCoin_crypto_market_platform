@@ -1,19 +1,19 @@
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { useAppStore } from '@/app/appStore';
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
+import { useAppStore } from '@/app';
+import { useMarketStore } from '@/entities';
 import {
+  Button,
+  Card,
   formatCompactNumber,
   formatCurrency,
   formatPercent,
   formatPrice,
   formatTimestamp,
-} from '@/shared/lib/formatters';
+  SectionHeading,
+  TRACKED_ASSETS,
+} from '@/shared';
 
 export const MarketsTable = () => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);

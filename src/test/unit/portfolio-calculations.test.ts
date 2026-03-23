@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildPortfolioSummary, buildPositions } from '@/entities/portfolio/model/calculations';
-import type { MarketSnapshot } from '@/shared/types/market';
-import type { CalculatorSettings, PortfolioTransaction } from '@/shared/types/portfolio';
+import { buildPortfolioSummary, buildPositions } from '@/entities';
+import type { CalculatorSettings, MarketSnapshot, PortfolioTransaction } from '@/shared';
 
 const settings: CalculatorSettings = {
   estimatedFeeRate: 0.1,
@@ -77,4 +76,3 @@ describe('portfolio calculations', () => {
     expect(summary.totalFeesPaid).toBeGreaterThan(20);
   });
 });
-

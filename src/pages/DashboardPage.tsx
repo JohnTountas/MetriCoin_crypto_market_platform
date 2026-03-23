@@ -3,12 +3,14 @@ import { Helmet } from 'react-helmet-async';
 import { useMarketStore } from '@/entities/market/model/marketStore';
 import { PositionsOverview } from '@/entities/portfolio/ui/PositionsOverview';
 import { TransactionHistory } from '@/entities/portfolio/ui/TransactionHistory';
-import { CoinAnalyticsPanel } from '@/features/coin-details/ui/CoinAnalyticsPanel';
-import { DashboardHero } from '@/features/dashboard/ui/DashboardHero';
-import { PortfolioSummaryGrid } from '@/features/dashboard/ui/PortfolioSummaryGrid';
-import { AlertsPanel } from '@/features/watchlist/ui/AlertsPanel';
-import { WatchlistGrid } from '@/features/watchlist/ui/WatchlistGrid';
-import { usePortfolioMetrics } from '@/hooks/portfolio/usePortfolioMetrics';
+import {
+  AlertsPanel,
+  CoinAnalyticsPanel,
+  DashboardHero,
+  PortfolioSummaryGrid,
+  WatchlistGrid,
+} from '@/features';
+import { usePortfolioMetrics } from '@/hooks';
 
 const DashboardPage = () => {
   const selectedAssetId = useMarketStore((state) => state.selectedAssetId);

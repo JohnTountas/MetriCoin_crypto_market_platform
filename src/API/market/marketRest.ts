@@ -1,11 +1,6 @@
-import { fetchJson } from '@/api/core/client';
-import { appConfig } from '@/api/core/config';
-import { ASSET_LOOKUP, TIMEFRAME_OPTIONS, TRACKED_ASSETS } from '@/shared/constants/assets';
-import type {
-  AssetTimeSeries,
-  MarketCandle,
-  MarketSnapshot,
-} from '@/shared/types/market';
+import { appConfig, fetchJson } from '@/API/core';
+import { ASSET_LOOKUP, TIMEFRAME_OPTIONS, TRACKED_ASSETS } from '@/shared/constants';
+import type { AssetTimeSeries, MarketCandle, MarketSnapshot } from '@/shared/types';
 
 import { createCoinbaseMarketStream } from './marketSocket';
 import type { MarketDataProvider, MarketStreamHandlers } from './provider';

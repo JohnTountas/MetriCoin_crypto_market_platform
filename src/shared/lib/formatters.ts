@@ -1,4 +1,4 @@
-import { ASSET_LOOKUP } from '@/shared/constants/assets';
+import { ASSET_LOOKUP } from '@/shared/constants';
 import { formatLocalDateTime, formatShortTime } from '@/shared/lib/date';
 
 export const formatCurrency = (value: number, compact = false) =>
@@ -44,4 +44,3 @@ export const formatQuantity = (assetId: string, value: number) => {
 
 export const formatTimestamp = (value: string | number, concise = false) =>
   concise ? formatShortTime(value) : formatLocalDateTime(value);
-

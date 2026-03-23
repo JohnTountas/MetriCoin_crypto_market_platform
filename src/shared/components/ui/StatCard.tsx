@@ -2,7 +2,7 @@ import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { Card } from '@/shared/components/ui/Card';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 
 type StatCardProps = {
   label: string;
@@ -56,4 +56,3 @@ export const StatCard = ({
     </div>
   </Card>
 );
-

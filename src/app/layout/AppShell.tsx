@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { useAppStore } from '@/app/appStore';
+import { useAppStore } from '@/app';
 import { Sidebar } from '@/app/layout/Sidebar';
 import { TickerStrip } from '@/app/layout/TickerStrip';
 import { Topbar } from '@/app/layout/Topbar';
-import { useTheme } from '@/hooks/app/useTheme';
-import { useMarketOverview } from '@/hooks/market/useMarketOverview';
-import { useMarketStream } from '@/hooks/market/useMarketStream';
-import { useAlertMonitor } from '@/hooks/portfolio/useAlertMonitor';
-import { CommandPalette } from '@/shared/components/feedback/CommandPalette';
-import { ToastViewport } from '@/shared/components/feedback/ToastViewport';
+import { useAlertMonitor, useMarketOverview, useMarketStream, useTheme } from '@/hooks';
+import { CommandPalette, ToastViewport } from '@/shared/components/feedback';
 
 export const AppShell = () => {
   const location = useLocation();

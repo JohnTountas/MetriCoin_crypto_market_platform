@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { useAppStore } from '@/app/appStore';
-import type { ThemePreference } from '@/shared/types/app';
+import { useAppStore } from '@/app';
+import type { ThemePreference } from '@/shared/types';
 
 const getSystemTheme = () =>
   window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';

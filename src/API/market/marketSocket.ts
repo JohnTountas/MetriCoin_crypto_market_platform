@@ -1,4 +1,4 @@
-import type { MarketTickerMessage } from '@/shared/types/market';
+import type { MarketTickerMessage } from '@/shared/types';
 
 import type { MarketStream, MarketStreamHandlers } from './provider';
 import { coinbaseWsErrorSchema, coinbaseWsTickerMessageSchema } from './schemas';
@@ -105,4 +105,3 @@ export const createCoinbaseMarketStream = (
     },
   };
 };
-

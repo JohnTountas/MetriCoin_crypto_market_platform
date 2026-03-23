@@ -1,11 +1,11 @@
-import { ASSET_LOOKUP, TIMEFRAME_OPTIONS, TRACKED_ASSETS } from '@/shared/constants/assets';
+import { ASSET_LOOKUP, TIMEFRAME_OPTIONS, TRACKED_ASSETS } from '@/shared/constants';
 import type {
   AssetTimeSeries,
   MarketCandle,
   MarketSnapshot,
   MarketTickerMessage,
   Timeframe,
-} from '@/shared/types/market';
+} from '@/shared/types';
 
 import type { MarketDataProvider, MarketStreamHandlers } from './provider';
 

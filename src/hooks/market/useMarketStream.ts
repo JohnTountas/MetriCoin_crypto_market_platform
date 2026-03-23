@@ -1,10 +1,10 @@
 import { startTransition, useEffect, useRef } from 'react';
 
-import { marketProvider } from '@/api/market/provider';
-import { useAppStore } from '@/app/appStore';
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
-import type { StreamConnectionStatus } from '@/shared/types/market';
+import { marketProvider } from '@/API';
+import { useAppStore } from '@/app';
+import { useMarketStore } from '@/entities';
+import { TRACKED_ASSETS } from '@/shared/constants';
+import type { StreamConnectionStatus } from '@/shared/types';
 
 export const useMarketStream = () => {
   const assetIds = TRACKED_ASSETS.map((asset) => asset.id);

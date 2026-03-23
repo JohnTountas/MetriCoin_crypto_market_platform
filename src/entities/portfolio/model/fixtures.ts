@@ -1,4 +1,4 @@
-import type { CalculatorSettings, PortfolioTransaction, PriceAlert } from '@/shared/types/portfolio';
+import type { CalculatorSettings, PortfolioTransaction, PriceAlert } from '@/shared/types';
 
 export const demoTransactions: PortfolioTransaction[] = [
   {
@@ -69,4 +69,3 @@ export const defaultCalculatorSettings: CalculatorSettings = {
   estimatedSlippageRate: 0.08,
   preferredCurrency: 'USD',
 };
-

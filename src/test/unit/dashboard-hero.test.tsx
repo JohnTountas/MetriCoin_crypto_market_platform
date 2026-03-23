@@ -2,9 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
-import { DashboardHero } from '@/features/dashboard/ui/DashboardHero';
-import type { MarketSnapshot } from '@/shared/types/market';
-import type { PortfolioSummary } from '@/shared/types/portfolio';
+import { DashboardHero } from '@/features';
+import type { MarketSnapshot, PortfolioSummary } from '@/shared';
 
 const snapshot: MarketSnapshot = {
   assetId: 'BTC-USD',

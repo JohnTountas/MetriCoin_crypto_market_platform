@@ -1,13 +1,17 @@
 import { Pencil, Trash2 } from 'lucide-react';
 
 import { usePortfolioStore } from '@/entities/portfolio/model/portfolioStore';
-import { Badge } from '@/shared/components/ui/Badge';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { EmptyState } from '@/shared/components/ui/EmptyState';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
-import { ASSET_LOOKUP } from '@/shared/constants/assets';
-import { formatPrice,formatQuantity, formatTimestamp } from '@/shared/lib/formatters';
+import {
+  ASSET_LOOKUP,
+  Badge,
+  Button,
+  Card,
+  EmptyState,
+  formatPrice,
+  formatQuantity,
+  formatTimestamp,
+  SectionHeading,
+} from '@/shared';
 
 type TransactionHistoryProps = {
   assetId?: string;
@@ -104,4 +108,3 @@ export const TransactionHistory = ({ assetId, limit, compact = false }: Transact
     </Card>
   );
 };
-

@@ -5,7 +5,7 @@ import type {
   CalculatorSettings,
   PortfolioTransaction,
   PriceAlert,
-} from '@/shared/types/portfolio';
+} from '@/shared/types';
 
 import { defaultCalculatorSettings, demoAlerts, demoTransactions } from './fixtures';
 

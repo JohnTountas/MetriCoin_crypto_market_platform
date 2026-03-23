@@ -1,14 +1,18 @@
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { useAppStore } from '@/app/appStore';
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { EmptyState } from '@/shared/components/ui/EmptyState';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
-import { formatCompactNumber, formatPercent, formatPrice } from '@/shared/lib/formatters';
+import { useAppStore } from '@/app';
+import { useMarketStore } from '@/entities';
+import {
+  Button,
+  Card,
+  EmptyState,
+  formatCompactNumber,
+  formatPercent,
+  formatPrice,
+  SectionHeading,
+  TRACKED_ASSETS,
+} from '@/shared';
 
 export const WatchlistGrid = () => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
@@ -89,4 +93,3 @@ export const WatchlistGrid = () => {
     </Card>
   );
 };
-

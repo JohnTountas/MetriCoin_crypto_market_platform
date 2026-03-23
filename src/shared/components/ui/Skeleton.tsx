@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 
 type SkeletonProps = {
   className?: string;
@@ -7,4 +7,3 @@ type SkeletonProps = {
 export const Skeleton = ({ className }: SkeletonProps) => (
   <div className={cn('animate-pulse rounded-2xl bg-white/6', className)} />
 );
-

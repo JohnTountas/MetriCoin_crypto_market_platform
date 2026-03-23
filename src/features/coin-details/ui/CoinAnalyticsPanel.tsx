@@ -1,16 +1,20 @@
 import { CandlestickChart, LineChart, Scale, TimerReset } from 'lucide-react';
 import { useState } from 'react';
 
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { useTheme } from '@/hooks/app/useTheme';
-import { useAssetCandles } from '@/hooks/market/useAssetCandles';
-import { MarketPriceChart } from '@/shared/components/charts/MarketPriceChart';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { SegmentedControl } from '@/shared/components/ui/SegmentedControl';
-import { Skeleton } from '@/shared/components/ui/Skeleton';
-import { ASSET_LOOKUP, TIMEFRAME_OPTIONS } from '@/shared/constants/assets';
-import { formatCompactNumber, formatPrice, formatTimestamp } from '@/shared/lib/formatters';
+import { useMarketStore } from '@/entities';
+import { useAssetCandles, useTheme } from '@/hooks';
+import {
+  ASSET_LOOKUP,
+  Button,
+  Card,
+  formatCompactNumber,
+  formatPrice,
+  formatTimestamp,
+  MarketPriceChart,
+  SegmentedControl,
+  Skeleton,
+  TIMEFRAME_OPTIONS,
+} from '@/shared';
 
 type CoinAnalyticsPanelProps = {
   assetId: string;
@@ -145,4 +149,3 @@ export const CoinAnalyticsPanel = ({ assetId }: CoinAnalyticsPanelProps) => {
     </Card>
   );
 };
-

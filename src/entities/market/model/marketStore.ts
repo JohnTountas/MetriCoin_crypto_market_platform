@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ASSET_LOOKUP, DEFAULT_ASSET_ID } from '@/shared/constants/assets';
+import { ASSET_LOOKUP, DEFAULT_ASSET_ID } from '@/shared/constants';
 import type {
   MarketSnapshot,
   MarketTickerMessage,
   StreamConnectionStatus,
   Timeframe,
-} from '@/shared/types/market';
+} from '@/shared/types';
 
 type MarketState = {
   selectedAssetId: string;

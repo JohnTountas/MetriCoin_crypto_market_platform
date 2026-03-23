@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 
 type SegmentedControlOption<T extends string> = {
   label: string;
@@ -34,4 +34,3 @@ export const SegmentedControl = <T extends string>({
     ))}
   </div>
 );
-

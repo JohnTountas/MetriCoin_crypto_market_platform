@@ -1,11 +1,8 @@
 import { Command, Star } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
-import { useAppStore } from '@/app/appStore';
-import { Button } from '@/shared/components/ui/Button';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
-import { NAV_ITEMS } from '@/shared/constants/routes';
-import { cn } from '@/shared/lib/cn';
+import { useAppStore } from '@/app';
+import { Button, cn, NAV_ITEMS, TRACKED_ASSETS } from '@/shared';
 
 type SidebarProps = {
   mobile?: boolean;

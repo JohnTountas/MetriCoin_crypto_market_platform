@@ -1,6 +1,6 @@
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 
 type CardProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
@@ -20,4 +20,3 @@ export const Card = ({ children, className, elevated = false, ...props }: CardPr
     {children}
   </div>
 );
-

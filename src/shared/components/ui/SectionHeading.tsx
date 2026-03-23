@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 
 type SectionHeadingProps = {
   eyebrow?: string;
@@ -30,4 +30,3 @@ export const SectionHeading = ({
     {action}
   </div>
 );
-

@@ -3,14 +3,10 @@ import { Download, RefreshCcw, Trash2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useAppStore } from '@/app/appStore';
-import { usePortfolioStore } from '@/entities/portfolio/model/portfolioStore';
-import { type SettingsFormValues,settingsSchema } from '@/entities/portfolio/model/schemas';
-import { useTheme } from '@/hooks/app/useTheme';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { Input } from '@/shared/components/ui/Input';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
+import { useAppStore } from '@/app';
+import { type SettingsFormValues, settingsSchema, usePortfolioStore } from '@/entities';
+import { useTheme } from '@/hooks';
+import { Button, Card, Input, SectionHeading } from '@/shared';
 
 export const PreferencesPanel = () => {
   const settings = usePortfolioStore((state) => state.settings);

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { ThemePreference, Toast } from '@/shared/types/app';
+import type { ThemePreference, Toast } from '@/shared/types';
 
 type AppState = {
   themePreference: ThemePreference;

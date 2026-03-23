@@ -2,7 +2,7 @@ import type { ComponentType } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import { AppShell } from '@/app/layout/AppShell';
-import { RouteSkeleton } from '@/shared/components/feedback/RouteSkeleton';
+import { RouteSkeleton } from '@/shared';
 
 const lazyImport = <T extends { default: ComponentType }>(factory: () => Promise<T>) =>
   factory().then((module) => ({ Component: module.default }));

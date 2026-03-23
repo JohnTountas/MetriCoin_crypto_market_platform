@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
 
-import { useAppStore } from '@/app/appStore';
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { usePortfolioStore } from '@/entities/portfolio/model/portfolioStore';
-import { formatPrice } from '@/shared/lib/formatters';
+import { useAppStore } from '@/app';
+import { useMarketStore, usePortfolioStore } from '@/entities';
+import { formatPrice } from '@/shared/lib';
 
 export const useAlertMonitor = () => {
   const alerts = usePortfolioStore((state) => state.alerts);

@@ -7,12 +7,7 @@ import {
   transactionFormSchema,
   type TransactionFormValues,
 } from '@/entities/portfolio/model/schemas';
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { Input } from '@/shared/components/ui/Input';
-import { SectionHeading } from '@/shared/components/ui/SectionHeading';
-import { Select } from '@/shared/components/ui/Select';
-import { TRACKED_ASSETS } from '@/shared/constants/assets';
+import { Button, Card, Input, SectionHeading, Select, TRACKED_ASSETS } from '@/shared';
 
 type TransactionFormProps = {
   assetId?: string;

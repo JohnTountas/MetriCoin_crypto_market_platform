@@ -2,8 +2,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
+import { Button, Card } from '@/shared';
 
 const NotFoundPage = () => (
   <div className="grid min-h-[60vh] place-items-center">

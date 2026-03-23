@@ -1,4 +1,4 @@
-import { Skeleton } from '@/shared/components/ui/Skeleton';
+import { Skeleton } from '@/shared/components/ui';
 
 export const RouteSkeleton = () => (
   <div className="min-h-screen p-6 lg:p-8">
@@ -15,4 +15,3 @@ export const RouteSkeleton = () => (
     </div>
   </div>
 );
-

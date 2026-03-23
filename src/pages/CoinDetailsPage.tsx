@@ -6,10 +6,9 @@ import { useMarketStore } from '@/entities/market/model/marketStore';
 import { PositionsOverview } from '@/entities/portfolio/ui/PositionsOverview';
 import { TransactionForm } from '@/entities/portfolio/ui/TransactionForm';
 import { TransactionHistory } from '@/entities/portfolio/ui/TransactionHistory';
-import { CoinAnalyticsPanel } from '@/features/coin-details/ui/CoinAnalyticsPanel';
-import { AlertsPanel } from '@/features/watchlist/ui/AlertsPanel';
-import { usePortfolioMetrics } from '@/hooks/portfolio/usePortfolioMetrics';
-import { ASSET_LOOKUP, DEFAULT_ASSET_ID } from '@/shared/constants/assets';
+import { AlertsPanel, CoinAnalyticsPanel } from '@/features';
+import { usePortfolioMetrics } from '@/hooks';
+import { ASSET_LOOKUP, DEFAULT_ASSET_ID } from '@/shared';
 
 const CoinDetailsPage = () => {
   const { assetId = DEFAULT_ASSET_ID } = useParams();

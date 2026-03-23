@@ -1,12 +1,12 @@
 import Decimal from 'decimal.js';
 
-import type { MarketSnapshot } from '@/shared/types/market';
+import type { MarketSnapshot } from '@/shared/types';
 import type {
   CalculatorSettings,
   PortfolioSummary,
   PortfolioTransaction,
   PositionMetrics,
-} from '@/shared/types/portfolio';
+} from '@/shared/types';
 
 type PositionAccumulator = {
   quantity: Decimal;

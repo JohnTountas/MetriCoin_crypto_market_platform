@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { marketProvider } from '@/api/market/provider';
-import type { Timeframe } from '@/shared/types/market';
+import { marketProvider } from '@/API';
+import type { Timeframe } from '@/shared/types';
 
 export const useAssetCandles = (assetId: string, timeframe: Timeframe) =>
   useQuery({

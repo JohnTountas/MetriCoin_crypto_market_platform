@@ -1,12 +1,16 @@
 import { ArrowRight, Radar, Wallet } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { Button } from '@/shared/components/ui/Button';
-import { Card } from '@/shared/components/ui/Card';
-import { ASSET_LOOKUP } from '@/shared/constants/assets';
-import { formatCompactNumber, formatPercent, formatPrice } from '@/shared/lib/formatters';
-import type { MarketSnapshot } from '@/shared/types/market';
-import type { PortfolioSummary } from '@/shared/types/portfolio';
+import {
+  ASSET_LOOKUP,
+  Button,
+  Card,
+  formatCompactNumber,
+  formatPercent,
+  formatPrice,
+  type MarketSnapshot,
+  type PortfolioSummary,
+} from '@/shared';
 
 type DashboardHeroProps = {
   snapshot?: MarketSnapshot;
