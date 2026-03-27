@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { AlertsPanel, WatchlistGrid } from '@/features';
+import { AlertsPanel, WatchlistGrid } from '@/features/watchlist';
 
 const WatchlistPage = () => (
   <div className="space-y-6">

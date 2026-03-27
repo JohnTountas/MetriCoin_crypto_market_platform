@@ -1,11 +1,11 @@
 import { Command, Menu, MoonStar, Radio, SunMedium } from 'lucide-react';
 
 import { useAppStore } from '@/app';
-import { useMarketStore } from '@/entities';
-import { useTheme } from '@/hooks';
-import { Badge, Button, cn, formatTimestamp } from '@/shared';
+import { useMarketStore } from '@/entities/market';
+import { useTheme } from '@/hooks/app';
+import { AssetIcon, Badge, Button, classNames, formatTimestamp, getFallbackAssetMeta } from '@/shared';
 
-const statusToneMap = {
+const connectionStatusToneMap = {
   connected: 'positive',
   reconnecting: 'warning',
   connecting: 'warning',
@@ -18,11 +18,14 @@ export const Topbar = () => {
   const setMobileNavOpen = useAppStore((state) => state.setMobileNavOpen);
   const setCommandPaletteOpen = useAppStore((state) => state.setCommandPaletteOpen);
   const connectionStatus = useMarketStore((state) => state.connectionStatus);
+  const assetLookup = useMarketStore((state) => state.assetLookup);
   const selectedAssetId = useMarketStore((state) => state.selectedAssetId);
   const snapshots = useMarketStore((state) => state.snapshots);
   const { themePreference, setThemePreference } = useTheme();
 
+  const selectedAsset = assetLookup[selectedAssetId] ?? getFallbackAssetMeta(selectedAssetId);
   const selectedSnapshot = snapshots[selectedAssetId];
+  const shouldPulseStatus = connectionStatus === 'connecting' || connectionStatus === 'reconnecting';
 
   return (
     <div className="surface flex flex-col gap-4 rounded-[2rem] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
@@ -35,22 +38,28 @@ export const Topbar = () => {
         >
           <Menu className="h-4.5 w-4.5" />
         </Button>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200/70">
-            Live execution context
-          </p>
-          <div className="mt-1 flex flex-wrap items-center gap-3">
-            <h2 className="font-display text-2xl font-semibold text-white">Metricoin market dashboard</h2>
-            <Badge tone={statusToneMap[connectionStatus]}>
-              <Radio className={cn('h-3.5 w-3.5', connectionStatus === 'connected' && 'animate-pulse-glow')} />
-              {connectionStatus}
-            </Badge>
+        <div className="flex items-center gap-3">
+          <AssetIcon
+            asset={selectedAsset}
+            size="sm"
+          />
+          <div>
+            <p className="eyebrow text-xs font-semibold uppercase tracking-[0.3em]">
+              Live execution context
+            </p>
+            <div className="mt-1 flex flex-wrap items-center gap-3">
+              <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)]">Metricoin market dashboard</h2>
+              <Badge tone={connectionStatusToneMap[connectionStatus]}>
+                <Radio className={classNames('h-3.5 w-3.5', shouldPulseStatus && 'animate-pulse-glow')} />
+                {connectionStatus}
+              </Badge>
+            </div>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              {selectedSnapshot
+                ? `Latest ${selectedAsset.symbol} tick at ${formatTimestamp(selectedSnapshot.lastUpdated, true)}`
+                : `Syncing ${selectedAsset.name} market state...`}
+            </p>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
-            {selectedSnapshot
-              ? `Latest ${selectedAssetId.replace('-USD', '')} tick at ${formatTimestamp(selectedSnapshot.lastUpdated, true)}`
-              : 'Syncing market state...'}
-          </p>
         </div>
       </div>
 
@@ -62,11 +71,11 @@ export const Topbar = () => {
           <Command className="h-4.5 w-4.5" />
           Quick search
         </Button>
-        <div className="inline-flex rounded-2xl border border-white/10 bg-slate-950/60 p-1">
+        <div className="control-group inline-flex rounded-2xl p-1">
           <button
-            className={cn(
-              'rounded-2xl px-3 py-2 text-sm transition',
-              themePreference === 'light' ? 'bg-white text-slate-950' : 'text-slate-400 hover:text-white',
+            className={classNames(
+              'control-option rounded-2xl px-3 py-2 text-sm',
+              themePreference === 'light' && 'control-option-active',
             )}
             onClick={() => setThemePreference('light')}
             type="button"
@@ -74,9 +83,9 @@ export const Topbar = () => {
             <SunMedium className="h-4.5 w-4.5" />
           </button>
           <button
-            className={cn(
-              'rounded-2xl px-3 py-2 text-sm transition',
-              themePreference === 'dark' ? 'bg-white text-slate-950' : 'text-slate-400 hover:text-white',
+            className={classNames(
+              'control-option rounded-2xl px-3 py-2 text-sm',
+              themePreference === 'dark' && 'control-option-active',
             )}
             onClick={() => setThemePreference('dark')}
             type="button"

@@ -2,8 +2,9 @@ import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useAppStore } from '@/app';
-import { useMarketStore } from '@/entities';
+import { useMarketStore } from '@/entities/market';
 import {
+  AssetIcon,
   Button,
   Card,
   EmptyState,
@@ -11,15 +12,15 @@ import {
   formatPercent,
   formatPrice,
   SectionHeading,
-  TRACKED_ASSETS,
 } from '@/shared';
 
 export const WatchlistGrid = () => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
   const toggleFavoriteAsset = useAppStore((state) => state.toggleFavoriteAsset);
+  const assets = useMarketStore((state) => state.assets);
   const snapshots = useMarketStore((state) => state.snapshots);
 
-  const favoriteAssets = TRACKED_ASSETS.filter((asset) => favoriteAssetIds.includes(asset.id));
+  const favoriteAssets = assets.filter((asset) => favoriteAssetIds.includes(asset.id));
 
   if (favoriteAssets.length === 0) {
     return (
@@ -43,14 +44,20 @@ export const WatchlistGrid = () => {
           const snapshot = snapshots[asset.id];
           return (
             <Link
-              className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-5 transition hover:border-white/20"
+              className="surface-hover rounded-[1.75rem] p-5"
               key={asset.id}
               to={`/markets/${asset.id}`}
             >
               <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">{asset.symbol}</p>
-                  <h3 className="mt-1 text-xl font-semibold text-white">{asset.name}</h3>
+                <div className="flex items-center gap-3">
+                  <AssetIcon
+                    asset={asset}
+                    size="md"
+                  />
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">{asset.symbol}</p>
+                    <h3 className="mt-1 text-xl font-semibold text-[var(--text-primary)]">{asset.name}</h3>
+                  </div>
                 </div>
                 <Button
                   onClick={(event) => {
@@ -66,21 +73,27 @@ export const WatchlistGrid = () => {
 
               <div className="mt-6 space-y-4">
                 <div>
-                  <p className="text-sm text-slate-500">Spot price</p>
-                  <p className="mt-1 text-2xl font-semibold text-white">
+                  <p className="text-sm text-[var(--text-faint)]">Spot price</p>
+                  <p className="mt-1 text-2xl font-semibold text-[var(--text-primary)]">
                     {snapshot ? formatPrice(snapshot.price) : 'Loading...'}
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-slate-500">24h change</p>
-                    <p className={snapshot && snapshot.changePercent24h >= 0 ? 'text-emerald-200' : 'text-rose-200'}>
+                    <p className="text-[var(--text-faint)]">24h change</p>
+                    <p
+                      className={
+                        snapshot && snapshot.changePercent24h >= 0
+                          ? 'text-[var(--positive-text)]'
+                          : 'text-[var(--negative-text)]'
+                      }
+                    >
                       {snapshot ? formatPercent(snapshot.changePercent24h) : '--'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-slate-500">Volume</p>
-                    <p className="text-slate-300">
+                    <p className="text-[var(--text-faint)]">Volume</p>
+                    <p className="text-[var(--text-secondary)]">
                       {snapshot ? formatCompactNumber(snapshot.volume24h) : '--'}
                     </p>
                   </div>

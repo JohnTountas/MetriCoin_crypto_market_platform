@@ -1,2 +1,4 @@
-export { AllocationDonut } from './AllocationDonut';
-export { MarketPriceChart } from './MarketPriceChart';
+export { PortfolioAllocationChart } from './PortfolioAllocationChart';
+export { AssetPriceChart } from './AssetPriceChart';
+
+

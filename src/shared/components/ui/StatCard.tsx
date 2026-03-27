@@ -2,7 +2,7 @@ import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { Card } from '@/shared/components/ui/Card';
-import { cn } from '@/shared/lib';
+import { classNames } from '@/shared/utils';
 
 type StatCardProps = {
   label: string;
@@ -23,21 +23,21 @@ export const StatCard = ({
   icon,
   className,
 }: StatCardProps) => (
-  <Card className={cn('surface p-5', className)}>
+  <Card className={classNames('surface p-5', className)}>
     <div className="flex items-start justify-between gap-4">
       <div className="space-y-4">
         <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">{label}</p>
-          <h3 className="text-2xl font-semibold tracking-tight text-white">{value}</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">{label}</p>
+          <h3 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)]">{value}</h3>
         </div>
         <div className="flex items-center gap-2 text-sm">
           {delta ? (
             <span
-              className={cn(
-                'inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-medium',
-                tone === 'positive' && 'bg-emerald-400/10 text-emerald-200',
-                tone === 'negative' && 'bg-rose-400/10 text-rose-200',
-                tone === 'neutral' && 'bg-white/5 text-slate-300',
+              className={classNames(
+                'inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-medium',
+                tone === 'positive' && 'tone-positive',
+                tone === 'negative' && 'tone-negative',
+                tone === 'neutral' && 'tone-default',
               )}
             >
               {tone === 'positive' ? <ArrowUpRight className="h-3.5 w-3.5" /> : null}
@@ -45,14 +45,15 @@ export const StatCard = ({
               {delta}
             </span>
           ) : null}
-          {detail ? <span className="text-slate-500">{detail}</span> : null}
+          {detail ? <span className="text-[var(--text-faint)]">{detail}</span> : null}
         </div>
       </div>
       {icon ? (
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-slate-100">
+        <div className="surface-subtle flex h-11 w-11 items-center justify-center rounded-2xl text-[var(--text-primary)]">
           {icon}
         </div>
       ) : null}
     </div>
   </Card>
 );
+

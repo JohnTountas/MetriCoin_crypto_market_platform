@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import { DEFAULT_FAVORITE_ASSET_IDS } from '@/shared/constants';
 import type { ThemePreference, Toast } from '@/shared/types';
 
 type AppState = {
@@ -11,8 +12,8 @@ type AppState = {
   toasts: Toast[];
   setThemePreference: (themePreference: ThemePreference) => void;
   toggleFavoriteAsset: (assetId: string) => void;
-  setCommandPaletteOpen: (commandPaletteOpen: boolean) => void;
-  setMobileNavOpen: (mobileNavOpen: boolean) => void;
+  setCommandPaletteOpen: (isCommandPaletteOpen: boolean) => void;
+  setMobileNavOpen: (isMobileNavOpen: boolean) => void;
   pushToast: (toast: Omit<Toast, 'id'> & { id?: string }) => void;
   dismissToast: (toastId: string) => void;
 };
@@ -21,7 +22,7 @@ export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
       themePreference: 'system',
-      favoriteAssetIds: ['BTC-USD', 'ETH-USD', 'SOL-USD'],
+      favoriteAssetIds: [...DEFAULT_FAVORITE_ASSET_IDS],
       commandPaletteOpen: false,
       mobileNavOpen: false,
       toasts: [],
@@ -32,8 +33,8 @@ export const useAppStore = create<AppState>()(
             ? state.favoriteAssetIds.filter((item) => item !== assetId)
             : [...state.favoriteAssetIds, assetId],
         })),
-      setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
-      setMobileNavOpen: (mobileNavOpen) => set({ mobileNavOpen }),
+      setCommandPaletteOpen: (isCommandPaletteOpen) => set({ commandPaletteOpen: isCommandPaletteOpen }),
+      setMobileNavOpen: (isMobileNavOpen) => set({ mobileNavOpen: isMobileNavOpen }),
       pushToast: (toast) =>
         set((state) => ({
           toasts: [

@@ -1,21 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 
-import { useMarketStore } from '@/entities/market/model/marketStore';
-import { PositionsOverview } from '@/entities/portfolio/ui/PositionsOverview';
-import { TransactionHistory } from '@/entities/portfolio/ui/TransactionHistory';
-import {
-  AlertsPanel,
-  CoinAnalyticsPanel,
-  DashboardHero,
-  PortfolioSummaryGrid,
-  WatchlistGrid,
-} from '@/features';
-import { usePortfolioMetrics } from '@/hooks';
+import { useMarketStore } from '@/entities/market';
+import { PortfolioPositionsGrid, PortfolioTransactionHistory } from '@/entities/portfolio';
+import { AssetAnalyticsPanel } from '@/features/asset-details';
+import { DashboardHero, PortfolioSummaryGrid } from '@/features/dashboard';
+import { AlertsPanel, WatchlistGrid } from '@/features/watchlist';
+import { usePortfolioOverview } from '@/hooks/portfolio';
 
 const DashboardPage = () => {
   const selectedAssetId = useMarketStore((state) => state.selectedAssetId);
   const snapshot = useMarketStore((state) => state.snapshots[selectedAssetId]);
-  const { summary, positions, bestPerformer, worstPerformer } = usePortfolioMetrics();
+  const { summary, positions, bestPerformer, worstPerformer } = usePortfolioOverview();
 
   return (
     <div className="space-y-6">
@@ -39,15 +34,15 @@ const DashboardPage = () => {
         worstPerformer={worstPerformer}
       />
 
-      <CoinAnalyticsPanel assetId={selectedAssetId} />
+      <AssetAnalyticsPanel assetId={selectedAssetId} />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_420px]">
-        <PositionsOverview positions={positions} />
+        <PortfolioPositionsGrid positions={positions} />
         <AlertsPanel assetId={selectedAssetId} />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_420px]">
-        <TransactionHistory compact limit={5} />
+        <PortfolioTransactionHistory compact limit={5} />
         <WatchlistGrid />
       </div>
     </div>
@@ -55,3 +50,4 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+

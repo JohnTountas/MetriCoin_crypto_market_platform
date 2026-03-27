@@ -1,2 +1,3 @@
-export { ApiError, fetchJson } from './client';
-export { appConfig } from './config';
+export { ApiError, requestJson } from './jsonClient';
+export { runtimeConfig } from './runtimeConfig';
+

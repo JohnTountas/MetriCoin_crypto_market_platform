@@ -7,49 +7,49 @@ import type {
   PriceAlert,
 } from '@/shared/types';
 
-import { defaultCalculatorSettings, demoAlerts, demoTransactions } from './fixtures';
+import { defaultPortfolioSettings, samplePriceAlerts, sampleTransactions } from './portfolioFixtures';
 
 type PortfolioState = {
   transactions: PortfolioTransaction[];
   alerts: PriceAlert[];
   settings: CalculatorSettings;
   editingTransactionId?: string;
-  addTransaction: (transaction: Omit<PortfolioTransaction, 'id'>) => void;
-  updateTransaction: (transactionId: string, transaction: Omit<PortfolioTransaction, 'id'>) => void;
+  addTransaction: (transactionInput: Omit<PortfolioTransaction, 'id'>) => void;
+  updateTransaction: (transactionId: string, transactionInput: Omit<PortfolioTransaction, 'id'>) => void;
   deleteTransaction: (transactionId: string) => void;
-  startEditingTransaction: (transactionId?: string) => void;
-  addAlert: (alert: Omit<PriceAlert, 'id' | 'createdAt' | 'triggered'>) => void;
+  setEditingTransactionId: (transactionId?: string) => void;
+  addAlert: (newAlert: Omit<PriceAlert, 'id' | 'createdAt' | 'triggered'>) => void;
   deleteAlert: (alertId: string) => void;
   markAlertTriggered: (alertId: string) => void;
   resetAlerts: () => void;
-  setSettings: (settings: Partial<CalculatorSettings>) => void;
-  seedDemoPortfolio: () => void;
-  clearPortfolio: () => void;
+  setSettings: (settingsPatch: Partial<CalculatorSettings>) => void;
+  restoreSamplePortfolio: () => void;
+  clearPortfolioData: () => void;
 };
 
 export const usePortfolioStore = create<PortfolioState>()(
   persist(
     (set) => ({
-      transactions: demoTransactions,
-      alerts: demoAlerts,
-      settings: defaultCalculatorSettings,
+      transactions: sampleTransactions,
+      alerts: samplePriceAlerts,
+      settings: defaultPortfolioSettings,
       editingTransactionId: undefined,
-      addTransaction: (transaction) =>
+      addTransaction: (transactionInput) =>
         set((state) => ({
           transactions: [
             {
-              ...transaction,
+              ...transactionInput,
               id: crypto.randomUUID(),
             },
             ...state.transactions,
           ],
           editingTransactionId: undefined,
         })),
-      updateTransaction: (transactionId, transaction) =>
+      updateTransaction: (transactionId, transactionInput) =>
         set((state) => ({
           transactions: state.transactions.map((existingTransaction) =>
             existingTransaction.id === transactionId
-              ? { ...transaction, id: transactionId }
+              ? { ...transactionInput, id: transactionId }
               : existingTransaction,
           ),
           editingTransactionId: undefined,
@@ -58,12 +58,12 @@ export const usePortfolioStore = create<PortfolioState>()(
         set((state) => ({
           transactions: state.transactions.filter((transaction) => transaction.id !== transactionId),
         })),
-      startEditingTransaction: (editingTransactionId) => set({ editingTransactionId }),
-      addAlert: (alert) =>
+      setEditingTransactionId: (editingTransactionId) => set({ editingTransactionId }),
+      addAlert: (newAlert) =>
         set((state) => ({
           alerts: [
             {
-              ...alert,
+              ...newAlert,
               id: crypto.randomUUID(),
               createdAt: new Date().toISOString(),
               triggered: false,
@@ -85,19 +85,20 @@ export const usePortfolioStore = create<PortfolioState>()(
         set((state) => ({
           alerts: state.alerts.map((alert) => ({ ...alert, triggered: false })),
         })),
-      setSettings: (settings) =>
+      setSettings: (settingsPatch) =>
         set((state) => ({
           settings: {
             ...state.settings,
-            ...settings,
+            ...settingsPatch,
           },
         })),
-      seedDemoPortfolio: () =>
+      restoreSamplePortfolio: () =>
         set({
-          transactions: demoTransactions,
-          alerts: demoAlerts,
+          transactions: sampleTransactions,
+          alerts: samplePriceAlerts,
+          editingTransactionId: undefined,
         }),
-      clearPortfolio: () =>
+      clearPortfolioData: () =>
         set({
           transactions: [],
           alerts: [],
@@ -109,3 +110,5 @@ export const usePortfolioStore = create<PortfolioState>()(
     },
   ),
 );
+
+

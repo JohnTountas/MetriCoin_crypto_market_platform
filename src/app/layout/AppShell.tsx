@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { useAppStore } from '@/app';
-import { Sidebar } from '@/app/layout/Sidebar';
-import { TickerStrip } from '@/app/layout/TickerStrip';
-import { Topbar } from '@/app/layout/Topbar';
-import { useAlertMonitor, useMarketOverview, useMarketStream, useTheme } from '@/hooks';
-import { CommandPalette, ToastViewport } from '@/shared/components/feedback';
+import { useTheme } from '@/hooks/app';
+import { useTrackedAssets, useMarketSnapshots, useMarketTickerStream } from '@/hooks/market';
+import { usePriceAlertMonitor } from '@/hooks/portfolio';
+import { AppToastViewport, GlobalCommandPalette } from '@/shared';
+
+import { Sidebar, TickerStrip, Topbar } from '.';
 
 export const AppShell = () => {
   const location = useLocation();
@@ -14,9 +15,10 @@ export const AppShell = () => {
   const setMobileNavOpen = useAppStore((state) => state.setMobileNavOpen);
 
   useTheme();
-  useMarketOverview();
-  useMarketStream();
-  useAlertMonitor();
+  useTrackedAssets();
+  useMarketSnapshots();
+  useMarketTickerStream();
+  usePriceAlertMonitor();
 
   useEffect(() => {
     setMobileNavOpen(false);
@@ -39,7 +41,7 @@ export const AppShell = () => {
       </div>
 
       {mobileNavOpen ? (
-        <div className="fixed inset-0 z-40 flex bg-slate-950/70 p-4 backdrop-blur-md lg:hidden">
+        <div className="surface-overlay fixed inset-0 z-40 flex p-4 backdrop-blur-md lg:hidden">
           <button
             aria-label="Close navigation"
             className="absolute inset-0"
@@ -52,8 +54,9 @@ export const AppShell = () => {
         </div>
       ) : null}
 
-      <CommandPalette />
-      <ToastViewport />
+      <GlobalCommandPalette />
+      <AppToastViewport />
     </div>
   );
 };
+

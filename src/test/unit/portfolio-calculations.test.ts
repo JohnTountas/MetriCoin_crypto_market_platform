@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildPortfolioSummary, buildPositions } from '@/entities';
+import { calculatePortfolioSummary, calculateOpenPositions } from '@/entities/portfolio';
 import type { CalculatorSettings, MarketSnapshot, PortfolioTransaction } from '@/shared';
 
 const settings: CalculatorSettings = {
@@ -51,7 +51,7 @@ const transactions: PortfolioTransaction[] = [
 
 describe('portfolio calculations', () => {
   it('builds position metrics from transactions and live snapshots', () => {
-    const positions = buildPositions(transactions, snapshots, settings);
+    const positions = calculateOpenPositions(transactions, snapshots, settings);
 
     expect(positions).toHaveLength(1);
     expect(positions[0]).toMatchObject({
@@ -67,8 +67,8 @@ describe('portfolio calculations', () => {
   });
 
   it('builds summary metrics from open positions', () => {
-    const positions = buildPositions(transactions, snapshots, settings);
-    const summary = buildPortfolioSummary(positions, settings);
+    const positions = calculateOpenPositions(transactions, snapshots, settings);
+    const summary = calculatePortfolioSummary(positions, settings);
 
     expect(summary.currentValue).toBe(67_500);
     expect(summary.investedCapital).toBeCloseTo(47_520, 0);
@@ -76,3 +76,4 @@ describe('portfolio calculations', () => {
     expect(summary.totalFeesPaid).toBeGreaterThan(20);
   });
 });
+

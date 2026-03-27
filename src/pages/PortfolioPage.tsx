@@ -1,14 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 
-import { PositionsOverview } from '@/entities/portfolio/ui/PositionsOverview';
-import { TransactionForm } from '@/entities/portfolio/ui/TransactionForm';
-import { TransactionHistory } from '@/entities/portfolio/ui/TransactionHistory';
-import { PortfolioSummaryGrid } from '@/features';
-import { usePortfolioMetrics } from '@/hooks';
-import { AllocationDonut, Card, SectionHeading } from '@/shared';
+import { PortfolioPositionsGrid, PortfolioTransactionForm, PortfolioTransactionHistory } from '@/entities/portfolio';
+import { PortfolioSummaryGrid } from '@/features/dashboard';
+import { usePortfolioOverview } from '@/hooks/portfolio';
+import { PortfolioAllocationChart, Card, SectionHeading } from '@/shared';
 
 const PortfolioPage = () => {
-  const { summary, positions, bestPerformer, worstPerformer } = usePortfolioMetrics();
+  const { summary, positions, bestPerformer, worstPerformer } = usePortfolioOverview();
 
   return (
     <div className="space-y-6">
@@ -23,7 +21,7 @@ const PortfolioPage = () => {
       />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_420px]">
-        <PositionsOverview positions={positions} />
+        <PortfolioPositionsGrid positions={positions} />
         <Card className="surface p-5">
           <SectionHeading
             eyebrow="Allocation"
@@ -31,17 +29,18 @@ const PortfolioPage = () => {
             description="Current exposure distribution across your tracked crypto sleeve."
           />
           <div className="mt-6">
-            <AllocationDonut positions={positions} />
+            <PortfolioAllocationChart positions={positions} />
           </div>
         </Card>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
-        <TransactionForm />
-        <TransactionHistory />
+        <PortfolioTransactionForm />
+        <PortfolioTransactionHistory />
       </div>
     </div>
   );
 };
 
 export default PortfolioPage;
+

@@ -1,11 +1,11 @@
 import type { ComponentType } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-import { AppShell } from '@/app/layout/AppShell';
-import { RouteSkeleton } from '@/shared';
+import { AppShell } from '@/app/layout';
+import { PageLoadingSkeleton } from '@/shared';
 
-const lazyImport = <T extends { default: ComponentType }>(factory: () => Promise<T>) =>
-  factory().then((module) => ({ Component: module.default }));
+const loadRoute = <T extends { default: ComponentType }>(importPage: () => Promise<T>) => () =>
+  importPage().then(({ default: Component }) => ({ Component }));
 
 export const router = createBrowserRouter([
   {
@@ -14,38 +14,40 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: () => lazyImport(() => import('@/pages/DashboardPage')),
+        lazy: loadRoute(() => import('@/pages/DashboardPage')),
       },
       {
         path: 'markets',
-        lazy: () => lazyImport(() => import('@/pages/MarketsPage')),
+        lazy: loadRoute(() => import('@/pages/MarketsPage')),
       },
       {
         path: 'markets/:assetId',
-        lazy: () => lazyImport(() => import('@/pages/CoinDetailsPage')),
+        lazy: loadRoute(() => import('@/pages/AssetDetailsPage')),
       },
       {
         path: 'portfolio',
-        lazy: () => lazyImport(() => import('@/pages/PortfolioPage')),
+        lazy: loadRoute(() => import('@/pages/PortfolioPage')),
       },
       {
         path: 'transactions',
-        lazy: () => lazyImport(() => import('@/pages/TransactionsPage')),
+        lazy: loadRoute(() => import('@/pages/TransactionsPage')),
       },
       {
         path: 'watchlist',
-        lazy: () => lazyImport(() => import('@/pages/WatchlistPage')),
+        lazy: loadRoute(() => import('@/pages/WatchlistPage')),
       },
       {
         path: 'settings',
-        lazy: () => lazyImport(() => import('@/pages/SettingsPage')),
+        lazy: loadRoute(() => import('@/pages/SettingsPage')),
       },
       {
         path: '*',
-        lazy: () => lazyImport(() => import('@/pages/NotFoundPage')),
+        lazy: loadRoute(() => import('@/pages/NotFoundPage')),
       },
     ],
   },
 ]);
 
-export const routerFallback = <RouteSkeleton />;
+export const routerFallback = <PageLoadingSkeleton />;
+
+

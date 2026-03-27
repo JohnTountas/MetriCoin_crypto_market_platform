@@ -1,6 +1,6 @@
 import { RouterProvider } from 'react-router-dom';
 
-import { AppProviders } from '@/app/providers/AppProviders';
+import { AppProviders } from '@/app/providers';
 import { router, routerFallback } from '@/app/router';
 
 export const App = () => (
@@ -11,4 +11,3 @@ export const App = () => (
     />
   </AppProviders>
 );
-

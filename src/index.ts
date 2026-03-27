@@ -1,4 +1,4 @@
-export * from './API';
+export * from './api';
 export * from './app';
 export * from './entities';
 export * from './features';

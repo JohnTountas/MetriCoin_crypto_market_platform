@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ASSET_LOOKUP, DEFAULT_ASSET_ID } from '@/shared/constants';
+import { ASSET_LOOKUP, buildAssetLookup, DEFAULT_ASSET_ID, TRACKED_ASSETS } from '@/shared/constants';
 import type {
+  AssetMeta,
   MarketSnapshot,
   MarketTickerMessage,
   StreamConnectionStatus,
@@ -10,6 +11,9 @@ import type {
 } from '@/shared/types';
 
 type MarketState = {
+  assets: AssetMeta[];
+  assetLookup: Record<string, AssetMeta>;
+  assetsLoaded: boolean;
   selectedAssetId: string;
   activeTimeframe: Timeframe;
   snapshots: Record<string, MarketSnapshot>;
@@ -17,14 +21,32 @@ type MarketState = {
   lastError?: string;
   setSelectedAssetId: (selectedAssetId: string) => void;
   setActiveTimeframe: (timeframe: Timeframe) => void;
+  setAssets: (assets: AssetMeta[]) => void;
   setConnectionStatus: (connectionStatus: StreamConnectionStatus) => void;
   setLastError: (lastError?: string) => void;
   bootstrapSnapshots: (snapshots: MarketSnapshot[]) => void;
   ingestTickerBatch: (messages: MarketTickerMessage[]) => void;
 };
 
-const createFallbackSnapshot = (assetId: string, price: number, lastUpdated: number): MarketSnapshot => {
-  const asset = ASSET_LOOKUP[assetId];
+const resolveSelectedAssetId = (selectedAssetId: string, assetLookup: Record<string, AssetMeta>, assets: AssetMeta[]) => {
+  if (assetLookup[selectedAssetId]) {
+    return selectedAssetId;
+  }
+
+  if (assetLookup[DEFAULT_ASSET_ID]) {
+    return DEFAULT_ASSET_ID;
+  }
+
+  return assets[0]?.id ?? DEFAULT_ASSET_ID;
+};
+
+const createFallbackSnapshot = (
+  assetLookup: Record<string, AssetMeta>,
+  assetId: string,
+  price: number,
+  lastUpdated: number,
+): MarketSnapshot => {
+  const asset = assetLookup[assetId];
 
   return {
     assetId,
@@ -47,6 +69,9 @@ const createFallbackSnapshot = (assetId: string, price: number, lastUpdated: num
 export const useMarketStore = create<MarketState>()(
   persist(
     (set) => ({
+      assets: TRACKED_ASSETS,
+      assetLookup: ASSET_LOOKUP,
+      assetsLoaded: false,
       selectedAssetId: DEFAULT_ASSET_ID,
       activeTimeframe: '24H',
       snapshots: {},
@@ -54,6 +79,18 @@ export const useMarketStore = create<MarketState>()(
       lastError: undefined,
       setSelectedAssetId: (selectedAssetId) => set({ selectedAssetId }),
       setActiveTimeframe: (activeTimeframe) => set({ activeTimeframe }),
+      setAssets: (incomingAssets) =>
+        set((state) => {
+          const deduplicatedAssets = Array.from(new Map(incomingAssets.map((asset) => [asset.id, asset])).values());
+          const nextAssetLookup = buildAssetLookup(deduplicatedAssets);
+
+          return {
+            assets: deduplicatedAssets,
+            assetLookup: nextAssetLookup,
+            assetsLoaded: true,
+            selectedAssetId: resolveSelectedAssetId(state.selectedAssetId, nextAssetLookup, deduplicatedAssets),
+          };
+        }),
       setConnectionStatus: (connectionStatus) => set({ connectionStatus }),
       setLastError: (lastError) => set({ lastError }),
       bootstrapSnapshots: (incomingSnapshots) =>
@@ -79,7 +116,7 @@ export const useMarketStore = create<MarketState>()(
           messages.forEach((message) => {
             const currentSnapshot =
               snapshots[message.assetId] ??
-              createFallbackSnapshot(message.assetId, message.price, message.lastUpdated);
+              createFallbackSnapshot(state.assetLookup, message.assetId, message.price, message.lastUpdated);
             const nextSnapshot: MarketSnapshot = {
               ...currentSnapshot,
               price: message.price,
@@ -95,8 +132,8 @@ export const useMarketStore = create<MarketState>()(
                 currentSnapshot.open24h === 0
                   ? 0
                   : ((message.price - currentSnapshot.open24h) / currentSnapshot.open24h) * 100,
-              marketCap: ASSET_LOOKUP[message.assetId]?.circulatingSupply
-                ? message.price * (ASSET_LOOKUP[message.assetId]?.circulatingSupply ?? 0)
+              marketCap: state.assetLookup[message.assetId]?.circulatingSupply
+                ? message.price * (state.assetLookup[message.assetId]?.circulatingSupply ?? 0)
                 : currentSnapshot.marketCap,
               lastUpdated: message.lastUpdated,
               direction:

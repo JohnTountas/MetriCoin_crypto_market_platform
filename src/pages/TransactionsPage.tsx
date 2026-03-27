@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { TransactionForm } from '@/entities/portfolio/ui/TransactionForm';
-import { TransactionHistory } from '@/entities/portfolio/ui/TransactionHistory';
+import { PortfolioTransactionForm, PortfolioTransactionHistory } from '@/entities/portfolio';
 
 const TransactionsPage = () => (
   <div className="space-y-6">
@@ -10,8 +9,8 @@ const TransactionsPage = () => (
     </Helmet>
 
     <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
-      <TransactionForm />
-      <TransactionHistory />
+      <PortfolioTransactionForm />
+      <PortfolioTransactionHistory />
     </div>
   </div>
 );

@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib';
+import { classNames } from '@/shared/utils';
 
 type SegmentedControlOption<T extends string> = {
   label: string;
@@ -16,14 +16,12 @@ export const SegmentedControl = <T extends string>({
   onChange,
   options,
 }: SegmentedControlProps<T>) => (
-  <div className="inline-flex rounded-2xl border border-white/10 bg-slate-950/70 p-1">
+  <div className="control-group inline-flex rounded-2xl p-1">
     {options.map((option) => (
       <button
-        className={cn(
-          'rounded-2xl px-3 py-2 text-sm font-medium transition',
-          option.value === value
-            ? 'bg-white text-slate-950 shadow-sm'
-            : 'text-slate-400 hover:text-white',
+        className={classNames(
+          'control-option rounded-2xl px-3 py-2 text-sm font-medium',
+          option.value === value && 'control-option-active',
         )}
         key={option.value}
         onClick={() => onChange(option.value)}
@@ -34,3 +32,4 @@ export const SegmentedControl = <T extends string>({
     ))}
   </div>
 );
+

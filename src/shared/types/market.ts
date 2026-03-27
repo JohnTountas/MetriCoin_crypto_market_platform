@@ -19,6 +19,7 @@ export type AssetMeta = {
   productId: string;
   description: string;
   accent: string;
+  iconUrl?: string;
   circulatingSupply?: number;
   quantityPrecision: number;
 };
@@ -63,4 +64,3 @@ export type AssetTimeSeries = {
   timeframe: Timeframe;
   candles: MarketCandle[];
 };
-

@@ -1,3 +1,5 @@
+export { AssetIcon } from './AssetIcon';
+export { AssetSelect } from './AssetSelect';
 export { Badge } from './Badge';
 export { Button } from './Button';
 export { Card } from './Card';

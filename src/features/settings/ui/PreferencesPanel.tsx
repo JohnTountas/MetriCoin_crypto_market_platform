@@ -4,22 +4,22 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useAppStore } from '@/app';
-import { type SettingsFormValues, settingsSchema, usePortfolioStore } from '@/entities';
-import { useTheme } from '@/hooks';
+import { portfolioSettingsSchema, type PortfolioSettingsFormValues, usePortfolioStore } from '@/entities/portfolio';
+import { useTheme } from '@/hooks/app';
 import { Button, Card, Input, SectionHeading } from '@/shared';
 
 export const PreferencesPanel = () => {
   const settings = usePortfolioStore((state) => state.settings);
   const setSettings = usePortfolioStore((state) => state.setSettings);
-  const seedDemoPortfolio = usePortfolioStore((state) => state.seedDemoPortfolio);
-  const clearPortfolio = usePortfolioStore((state) => state.clearPortfolio);
+  const restoreSamplePortfolio = usePortfolioStore((state) => state.restoreSamplePortfolio);
+  const clearPortfolioData = usePortfolioStore((state) => state.clearPortfolioData);
   const transactions = usePortfolioStore((state) => state.transactions);
   const alerts = usePortfolioStore((state) => state.alerts);
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
   const { themePreference, setThemePreference } = useTheme();
 
-  const form = useForm<SettingsFormValues>({
-    resolver: zodResolver(settingsSchema),
+  const form = useForm<PortfolioSettingsFormValues>({
+    resolver: zodResolver(portfolioSettingsSchema),
     defaultValues: {
       estimatedFeeRate: settings.estimatedFeeRate,
       estimatedSlippageRate: settings.estimatedSlippageRate,
@@ -46,7 +46,7 @@ export const PreferencesPanel = () => {
           className="mt-6 grid gap-4 md:grid-cols-2"
           onSubmit={form.handleSubmit((values) => setSettings(values))}
         >
-          <label className="space-y-2 text-sm text-slate-300">
+          <label className="space-y-2 text-sm text-[var(--text-secondary)]">
             Estimated trading fee (%)
             <Input
               step="0.01"
@@ -55,7 +55,7 @@ export const PreferencesPanel = () => {
             />
           </label>
 
-          <label className="space-y-2 text-sm text-slate-300">
+          <label className="space-y-2 text-sm text-[var(--text-secondary)]">
             Estimated slippage (%)
             <Input
               step="0.01"
@@ -71,7 +71,7 @@ export const PreferencesPanel = () => {
 
         <div className="mt-8 space-y-4">
           <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Theme</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">Theme</p>
             <div className="flex flex-wrap gap-3">
               <Button
                 onClick={() => setThemePreference('dark')}
@@ -104,7 +104,7 @@ export const PreferencesPanel = () => {
         />
 
         <div className="mt-6 space-y-4">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-slate-300">
+          <div className="surface-subtle rounded-2xl p-4 text-sm text-[var(--text-secondary)]">
             <p>Transactions: {transactions.length}</p>
             <p className="mt-1">Alerts: {alerts.length}</p>
             <p className="mt-1">Favorites: {favoriteAssetIds.length}</p>
@@ -112,7 +112,7 @@ export const PreferencesPanel = () => {
 
           <Button
             fullWidth
-            onClick={() => seedDemoPortfolio()}
+            onClick={() => restoreSamplePortfolio()}
             variant="secondary"
           >
             <RefreshCcw className="h-4 w-4" />
@@ -147,7 +147,7 @@ export const PreferencesPanel = () => {
 
           <Button
             fullWidth
-            onClick={() => clearPortfolio()}
+            onClick={() => clearPortfolioData()}
             variant="danger"
           >
             <Trash2 className="h-4 w-4" />
@@ -158,3 +158,5 @@ export const PreferencesPanel = () => {
     </div>
   );
 };
+
+

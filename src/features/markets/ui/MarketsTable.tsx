@@ -2,8 +2,9 @@ import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { useAppStore } from '@/app';
-import { useMarketStore } from '@/entities';
+import { useMarketStore } from '@/entities/market';
 import {
+  AssetIcon,
   Button,
   Card,
   formatCompactNumber,
@@ -12,12 +13,12 @@ import {
   formatPrice,
   formatTimestamp,
   SectionHeading,
-  TRACKED_ASSETS,
 } from '@/shared';
 
 export const MarketsTable = () => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
   const toggleFavoriteAsset = useAppStore((state) => state.toggleFavoriteAsset);
+  const assets = useMarketStore((state) => state.assets);
   const snapshots = useMarketStore((state) => state.snapshots);
 
   return (
@@ -30,7 +31,7 @@ export const MarketsTable = () => {
 
       <div className="mt-6 overflow-x-auto">
         <table className="min-w-full text-left text-sm">
-          <thead className="text-xs uppercase tracking-[0.22em] text-slate-500">
+          <thead className="text-xs uppercase tracking-[0.22em] text-[var(--text-faint)]">
             <tr>
               <th className="pb-3 font-medium">Asset</th>
               <th className="pb-3 font-medium">Price</th>
@@ -42,34 +43,46 @@ export const MarketsTable = () => {
               <th className="pb-3 font-medium">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
-            {TRACKED_ASSETS.map((asset) => {
+          <tbody className="divide-y divide-[var(--border)]">
+            {assets.map((asset) => {
               const snapshot = snapshots[asset.id];
               return (
                 <tr key={asset.id}>
                   <td className="py-4">
-                    <div>
-                      <p className="font-semibold text-white">{asset.name}</p>
-                      <p className="text-slate-500">{asset.symbol}</p>
+                    <div className="flex items-center gap-3">
+                      <AssetIcon
+                        asset={asset}
+                        size="sm"
+                      />
+                      <div>
+                        <p className="font-semibold text-[var(--text-primary)]">{asset.name}</p>
+                        <p className="text-[var(--text-faint)]">{asset.symbol}</p>
+                      </div>
                     </div>
                   </td>
-                  <td className="py-4 text-white">{snapshot ? formatPrice(snapshot.price) : 'Loading...'}</td>
+                  <td className="py-4 text-[var(--text-primary)]">{snapshot ? formatPrice(snapshot.price) : 'Loading...'}</td>
                   <td className="py-4">
-                    <div className={snapshot && snapshot.changePercent24h >= 0 ? 'text-emerald-200' : 'text-rose-200'}>
+                    <div
+                      className={
+                        snapshot && snapshot.changePercent24h >= 0
+                          ? 'text-[var(--positive-text)]'
+                          : 'text-[var(--negative-text)]'
+                      }
+                    >
                       <p>{snapshot ? formatPercent(snapshot.changePercent24h) : '--'}</p>
-                      <p className="text-slate-500">{snapshot ? formatCurrency(snapshot.change24h) : '--'}</p>
+                      <p className="text-[var(--text-faint)]">{snapshot ? formatCurrency(snapshot.change24h) : '--'}</p>
                     </div>
                   </td>
-                  <td className="py-4 text-slate-300">
+                  <td className="py-4 text-[var(--text-secondary)]">
                     {snapshot ? formatCompactNumber(snapshot.volume24h) : '--'}
                   </td>
-                  <td className="py-4 text-slate-300">
+                  <td className="py-4 text-[var(--text-secondary)]">
                     {snapshot ? `${formatPrice(snapshot.high24h)} / ${formatPrice(snapshot.low24h)}` : '--'}
                   </td>
-                  <td className="py-4 text-slate-300">
+                  <td className="py-4 text-[var(--text-secondary)]">
                     {snapshot?.spread ? formatPrice(snapshot.spread) : '--'}
                   </td>
-                  <td className="py-4 text-slate-400">
+                  <td className="py-4 text-[var(--text-muted)]">
                     {snapshot ? formatTimestamp(snapshot.lastUpdated, true) : '--'}
                   </td>
                   <td className="py-4">
@@ -85,7 +98,7 @@ export const MarketsTable = () => {
                         variant="secondary"
                       >
                         <Star
-                          className={`h-4 w-4 ${favoriteAssetIds.includes(asset.id) ? 'fill-amber-300 text-amber-300' : 'text-slate-400'}`}
+                          className={`h-4 w-4 ${favoriteAssetIds.includes(asset.id) ? 'fill-amber-300 text-amber-300' : 'text-[var(--text-muted)]'}`}
                         />
                       </Button>
                     </div>

@@ -11,9 +11,9 @@ const NotFoundPage = () => (
     </Helmet>
 
     <Card className="surface max-w-xl p-8 text-center">
-      <p className="text-xs font-semibold uppercase tracking-[0.34em] text-cyan-200/70">404</p>
-      <h1 className="mt-4 font-display text-4xl font-semibold text-white">Signal lost on this route</h1>
-      <p className="mt-4 text-base leading-8 text-slate-400">
+      <p className="eyebrow text-xs font-semibold uppercase tracking-[0.34em]">404</p>
+      <h1 className="mt-4 font-display text-4xl font-semibold text-[var(--text-primary)]">Signal lost on this route</h1>
+      <p className="mt-4 text-base leading-8 text-[var(--text-muted)]">
         The page you requested does not exist, but your market stream is still intact. Head back to the dashboard to
         continue monitoring Bitcoin and your live portfolio.
       </p>

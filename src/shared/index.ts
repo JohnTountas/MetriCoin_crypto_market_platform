@@ -1,8 +1,8 @@
 export * from './components/charts';
-export { RouteSkeleton } from './components/feedback';
+export * from './components/feedback';
 export * from './components/ui';
 export * from './constants';
-export * from './lib';
+export * from './utils';
 export type { CommandAction, ThemePreference, Toast, ToastTone } from './types/app';
 export type {
   AssetMeta,
@@ -24,3 +24,4 @@ export type {
   PriceAlert,
   TransactionSide,
 } from './types/portfolio';
+

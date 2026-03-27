@@ -6,28 +6,28 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Space Grotesk"', 'sans-serif'],
-        sans: ['"Manrope"', 'sans-serif'],
+        display: ['"Inter"', 'sans-serif'],
+        sans: ['"Inter"', 'sans-serif'],
       },
       boxShadow: {
         panel: '0 22px 70px -30px rgba(10, 16, 35, 0.45)',
-        glow: '0 0 0 1px rgba(115, 241, 202, 0.18), 0 20px 50px -24px rgba(17, 193, 163, 0.55)',
+        glow: '0 0 0 1px rgba(93, 127, 143, 0.12), 0 12px 28px -22px rgba(39, 62, 74, 0.22)',
       },
       keyframes: {
         pulseGlow: {
-          '0%, 100%': { opacity: '0.82' },
-          '50%': { opacity: '1' },
+          '0%, 100%': { opacity: '0.72' },
+          '50%': { opacity: '0.9' },
         },
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(14px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         flashUp: {
-          '0%': { backgroundColor: 'rgba(52, 211, 153, 0.28)' },
+          '0%': { backgroundColor: 'rgba(126, 184, 155, 0.16)' },
           '100%': { backgroundColor: 'transparent' },
         },
         flashDown: {
-          '0%': { backgroundColor: 'rgba(248, 113, 113, 0.24)' },
+          '0%': { backgroundColor: 'rgba(201, 146, 159, 0.14)' },
           '100%': { backgroundColor: 'transparent' },
         },
       },
@@ -49,4 +49,3 @@ const config: Config = {
 };
 
 export default config;
-

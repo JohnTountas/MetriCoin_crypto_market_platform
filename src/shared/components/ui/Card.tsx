@@ -1,6 +1,6 @@
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 
-import { cn } from '@/shared/lib';
+import { classNames } from '@/shared/utils';
 
 type CardProps = PropsWithChildren<
   HTMLAttributes<HTMLDivElement> & {
@@ -10,8 +10,8 @@ type CardProps = PropsWithChildren<
 
 export const Card = ({ children, className, elevated = false, ...props }: CardProps) => (
   <div
-    className={cn(
-      'rounded-3xl border border-white/10 bg-slate-900/75 backdrop-blur-xl',
+    className={classNames(
+      'surface rounded-3xl',
       elevated ? 'shadow-panel' : 'shadow-none',
       className,
     )}
@@ -20,3 +20,4 @@ export const Card = ({ children, className, elevated = false, ...props }: CardPr
     {children}
   </div>
 );
+
