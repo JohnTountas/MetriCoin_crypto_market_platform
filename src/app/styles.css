@@ -80,7 +80,7 @@
     --positive-text: #166534;
     --negative-bg: rgba(225, 29, 72, 0.1);
     --negative-border: rgba(225, 29, 72, 0.18);
-    --negative-text: #be123c;
+    --negative-text: #c7103e;
     --warning-bg: rgba(217, 119, 6, 0.1);
     --warning-border: rgba(217, 119, 6, 0.18);
     --warning-text: #b45309;
@@ -105,7 +105,9 @@
       linear-gradient(180deg, var(--bg-primary), var(--bg-secondary) 60%);
     color: var(--text-primary);
     font-family: 'Inter', sans-serif;
-    font-feature-settings: 'cv11' 1, 'ss01' 1;
+    font-feature-settings:
+      'cv11' 1,
+      'ss01' 1;
     text-rendering: optimizeLegibility;
   }
 

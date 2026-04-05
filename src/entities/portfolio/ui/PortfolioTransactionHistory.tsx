@@ -1,5 +1,6 @@
 import { Pencil, Trash2 } from 'lucide-react';
 
+import { useAppStore } from '@/app';
 import { useMarketStore } from '@/entities/market';
 import {
   AssetIcon,
@@ -7,13 +8,15 @@ import {
   Button,
   Card,
   EmptyState,
+  formatCurrency,
   formatPrice,
   formatQuantity,
   formatTimestamp,
   getFallbackAssetMeta,
   SectionHeading,
 } from '@/shared';
-import { usePortfolioStore } from '../model';
+
+import { sortTransactionsByExecutedAt, usePortfolioStore } from '../model';
 
 type PortfolioTransactionHistoryProps = {
   assetId?: string;
@@ -30,9 +33,11 @@ export const PortfolioTransactionHistory = ({
   const transactions = usePortfolioStore((state) => state.transactions);
   const deleteTransaction = usePortfolioStore((state) => state.deleteTransaction);
   const setEditingTransactionId = usePortfolioStore((state) => state.setEditingTransactionId);
+  const pushToast = useAppStore((state) => state.pushToast);
 
-  const filteredTransactions = transactions
-    .filter((transaction) => !assetId || transaction.assetId === assetId)
+  const filteredTransactions = sortTransactionsByExecutedAt(
+    transactions.filter((transaction) => !assetId || transaction.assetId === assetId),
+  )
     .slice(0, limit ?? transactions.length);
 
   if (filteredTransactions.length === 0) {
@@ -60,6 +65,7 @@ export const PortfolioTransactionHistory = ({
               <th className="pb-3 font-medium">Side</th>
               <th className="pb-3 font-medium">Quantity</th>
               <th className="pb-3 font-medium">Price</th>
+              <th className="pb-3 font-medium">Value</th>
               <th className="pb-3 font-medium">Fee</th>
               <th className="pb-3 font-medium">Executed</th>
               {!compact ? <th className="pb-3 font-medium">Actions</th> : null}
@@ -92,6 +98,9 @@ export const PortfolioTransactionHistory = ({
                     {formatQuantity(transaction.assetId, transaction.quantity)}
                   </td>
                   <td className="py-4 text-[var(--text-secondary)]">{formatPrice(transaction.price)}</td>
+                  <td className="py-4 text-[var(--text-secondary)]">
+                    {formatCurrency(transaction.quantity * transaction.price)}
+                  </td>
                   <td className="py-4 text-[var(--text-secondary)]">{formatPrice(transaction.fee)}</td>
                   <td className="py-4 text-[var(--text-muted)]">{formatTimestamp(transaction.executedAt)}</td>
                   {!compact ? (
@@ -106,7 +115,14 @@ export const PortfolioTransactionHistory = ({
                           Edit
                         </Button>
                         <Button
-                          onClick={() => deleteTransaction(transaction.id)}
+                          onClick={() => {
+                            deleteTransaction(transaction.id);
+                            pushToast({
+                              tone: 'warning',
+                              title: 'Transaction deleted',
+                              description: `Removed ${transaction.side} ${formatQuantity(transaction.assetId, transaction.quantity)} ${asset.symbol} from the ledger.`,
+                            });
+                          }}
                           size="sm"
                           variant="danger"
                         >

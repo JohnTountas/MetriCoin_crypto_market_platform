@@ -18,9 +18,10 @@ type PortfolioState = {
   updateTransaction: (transactionId: string, transactionInput: Omit<PortfolioTransaction, 'id'>) => void;
   deleteTransaction: (transactionId: string) => void;
   setEditingTransactionId: (transactionId?: string) => void;
-  addAlert: (newAlert: Omit<PriceAlert, 'id' | 'createdAt' | 'triggered'>) => void;
+  addAlert: (newAlert: Omit<PriceAlert, 'id' | 'createdAt' | 'triggered' | 'triggeredAt'>) => void;
   deleteAlert: (alertId: string) => void;
   markAlertTriggered: (alertId: string) => void;
+  rearmAlert: (alertId: string) => void;
   resetAlerts: () => void;
   setSettings: (settingsPatch: Partial<CalculatorSettings>) => void;
   restoreSamplePortfolio: () => void;
@@ -57,6 +58,10 @@ export const usePortfolioStore = create<PortfolioState>()(
       deleteTransaction: (transactionId) =>
         set((state) => ({
           transactions: state.transactions.filter((transaction) => transaction.id !== transactionId),
+          editingTransactionId:
+            state.editingTransactionId === transactionId
+              ? undefined
+              : state.editingTransactionId,
         })),
       setEditingTransactionId: (editingTransactionId) => set({ editingTransactionId }),
       addAlert: (newAlert) =>
@@ -67,6 +72,7 @@ export const usePortfolioStore = create<PortfolioState>()(
               id: crypto.randomUUID(),
               createdAt: new Date().toISOString(),
               triggered: false,
+              triggeredAt: undefined,
             },
             ...state.alerts,
           ],
@@ -78,12 +84,34 @@ export const usePortfolioStore = create<PortfolioState>()(
       markAlertTriggered: (alertId) =>
         set((state) => ({
           alerts: state.alerts.map((alert) =>
-            alert.id === alertId ? { ...alert, triggered: true } : alert,
+            alert.id === alertId
+              ? {
+                  ...alert,
+                  triggered: true,
+                  triggeredAt: alert.triggeredAt ?? new Date().toISOString(),
+                }
+              : alert,
+          ),
+        })),
+      rearmAlert: (alertId) =>
+        set((state) => ({
+          alerts: state.alerts.map((alert) =>
+            alert.id === alertId
+              ? {
+                  ...alert,
+                  triggered: false,
+                  triggeredAt: undefined,
+                }
+              : alert,
           ),
         })),
       resetAlerts: () =>
         set((state) => ({
-          alerts: state.alerts.map((alert) => ({ ...alert, triggered: false })),
+          alerts: state.alerts.map((alert) => ({
+            ...alert,
+            triggered: false,
+            triggeredAt: undefined,
+          })),
         })),
       setSettings: (settingsPatch) =>
         set((state) => ({

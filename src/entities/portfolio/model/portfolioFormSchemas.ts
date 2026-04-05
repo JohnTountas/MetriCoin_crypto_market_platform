@@ -6,7 +6,10 @@ export const portfolioTransactionFormSchema = z.object({
   quantity: z.coerce.number().positive(),
   price: z.coerce.number().positive(),
   fee: z.coerce.number().min(0),
-  executedAt: z.string().min(1),
+  executedAt: z
+    .string()
+    .min(1, 'Execution time is required.')
+    .refine((value) => !Number.isNaN(new Date(value).getTime()), 'Enter a valid execution time.'),
   note: z.string().max(160).optional().or(z.literal('')),
 });
 

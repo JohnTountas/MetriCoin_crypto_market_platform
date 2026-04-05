@@ -25,8 +25,8 @@ export const usePriceAlertMonitor = () => {
         const assetSymbol = getFallbackAssetMeta(alert.assetId).symbol;
         markAlertTriggered(alert.id);
         useAppStore.getState().pushToast({
-          title: `${assetSymbol} alert triggered`,
-          description: `${alert.label ?? 'Price level hit'} at ${formatPrice(currentPrice)}.`,
+          title: `${assetSymbol} trigger hit`,
+          description: `${alert.label ?? 'Price level reached'} at ${formatPrice(currentPrice)}.`,
           tone: 'success',
         });
       }

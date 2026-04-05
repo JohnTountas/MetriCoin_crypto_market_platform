@@ -1,8 +1,8 @@
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-import { classNames } from '@/shared/utils';
 import type { AssetMeta } from '@/shared/types';
+import { classNames } from '@/shared/utils';
 
 import { AssetIcon } from './AssetIcon';
 
@@ -11,9 +11,16 @@ type AssetSelectProps = {
   value?: string;
   onChange: (value: string) => void;
   className?: string;
+  disabled?: boolean;
 };
 
-export const AssetSelect = ({ assets, value, onChange, className }: AssetSelectProps) => {
+export const AssetSelect = ({
+  assets,
+  value,
+  onChange,
+  className,
+  disabled = false,
+}: AssetSelectProps) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const selectedAsset = assets.find((asset) => asset.id === value) ?? assets[0];
@@ -40,6 +47,12 @@ export const AssetSelect = ({ assets, value, onChange, className }: AssetSelectP
     };
   }, []);
 
+  useEffect(() => {
+    if (disabled) {
+      setOpen(false);
+    }
+  }, [disabled]);
+
   if (!selectedAsset) {
     return null;
   }
@@ -51,8 +64,15 @@ export const AssetSelect = ({ assets, value, onChange, className }: AssetSelectP
     >
       <button
         aria-expanded={open}
-        className="surface-input flex h-14 w-full items-center justify-between rounded-2xl px-4 text-left text-sm text-[var(--text-primary)] outline-none transition focus:border-cyan-300/60 focus:ring-2 focus:ring-cyan-300/20"
-        onClick={() => setOpen((current) => !current)}
+        className="surface-input flex h-14 w-full items-center justify-between rounded-2xl px-4 text-left text-sm text-[var(--text-primary)] outline-none transition focus:border-cyan-300/60 focus:ring-2 focus:ring-cyan-300/20 disabled:cursor-not-allowed disabled:opacity-70"
+        disabled={disabled}
+        onClick={() => {
+          if (disabled) {
+            return;
+          }
+
+          setOpen((current) => !current);
+        }}
         type="button"
       >
         <div className="flex min-w-0 items-center gap-3">
@@ -73,7 +93,7 @@ export const AssetSelect = ({ assets, value, onChange, className }: AssetSelectP
         />
       </button>
 
-      {open ? (
+      {open && !disabled ? (
         <div className="surface absolute z-20 mt-2 max-h-80 w-full overflow-y-auto rounded-[1.5rem] border border-[var(--border)] p-2 shadow-[0_24px_60px_rgba(2,6,23,0.2)]">
           {assets.map((asset) => {
             const active = asset.id === selectedAsset.id;

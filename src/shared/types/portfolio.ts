@@ -45,6 +45,7 @@ export type PriceAlert = {
   label?: string;
   triggered: boolean;
   createdAt: string;
+  triggeredAt?: string;
 };
 
 export type CalculatorSettings = {
@@ -52,4 +53,3 @@ export type CalculatorSettings = {
   estimatedSlippageRate: number;
   preferredCurrency: 'USD';
 };
-

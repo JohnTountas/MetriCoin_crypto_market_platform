@@ -5,46 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/app';
 import { useMarketStore } from '@/entities/market';
 import { useKeyboardShortcut } from '@/hooks/shared';
-import { ROUTES } from '@/shared/constants';
 import { AssetIcon, Input } from '@/shared/components/ui';
-
-const baseNavigationCommands = [
-  {
-    id: 'dashboard',
-    label: 'Dashboard',
-    description: 'Jump to the live Metricoin command center.',
-    path: ROUTES.dashboard,
-    keywords: ['home', 'dashboard', 'overview'],
-  },
-  {
-    id: 'markets',
-    label: 'Markets',
-    description: 'Browse tracked crypto market snapshots.',
-    path: ROUTES.markets,
-    keywords: ['markets', 'coins', 'prices'],
-  },
-  {
-    id: 'portfolio',
-    label: 'Portfolio',
-    description: 'Review your live positions and exposure.',
-    path: ROUTES.portfolio,
-    keywords: ['portfolio', 'pnl', 'positions'],
-  },
-  {
-    id: 'watchlist',
-    label: 'Watchlist',
-    description: 'Open favorites and live alerting workflows.',
-    path: ROUTES.watchlist,
-    keywords: ['watchlist', 'favorites', 'alerts'],
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    description: 'Customize themes, fees, and portfolio behavior.',
-    path: ROUTES.settings,
-    keywords: ['settings', 'preferences', 'theme'],
-  },
-];
 
 export const GlobalCommandPalette = () => {
   const navigate = useNavigate();
@@ -77,7 +38,7 @@ export const GlobalCommandPalette = () => {
     asset,
   }));
 
-  const filteredCommands = [...baseNavigationCommands, ...assetCommands].filter((command) => {
+  const filteredCommands = assetCommands.filter((command) => {
     const haystack = `${command.label} ${command.description} ${command.keywords.join(' ')}`.toLowerCase();
     return haystack.includes(searchQuery.toLowerCase());
   });
@@ -97,7 +58,7 @@ export const GlobalCommandPalette = () => {
             autoFocus
             className="h-auto border-none bg-transparent px-0 text-base focus:ring-0"
             onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Search routes, assets, alerts, settings..."
+            placeholder="Search coins by name or symbol..."
             value={searchQuery}
           />
           <div className="surface-subtle hidden items-center gap-1 rounded-xl px-2 py-1 text-xs text-[var(--text-muted)] sm:flex">
@@ -110,21 +71,17 @@ export const GlobalCommandPalette = () => {
               className="surface-hover flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left"
               key={command.id}
               onClick={() => {
-                if (command.path?.startsWith('/markets/')) {
-                  setSelectedAssetId(command.id);
-                }
-                navigate(command.path ?? ROUTES.dashboard);
+                setSelectedAssetId(command.id);
+                navigate(command.path);
                 setCommandPaletteOpen(false);
               }}
               type="button"
             >
               <div className="flex items-center gap-3">
-                {'asset' in command ? (
-                  <AssetIcon
-                    asset={command.asset}
-                    size="sm"
-                  />
-                ) : null}
+                <AssetIcon
+                  asset={command.asset}
+                  size="sm"
+                />
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-[var(--text-primary)]">{command.label}</span>
@@ -138,6 +95,11 @@ export const GlobalCommandPalette = () => {
               <span className="text-xs uppercase tracking-[0.22em] text-[var(--text-faint)]">Open</span>
             </button>
           ))}
+          {filteredCommands.length === 0 ? (
+            <div className="px-4 py-6 text-sm text-[var(--text-muted)]">
+              No coins matched your search.
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
