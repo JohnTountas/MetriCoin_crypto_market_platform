@@ -11,10 +11,14 @@ type SidebarProps = {
 
 export const Sidebar = ({ mobile = false }: SidebarProps) => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
-  const setCommandPaletteOpen = useAppStore((state) => state.setCommandPaletteOpen);
+  const setCommandPaletteOpen = useAppStore(
+    (state) => state.setCommandPaletteOpen,
+  );
   const assets = useMarketStore((state) => state.assets);
 
-  const favoriteAssets = assets.filter((asset) => favoriteAssetIds.includes(asset.id));
+  const favoriteAssets = assets.filter((asset) =>
+    favoriteAssetIds.includes(asset.id),
+  );
 
   return (
     <aside className="surface flex h-full flex-col rounded-[2rem] p-5">
@@ -23,7 +27,9 @@ export const Sidebar = ({ mobile = false }: SidebarProps) => {
           <p className="eyebrow text-xs font-semibold uppercase tracking-[0.32em]">
             Metricoin
           </p>
-          <h1 className="font-display text-2xl font-semibold text-[var(--text-primary)]">Institutional-grade market view</h1>
+          <h1 className="font-display text-2xl font-semibold text-[var(--text-primary)]">
+            Institutional-grade market view
+          </h1>
         </div>
 
         <Button
@@ -58,40 +64,49 @@ export const Sidebar = ({ mobile = false }: SidebarProps) => {
         ))}
       </nav>
 
-      <div className="surface-subtle space-y-4 rounded-3xl p-4">
+      <div className="surface-subtle space-y-4 rounded-3xl p-7">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">Favorites</p>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">Pinned for fast review</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">
+              Favorites
+            </p>
+            <p className="mt-1 text-sm text-[var(--text-secondary)]">
+              Pinned for fast review
+            </p>
           </div>
           <Star className="h-4.5 w-4.5 text-amber-300" />
         </div>
         <div className="space-y-2">
           {favoriteAssets.map((asset) => (
-            <div
-              className="surface-muted rounded-2xl px-3 py-2"
-              key={asset.id}
-            >
-              <div className="flex items-center gap-3">
-                <AssetIcon
-                  asset={asset}
-                  size="sm"
-                />
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[var(--text-primary)]">{asset.name}</p>
-                  <p className="truncate text-sm text-[var(--text-muted)]">{asset.description}</p>
+            <div className="surface-muted rounded-2xl px-3 py-3" key={asset.id}>
+              <div className="flex min-w-0 items-center gap-3">
+                <AssetIcon asset={asset} size="sm" />
+                <div className="min-w-0 flex-1">
+                  <p
+                    className="truncate text-sm font-semibold leading-tight text-[var(--text-primary)]"
+                    title={asset.name}
+                  >
+                    {asset.name}
+                  </p>
+                  <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-faint)]">
+                    {asset.symbol} / USD
+                  </p>
                 </div>
               </div>
             </div>
           ))}
           {favoriteAssets.length === 0 ? (
-            <p className="text-sm text-[var(--text-muted)]">Star assets from Markets to build a tighter watchlist.</p>
+            <p className="text-sm text-[var(--text-muted)]">
+              Star assets from Markets to build a tighter watchlist.
+            </p>
           ) : null}
         </div>
       </div>
 
       {mobile ? (
-        <p className="mt-4 text-xs uppercase tracking-[0.22em] text-[var(--text-faint)]">Tap outside the panel to close</p>
+        <p className="mt-4 text-xs uppercase tracking-[0.22em] text-[var(--text-faint)]">
+          Tap outside the panel to close
+        </p>
       ) : null}
     </aside>
   );

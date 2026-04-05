@@ -27,16 +27,21 @@ export const TickerStrip = () => {
               to={`/markets/${asset.id}`}
             >
               <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
                   <AssetIcon
                     asset={asset}
                     size="sm"
                   />
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">
                       {asset.symbol}
                     </p>
-                    <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">{asset.name}</p>
+                    <p
+                      className="mt-1 truncate text-sm font-semibold text-[var(--text-primary)]"
+                      title={asset.name}
+                    >
+                      {asset.name}
+                    </p>
                   </div>
                 </div>
                 <div

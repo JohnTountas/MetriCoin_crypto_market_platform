@@ -44,4 +44,3 @@ export const formatQuantity = (assetId: string, value: number) => {
 
 export const formatTimestamp = (value: string | number, concise = false) =>
   concise ? formatShortTime(value) : formatLocalDateTime(value);
-

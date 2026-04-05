@@ -28,8 +28,8 @@ export const Topbar = () => {
   const shouldPulseStatus = connectionStatus === 'connecting' || connectionStatus === 'reconnecting';
 
   return (
-    <div className="surface flex flex-col gap-4 rounded-[2rem] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex items-center gap-3">
+    <div className="surface flex flex-col gap-4 rounded-[2rem] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+      <div className="flex min-w-0 items-start gap-3">
         <Button
           className="lg:hidden"
           onClick={() => setMobileNavOpen(true)}
@@ -38,23 +38,25 @@ export const Topbar = () => {
         >
           <Menu className="h-4.5 w-4.5" />
         </Button>
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-start gap-3">
           <AssetIcon
             asset={selectedAsset}
             size="sm"
           />
-          <div>
+          <div className="min-w-0 flex-1">
             <p className="eyebrow text-xs font-semibold uppercase tracking-[0.3em]">
               Live execution context
             </p>
-            <div className="mt-1 flex flex-wrap items-center gap-3">
-              <h2 className="font-display text-2xl font-semibold text-[var(--text-primary)]">Metricoin market dashboard</h2>
-              <Badge tone={connectionStatusToneMap[connectionStatus]}>
+            <div className="mt-1 flex flex-wrap items-center gap-2 sm:gap-3">
+              <h2 className="basis-full font-display text-xl font-semibold leading-tight text-[var(--text-primary)] sm:basis-auto sm:text-2xl">
+                Metricoin market dashboard
+              </h2>
+              <Badge className="shrink-0" tone={connectionStatusToneMap[connectionStatus]}>
                 <Radio className={classNames('h-3.5 w-3.5', shouldPulseStatus && 'animate-pulse-glow')} />
                 {connectionStatus}
               </Badge>
             </div>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">
+            <p className="mt-1 break-words text-sm text-[var(--text-muted)]">
               {selectedSnapshot
                 ? `Latest ${selectedAsset.symbol} tick at ${formatTimestamp(selectedSnapshot.lastUpdated, true)}`
                 : `Syncing ${selectedAsset.name} market state...`}
@@ -63,8 +65,9 @@ export const Topbar = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 sm:justify-end">
         <Button
+          className="w-full justify-between xs:w-auto"
           onClick={() => setCommandPaletteOpen(true)}
           variant="secondary"
         >

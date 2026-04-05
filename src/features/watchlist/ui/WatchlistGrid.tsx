@@ -8,11 +8,19 @@ import {
   Button,
   Card,
   EmptyState,
+  classNames,
   formatCompactNumber,
   formatPercent,
   formatPrice,
   SectionHeading,
 } from '@/shared';
+
+const TWO_LINE_CLAMP_STYLE = {
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical' as const,
+  WebkitLineClamp: 2,
+  overflow: 'hidden',
+};
 
 export const WatchlistGrid = () => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
@@ -20,13 +28,15 @@ export const WatchlistGrid = () => {
   const assets = useMarketStore((state) => state.assets);
   const snapshots = useMarketStore((state) => state.snapshots);
 
-  const favoriteAssets = assets.filter((asset) => favoriteAssetIds.includes(asset.id));
+  const favoriteAssets = assets.filter((asset) =>
+    favoriteAssetIds.includes(asset.id),
+  );
 
   if (favoriteAssets.length === 0) {
     return (
       <EmptyState
         title="No favorites pinned yet"
-        description="Star the assets you care about most so the watchlist becomes a fast high-signal monitoring lane."
+        description="Star the coins you care about most so the watchlist becomes a fast high-signal monitoring lane."
       />
     );
   }
@@ -39,62 +49,90 @@ export const WatchlistGrid = () => {
         description="A tighter high-signal set of coins with fast access to detail pages, live pricing, and 24h context."
       />
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-4">
         {favoriteAssets.map((asset) => {
           const snapshot = snapshots[asset.id];
           return (
             <Link
-              className="surface-hover rounded-[1.75rem] p-5"
+              className="surface-hover relative overflow-hidden rounded-[1.75rem] p-5 transition-transform duration-200 hover:-translate-y-0.5"
               key={asset.id}
               to={`/markets/${asset.id}`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <AssetIcon
-                    asset={asset}
-                    size="md"
-                  />
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">{asset.symbol}</p>
-                    <h3 className="mt-1 text-xl font-semibold text-[var(--text-primary)]">{asset.name}</h3>
-                  </div>
+              <Button
+                aria-label={`Remove ${asset.name} from favorites`}
+                className="absolute right-5 top-5 h-9 w-9 shrink-0 rounded-2xl p-0"
+                onClick={(event) => {
+                  event.preventDefault();
+                  toggleFavoriteAsset(asset.id);
+                }}
+                size="sm"
+                variant="secondary"
+              >
+                <Star className="h-4 w-4 fill-amber-300 text-amber-300" />
+              </Button>
+
+              <div className="flex min-w-0 items-start gap-3.5 pr-12">
+                <div className="pt-0.5">
+                  <AssetIcon asset={asset} size="md" />
                 </div>
-                <Button
-                  onClick={(event) => {
-                    event.preventDefault();
-                    toggleFavoriteAsset(asset.id);
-                  }}
-                  size="sm"
-                  variant="secondary"
-                >
-                  <Star className="h-4 w-4 fill-amber-300 text-amber-300" />
-                </Button>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className="truncate whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-faint)]"
+                    title={`${asset.symbol} / USD`}
+                  >
+                    {asset.symbol} / USD
+                  </p>
+                  <h3
+                    className="mt-1 text-lg font-semibold leading-tight text-[var(--text-primary)] sm:text-xl"
+                    style={TWO_LINE_CLAMP_STYLE}
+                    title={asset.name}
+                  >
+                    {asset.name}
+                  </h3>
+                  <p className="mt-1 truncate text-sm text-[var(--text-muted)]">
+                    Live spot market
+                  </p>
+                </div>
               </div>
 
-              <div className="mt-6 space-y-4">
+              <div className="mt-6">
                 <div>
-                  <p className="text-sm text-[var(--text-faint)]">Spot price</p>
-                  <p className="mt-1 text-2xl font-semibold text-[var(--text-primary)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-faint)]">
+                    Spot price
+                  </p>
+                  <p className="mt-2 text-[1.65rem] font-semibold leading-none tracking-tight text-[var(--text-primary)]">
                     {snapshot ? formatPrice(snapshot.price) : 'Loading...'}
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+
+                <div className="surface-muted mt-5 grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-3 rounded-[1.25rem] p-4">
                   <div>
-                    <p className="text-[var(--text-faint)]">24h change</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-faint)]">
+                      24h change
+                    </p>
                     <p
-                      className={
-                        snapshot && snapshot.changePercent24h >= 0
-                          ? 'text-[var(--positive-text)]'
-                          : 'text-[var(--negative-text)]'
-                      }
+                      className={classNames(
+                        'mt-2 text-base font-semibold',
+                        !snapshot
+                          ? 'text-[var(--text-secondary)]'
+                          : snapshot.changePercent24h >= 0
+                            ? 'text-[var(--positive-text)]'
+                            : 'text-[var(--negative-text)]',
+                      )}
                     >
-                      {snapshot ? formatPercent(snapshot.changePercent24h) : '--'}
+                      {snapshot
+                        ? formatPercent(snapshot.changePercent24h)
+                        : '--'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-[var(--text-faint)]">Volume</p>
-                    <p className="text-[var(--text-secondary)]">
-                      {snapshot ? formatCompactNumber(snapshot.volume24h) : '--'}
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-faint)]">
+                      24h volume
+                    </p>
+                    <p className="mt-2 text-base font-semibold text-[var(--text-secondary)]">
+                      {snapshot
+                        ? formatCompactNumber(snapshot.volume24h)
+                        : '--'}
                     </p>
                   </div>
                 </div>
