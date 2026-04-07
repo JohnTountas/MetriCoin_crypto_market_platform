@@ -9,8 +9,8 @@ export const TickerStrip = () => {
   const setSelectedAssetId = useMarketStore((state) => state.setSelectedAssetId);
 
   return (
-    <div className="surface overflow-hidden rounded-[2rem]">
-      <div className="flex gap-3 overflow-x-auto px-4 py-3">
+    <div className="surface overflow-hidden rounded-[2.25rem]">
+      <div className="flex gap-3 overflow-x-auto px-4 py-3.5">
         {assets.map((asset) => {
           const snapshot = snapshots[asset.id];
           const positive = (snapshot?.changePercent24h ?? 0) >= 0;
@@ -18,7 +18,7 @@ export const TickerStrip = () => {
           return (
             <Link
               className={classNames(
-                'surface-hover min-w-[220px] rounded-2xl px-4 py-3',
+                'surface-hover min-w-[220px] rounded-[1.4rem] px-4 py-3.5',
                 snapshot?.direction === 'up' && 'animate-flash-up',
                 snapshot?.direction === 'down' && 'animate-flash-down',
               )}

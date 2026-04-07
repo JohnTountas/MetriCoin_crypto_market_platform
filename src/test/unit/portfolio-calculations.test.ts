@@ -75,5 +75,32 @@ describe('portfolio calculations', () => {
     expect(summary.roiPercent).toBeGreaterThan(40);
     expect(summary.totalFeesPaid).toBeGreaterThan(20);
   });
+
+  it('falls back to the latest transaction price when a live snapshot is missing', () => {
+    const positions = calculateOpenPositions(
+      [
+        ...transactions,
+        {
+          id: 'eth-buy-1',
+          assetId: 'ETH-USD',
+          side: 'buy',
+          quantity: 2,
+          price: 3_200,
+          fee: 6,
+          executedAt: '2026-03-01T10:00:00.000Z',
+        },
+      ],
+      snapshots,
+      settings,
+    );
+
+    const ethPosition = positions.find((position) => position.assetId === 'ETH-USD');
+
+    expect(ethPosition).toMatchObject({
+      assetId: 'ETH-USD',
+      currentPrice: 3_200,
+      currentValue: 6_400,
+    });
+  });
 });
 

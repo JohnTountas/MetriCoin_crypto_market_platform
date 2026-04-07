@@ -12,9 +12,9 @@ type ButtonProps = PropsWithChildren<
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
-    'bg-[var(--accent-strong)] text-[var(--accent-strong-text)] shadow-glow hover:bg-[var(--accent-strong-hover)] disabled:bg-[var(--accent-bg)] disabled:text-[var(--text-muted)]',
+    'bg-[var(--accent-strong)] text-[var(--accent-strong-text)] shadow-[var(--shadow-accent)] hover:-translate-y-px hover:bg-[var(--accent-strong-hover)] disabled:bg-[var(--accent-bg)] disabled:text-[var(--text-muted)]',
   secondary:
-    'border border-[var(--border)] bg-[var(--panel-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:bg-[var(--panel-hover)] hover:text-[var(--text-primary)] disabled:opacity-50',
+    'border border-[var(--border)] bg-[var(--panel-strong)] text-[var(--text-secondary)] hover:-translate-y-px hover:border-[var(--border-strong)] hover:bg-[var(--panel-hover)] hover:text-[var(--text-primary)] disabled:opacity-50',
   ghost: 'text-[var(--text-muted)] hover:bg-[var(--panel-subtle)] hover:text-[var(--text-primary)]',
   danger:
     'border border-[var(--negative-border)] bg-[var(--negative-bg)] text-[var(--negative-text)] hover:opacity-90 disabled:opacity-50',
@@ -37,7 +37,7 @@ export const Button = ({
 }: ButtonProps) => (
   <button
     className={classNames(
-      'inline-flex items-center justify-center gap-2 rounded-2xl font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] disabled:cursor-not-allowed',
+      'inline-flex items-center justify-center gap-2 rounded-2xl font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-border)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)] disabled:cursor-not-allowed disabled:translate-y-0',
       variantClasses[variant],
       sizeClasses[size],
       fullWidth && 'w-full',

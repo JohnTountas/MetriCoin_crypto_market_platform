@@ -20,26 +20,56 @@ type AssetPriceChartProps = {
   height?: number;
 };
 
-const getBaselinePalette = (isDark: boolean) =>
-  isDark
-    ? {
-        topFillColor1: 'rgba(110, 168, 125, 0.20)',
-        topFillColor2: 'rgba(110, 168, 125, 0.03)',
-        topLineColor: '#6ea87d',
-        bottomFillColor1: 'rgba(216, 122, 132, 0.05)',
-        bottomFillColor2: 'rgba(216, 122, 132, 0.18)',
-        bottomLineColor: '#d87a84',
-        baseLineColor: 'rgba(148, 163, 184, 0.38)',
-      }
-    : {
-        topFillColor1: 'rgba(46, 143, 59, 0.18)',
-        topFillColor2: 'rgba(46, 143, 59, 0.02)',
-        topLineColor: '#2e8f3b',
-        bottomFillColor1: 'rgba(255, 90, 95, 0.03)',
-        bottomFillColor2: 'rgba(255, 90, 95, 0.16)',
-        bottomLineColor: '#ff5a5f',
-        baseLineColor: 'rgba(100, 116, 139, 0.45)',
-      };
+const readCssVar = (name: string, fallback: string) => {
+  if (typeof window === 'undefined') {
+    return fallback;
+  }
+
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+};
+
+const getChartPalette = (isDark: boolean) => ({
+  textColor: readCssVar('--chart-text', isDark ? '#aab6c5' : '#5b6d81'),
+  gridColor: readCssVar('--chart-grid', isDark ? 'rgba(148, 163, 184, 0.03)' : 'rgba(15, 23, 42, 0.055)'),
+  crosshairColor: readCssVar('--chart-crosshair', isDark ? 'rgba(93, 127, 143, 0.18)' : 'rgba(28, 99, 113, 0.24)'),
+  crosshairSoftColor: readCssVar(
+    '--chart-crosshair-soft',
+    isDark ? 'rgba(93, 127, 143, 0.12)' : 'rgba(28, 99, 113, 0.14)',
+  ),
+  positiveColor: readCssVar('--chart-positive', isDark ? '#7eb89b' : '#18805e'),
+  positiveFillColor: readCssVar(
+    '--chart-positive-fill',
+    isDark ? 'rgba(110, 168, 125, 0.20)' : 'rgba(24, 128, 94, 0.16)',
+  ),
+  positiveFillSoftColor: readCssVar(
+    '--chart-positive-fill-soft',
+    isDark ? 'rgba(110, 168, 125, 0.03)' : 'rgba(24, 128, 94, 0.03)',
+  ),
+  negativeColor: readCssVar('--chart-negative', isDark ? '#c9929f' : '#c55a70'),
+  negativeFillColor: readCssVar(
+    '--chart-negative-fill',
+    isDark ? 'rgba(216, 122, 132, 0.18)' : 'rgba(197, 90, 112, 0.14)',
+  ),
+  negativeFillSoftColor: readCssVar(
+    '--chart-negative-fill-soft',
+    isDark ? 'rgba(216, 122, 132, 0.05)' : 'rgba(197, 90, 112, 0.03)',
+  ),
+  baseLineColor: readCssVar('--chart-baseline', isDark ? 'rgba(148, 163, 184, 0.38)' : 'rgba(122, 136, 155, 0.4)'),
+});
+
+const getBaselinePalette = (isDark: boolean) => {
+  const palette = getChartPalette(isDark);
+
+  return {
+    topFillColor1: palette.positiveFillColor,
+    topFillColor2: palette.positiveFillSoftColor,
+    topLineColor: palette.positiveColor,
+    bottomFillColor1: palette.negativeFillSoftColor,
+    bottomFillColor2: palette.negativeFillColor,
+    bottomLineColor: palette.negativeColor,
+    baseLineColor: palette.baseLineColor,
+  };
+};
 
 export const AssetPriceChart = ({
   candles,
@@ -56,17 +86,18 @@ export const AssetPriceChart = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
+    const chartPalette = getChartPalette(isDark);
     const chart = createChart(containerRef.current, {
       autoSize: true,
       height,
       layout: {
         background: { type: ColorType.Solid, color: 'transparent' },
-        textColor: isDark ? '#aab6c5' : '#334155',
+        textColor: chartPalette.textColor,
         fontFamily: 'Inter, sans-serif',
       },
       grid: {
-        vertLines: { color: isDark ? 'rgba(148, 163, 184, 0.03)' : 'rgba(15, 23, 42, 0.06)' },
-        horzLines: { color: isDark ? 'rgba(148, 163, 184, 0.03)' : 'rgba(15, 23, 42, 0.06)' },
+        vertLines: { color: chartPalette.gridColor },
+        horzLines: { color: chartPalette.gridColor },
       },
       rightPriceScale: {
         borderVisible: false,
@@ -78,11 +109,11 @@ export const AssetPriceChart = ({
       crosshair: {
         mode: CrosshairMode.Normal,
         vertLine: {
-          color: isDark ? 'rgba(93, 127, 143, 0.16)' : 'rgba(14, 116, 144, 0.26)',
+          color: chartPalette.crosshairColor,
           style: LineStyle.Dashed,
         },
         horzLine: {
-          color: isDark ? 'rgba(93, 127, 143, 0.1)' : 'rgba(14, 116, 144, 0.14)',
+          color: chartPalette.crosshairSoftColor,
           style: LineStyle.Dashed,
         },
       },
@@ -100,11 +131,11 @@ export const AssetPriceChart = ({
     });
 
     const candleSeries = chart.addCandlestickSeries({
-      upColor: isDark ? '#7eb89b' : '#16a34a',
-      downColor: isDark ? '#c9929f' : '#e11d48',
+      upColor: chartPalette.positiveColor,
+      downColor: chartPalette.negativeColor,
       borderVisible: false,
-      wickUpColor: isDark ? '#7eb89b' : '#16a34a',
-      wickDownColor: isDark ? '#c9929f' : '#e11d48',
+      wickUpColor: chartPalette.positiveColor,
+      wickDownColor: chartPalette.negativeColor,
       priceLineVisible: false,
     });
 

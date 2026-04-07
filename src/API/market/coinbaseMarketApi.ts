@@ -10,11 +10,44 @@ import { createCoinbaseMarketStream } from './coinbaseMarketStream';
 import type { MarketDataProvider, MarketStreamHandlers } from './marketDataProvider';
 import {
   coinbaseCandleSchema,
+  coinbaseProductsSchema,
   coinbaseProductStatsSchema,
   coinbaseTickerResponseSchema,
 } from './coinbaseMarketSchemas';
 
+type CoinbaseProduct = {
+  id: string;
+  base_currency: string;
+  quote_currency: string;
+  display_name?: string;
+  status?: string;
+  trading_disabled?: boolean;
+  base_increment?: string;
+};
+
 const toNumber = (value?: string) => (value ? Number(value) : undefined);
+
+const isTradableCoinbaseUsdProduct = (product: CoinbaseProduct) => {
+  const normalizedStatus = product.status?.toLowerCase();
+
+  return (
+    product.quote_currency === 'USD' &&
+    product.id.endsWith('-USD') &&
+    product.trading_disabled !== true &&
+    normalizedStatus !== 'delisted' &&
+    normalizedStatus !== 'offline'
+  );
+};
+
+export const selectSupportedTrackedAssets = (products: CoinbaseProduct[]) => {
+  const supportedProductIds = new Set(
+    products
+      .filter(isTradableCoinbaseUsdProduct)
+      .map((product) => product.id),
+  );
+
+  return TRACKED_ASSETS.filter((asset) => supportedProductIds.has(asset.id));
+};
 
 const createMarketSnapshot = (
   assetId: string,
@@ -51,7 +84,7 @@ const createMarketSnapshot = (
     marketCap: asset?.circulatingSupply ? price * asset.circulatingSupply : undefined,
     bid,
     ask,
-    spread: bid && ask ? ask - bid : undefined,
+    spread: bid !== undefined && ask !== undefined ? ask - bid : undefined,
     lastUpdated: ticker.time ? Date.parse(ticker.time) : Date.now(),
     direction: 'flat',
   };
@@ -113,7 +146,19 @@ const mapCoinbaseCandle = (candle: [number, number, number, number, number, numb
 
 export const coinbaseMarketDataSource: MarketDataProvider = {
   async fetchAssets() {
-    return TRACKED_ASSETS;
+    try {
+      const products = await requestJson({
+        url: `${runtimeConfig.marketApiBaseUrl}/products`,
+        schema: coinbaseProductsSchema,
+      });
+      const supportedTrackedAssets = selectSupportedTrackedAssets(products);
+
+      return supportedTrackedAssets.length > 0
+        ? supportedTrackedAssets
+        : TRACKED_ASSETS;
+    } catch {
+      return TRACKED_ASSETS;
+    }
   },
   async fetchSnapshots(assetIds) {
     const fulfilled = await fetchSnapshotsWithConcurrency(assetIds);

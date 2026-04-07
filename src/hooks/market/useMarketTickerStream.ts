@@ -3,19 +3,24 @@ import { startTransition, useEffect, useRef } from 'react';
 import { activeMarketDataProvider } from '@/api/market';
 import { useAppStore } from '@/app';
 import { useMarketStore } from '@/entities/market';
-import { TRACKED_ASSETS } from '@/shared/constants';
 import type { StreamConnectionStatus } from '@/shared/types';
 
-const STREAM_ASSET_IDS = TRACKED_ASSETS.map((asset) => asset.id);
-
 export const useMarketTickerStream = () => {
+  const assets = useMarketStore((state) => state.assets);
+  const assetsLoaded = useMarketStore((state) => state.assetsLoaded);
   const setConnectionStatus = useMarketStore((state) => state.setConnectionStatus);
   const setLastError = useMarketStore((state) => state.setLastError);
   const ingestTickerBatch = useMarketStore((state) => state.ingestTickerBatch);
   const previousConnectionStatusRef = useRef<StreamConnectionStatus>('idle');
 
   useEffect(() => {
-    const stream = activeMarketDataProvider.createStream(STREAM_ASSET_IDS, {
+    const streamAssetIds = assets.map((asset) => asset.id);
+
+    if (!assetsLoaded || streamAssetIds.length === 0) {
+      return;
+    }
+
+    const stream = activeMarketDataProvider.createStream(streamAssetIds, {
       onBatch: (messages) => {
         startTransition(() => {
           ingestTickerBatch(messages);
@@ -54,6 +59,6 @@ export const useMarketTickerStream = () => {
 
     stream.connect();
     return () => stream.disconnect();
-  }, [ingestTickerBatch, setConnectionStatus, setLastError]);
+  }, [assets, assetsLoaded, ingestTickerBatch, setConnectionStatus, setLastError]);
 };
 

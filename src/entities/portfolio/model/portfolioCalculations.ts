@@ -23,6 +23,7 @@ export const calculateOpenPositions = (
   const orderedTransactions = [...transactions].sort(
     (left, right) => new Date(left.executedAt).getTime() - new Date(right.executedAt).getTime(),
   );
+  const latestExecutedPriceByAssetId = new Map<string, number>();
 
   orderedTransactions.forEach((transaction) => {
     const positionAccumulator = positionAccumulatorsByAssetId.get(transaction.assetId) ?? {
@@ -47,13 +48,15 @@ export const calculateOpenPositions = (
     }
 
     positionAccumulatorsByAssetId.set(transaction.assetId, positionAccumulator);
+    latestExecutedPriceByAssetId.set(transaction.assetId, transaction.price);
   });
 
   const positions = Array.from(positionAccumulatorsByAssetId.entries())
     .filter(([, position]) => position.quantity.greaterThan(0))
     .map(([assetId, position]) => {
       const snapshot = snapshots[assetId];
-      const currentPrice = new Decimal(snapshot?.price ?? 0);
+      const fallbackPrice = latestExecutedPriceByAssetId.get(assetId) ?? 0;
+      const currentPrice = new Decimal(snapshot?.price ?? fallbackPrice);
       const currentValue = position.quantity.mul(currentPrice);
       const averageCost = position.quantity.equals(0) ? new Decimal(0) : position.costBasis.div(position.quantity);
       const modeledExitRate = new Decimal(settings.estimatedFeeRate + settings.estimatedSlippageRate).div(100);

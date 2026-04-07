@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { ASSET_LOOKUP, buildAssetLookup, DEFAULT_ASSET_ID, TRACKED_ASSETS } from '@/shared/constants';
+import { ASSET_LOOKUP, buildAssetLookup, DEFAULT_ASSET_ID } from '@/shared/constants';
 import type {
   AssetMeta,
   MarketSnapshot,
@@ -69,7 +69,7 @@ const createFallbackSnapshot = (
 export const useMarketStore = create<MarketState>()(
   persist(
     (set) => ({
-      assets: TRACKED_ASSETS,
+      assets: [],
       assetLookup: ASSET_LOOKUP,
       assetsLoaded: false,
       selectedAssetId: DEFAULT_ASSET_ID,

@@ -221,6 +221,10 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
           );
         })}
       >
+        <input
+          type="hidden"
+          {...form.register('assetId')}
+        />
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Asset
           <AssetSelect

@@ -25,16 +25,16 @@ export const AppShell = () => {
   }, [location.pathname, setMobileNavOpen]);
 
   return (
-    <div className="mx-auto max-w-[1800px] p-4 sm:p-6 lg:p-8">
-      <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
-        <div className="hidden lg:block">
+    <div className="mx-auto max-w-[1820px] px-4 pb-8 pt-4 sm:px-6 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-12 lg:pt-8">
+      <div className="grid items-start gap-6 xl:gap-7 lg:grid-cols-[300px_minmax(0,1fr)]">
+        <div className="hidden lg:sticky lg:top-8 lg:block lg:self-start">
           <Sidebar />
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 xl:space-y-7">
           <Topbar />
           <TickerStrip />
-          <main className="space-y-6">
+          <main className="space-y-6 xl:space-y-7">
             <Outlet />
           </main>
         </div>

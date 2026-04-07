@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { activeMarketDataProvider } from '@/api/market';
 import { useMarketStore } from '@/entities/market';
+import { TRACKED_ASSETS } from '@/shared/constants';
 
 export const useTrackedAssets = () => {
   const setAssets = useMarketStore((state) => state.setAssets);
@@ -14,10 +15,15 @@ export const useTrackedAssets = () => {
   });
 
   useEffect(() => {
-    if (trackedAssetsQuery.data?.length) {
+    if (trackedAssetsQuery.data) {
       setAssets(trackedAssetsQuery.data);
+      return;
     }
-  }, [trackedAssetsQuery.data, setAssets]);
+
+    if (trackedAssetsQuery.error) {
+      setAssets(TRACKED_ASSETS);
+    }
+  }, [trackedAssetsQuery.data, trackedAssetsQuery.error, setAssets]);
 
   return trackedAssetsQuery;
 };

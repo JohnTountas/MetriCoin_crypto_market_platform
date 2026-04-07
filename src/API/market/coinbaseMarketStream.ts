@@ -1,3 +1,4 @@
+import { runtimeConfig } from '@/api/core';
 import type { MarketTickerMessage } from '@/shared/types';
 
 import type { MarketStream, MarketStreamHandlers } from './marketDataProvider';
@@ -7,6 +8,7 @@ export const createCoinbaseMarketStream = (
   assetIds: string[],
   handlers: MarketStreamHandlers,
 ): MarketStream => {
+  const subscriptionAssetIds = Array.from(new Set(assetIds));
   let socket: WebSocket | null = null;
   let reconnectTimeout: ReturnType<typeof setTimeout> | undefined;
   let reconnectAttempt = 0;
@@ -27,8 +29,13 @@ export const createCoinbaseMarketStream = (
   };
 
   const connect = () => {
+    if (subscriptionAssetIds.length === 0) {
+      handlers.onStatus('idle');
+      return;
+    }
+
     handlers.onStatus(reconnectAttempt > 0 ? 'reconnecting' : 'connecting');
-    socket = new WebSocket('wss://ws-feed.exchange.coinbase.com');
+    socket = new WebSocket(runtimeConfig.marketWebSocketUrl);
 
     socket.addEventListener('open', () => {
       reconnectAttempt = 0;
@@ -36,7 +43,7 @@ export const createCoinbaseMarketStream = (
       socket?.send(
         JSON.stringify({
           type: 'subscribe',
-          product_ids: assetIds,
+          product_ids: subscriptionAssetIds,
           channels: ['ticker'],
         }),
       );

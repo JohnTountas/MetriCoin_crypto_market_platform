@@ -79,6 +79,7 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
   const selectedFee = Number.isFinite(watchedFee) ? watchedFee : 0;
   const selectedExecutedAt = form.watch('executedAt');
   const selectedAsset = assetLookup[selectedFormAssetId] ?? getFallbackAssetMeta(selectedFormAssetId);
+  const selectedAssetIsTracked = Boolean(assetLookup[selectedFormAssetId]);
   const selectedSnapshot = snapshots[selectedFormAssetId];
   const availableToSell =
     selectedSide === 'sell'
@@ -127,8 +128,6 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
     selectedQuantity,
     selectedSide,
   ]);
-
-  const assetLocked = Boolean(assetId);
 
   return (
     <Card className="surface p-5">
@@ -217,18 +216,22 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
           }
 
           form.reset(
-            buildTransactionFormDefaults(assetId ?? values.assetId, {
+            buildTransactionFormDefaults(payload.assetId, {
               price: values.price,
               fee: values.fee,
+              assetId: payload.assetId,
             }),
           );
         })}
       >
+        <input
+          type="hidden"
+          {...form.register('assetId')}
+        />
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Asset
           <AssetSelect
             assets={assets}
-            disabled={assetLocked}
             onChange={(nextAssetId) =>
               form.setValue('assetId', nextAssetId, {
                 shouldDirty: true,
@@ -237,10 +240,13 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
             value={selectedFormAssetId}
           />
           <p className="text-xs text-[var(--text-faint)]">
-            {assetLocked
-              ? 'Locked to the coin selected on this detail page.'
+            {assetId
+              ? 'Preselected from this page, but you can change it before saving.'
               : 'Choose the coin this fill belongs to.'}
           </p>
+          {errors.assetId?.message ? (
+            <p className="text-xs text-[var(--negative-text)]">{errors.assetId.message}</p>
+          ) : null}
         </label>
 
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
@@ -271,7 +277,9 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
           >
             {selectedSide === 'sell'
               ? `Available at that time: ${formatQuantity(selectedFormAssetId, availableToSell)} ${selectedAsset.symbol}`
-              : `Precision follows ${selectedAsset.symbol} market increments.`}
+              : selectedAssetIsTracked
+                ? `Precision follows ${selectedAsset.symbol} market increments.`
+                : `Using default precision for ${selectedAsset.symbol} until market metadata is available.`}
           </p>
           {errors.quantity?.message ? (
             <p className="text-xs text-[var(--negative-text)]">{errors.quantity.message}</p>

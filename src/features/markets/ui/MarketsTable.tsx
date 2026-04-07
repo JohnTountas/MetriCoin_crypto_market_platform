@@ -98,7 +98,7 @@ export const MarketsTable = () => {
                         variant="secondary"
                       >
                         <Star
-                          className={`h-4 w-4 ${favoriteAssetIds.includes(asset.id) ? 'fill-amber-300 text-amber-300' : 'text-[var(--text-muted)]'}`}
+                          className={`h-4 w-4 ${favoriteAssetIds.includes(asset.id) ? 'fill-[var(--highlight-text)] text-[var(--highlight-text)]' : 'text-[var(--text-muted)]'}`}
                         />
                       </Button>
                     </div>

@@ -1,6 +1,7 @@
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
+import { getFallbackAssetMeta } from '@/shared/constants';
 import type { AssetMeta } from '@/shared/types';
 import { classNames } from '@/shared/utils';
 
@@ -23,7 +24,9 @@ export const AssetSelect = ({
 }: AssetSelectProps) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const selectedAsset = assets.find((asset) => asset.id === value) ?? assets[0];
+  const selectedAsset =
+    assets.find((asset) => asset.id === value) ??
+    (value ? getFallbackAssetMeta(value) : assets[0]);
 
   useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
@@ -64,7 +67,7 @@ export const AssetSelect = ({
     >
       <button
         aria-expanded={open}
-        className="surface-input flex h-14 w-full items-center justify-between rounded-2xl px-4 text-left text-sm text-[var(--text-primary)] outline-none transition focus:border-cyan-300/60 focus:ring-2 focus:ring-cyan-300/20 disabled:cursor-not-allowed disabled:opacity-70"
+        className="surface-input flex h-14 w-full items-center justify-between rounded-2xl px-4 text-left text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--focus-border)] focus:ring-4 focus:ring-[var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-70"
         disabled={disabled}
         onClick={() => {
           if (disabled) {
@@ -94,7 +97,7 @@ export const AssetSelect = ({
       </button>
 
       {open && !disabled ? (
-        <div className="surface absolute z-20 mt-2 max-h-80 w-full overflow-y-auto rounded-[1.5rem] border border-[var(--border)] p-2 shadow-[0_24px_60px_rgba(2,6,23,0.2)]">
+        <div className="surface absolute z-20 mt-2 max-h-80 w-full overflow-y-auto rounded-[1.5rem] border border-[var(--border)] p-2 shadow-[var(--shadow-floating)]">
           {assets.map((asset) => {
             const active = asset.id === selectedAsset.id;
 

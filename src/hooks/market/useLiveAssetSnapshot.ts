@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { activeMarketDataProvider } from '@/api/market';
 import { useMarketStore } from '@/entities/market';
 
-export const useLiveAssetSnapshot = (assetId: string) => {
+export const useLiveAssetSnapshot = (assetId: string, enabled = true) => {
   const bootstrapSnapshots = useMarketStore((state) => state.bootstrapSnapshots);
 
   const liveAssetSnapshotQuery = useQuery({
@@ -13,7 +13,7 @@ export const useLiveAssetSnapshot = (assetId: string) => {
       const [snapshot] = await activeMarketDataProvider.fetchSnapshots([assetId]);
       return snapshot;
     },
-    enabled: Boolean(assetId),
+    enabled: enabled && Boolean(assetId),
     staleTime: 30_000,
     refetchInterval: 60_000,
   });

@@ -86,7 +86,7 @@ export const GlobalCommandPalette = () => {
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-[var(--text-primary)]">{command.label}</span>
                     {favoriteAssetIds.includes(command.id) ? (
-                      <Star className="h-3.5 w-3.5 fill-amber-300 text-amber-300" />
+                      <Star className="h-3.5 w-3.5 fill-[var(--highlight-text)] text-[var(--highlight-text)]" />
                     ) : null}
                   </div>
                   <p className="text-sm text-[var(--text-muted)]">{command.description}</p>

@@ -1,3 +1,4 @@
+export { resolveAssetDetailsAssetId } from './assetIds';
 export { classNames } from './classNames';
 export { formatLocalDateTime, formatShortTime, toIsoNow } from './date';
 export {

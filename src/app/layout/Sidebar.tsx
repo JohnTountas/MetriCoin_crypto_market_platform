@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { useAppStore } from '@/app';
 import { useMarketStore } from '@/entities/market';
-import { AssetIcon, Button, classNames, NAV_ITEMS } from '@/shared';
+import { AssetIcon, Badge, Button, classNames, NAV_ITEMS } from '@/shared';
 
 type SidebarProps = {
   mobile?: boolean;
@@ -21,15 +21,18 @@ export const Sidebar = ({ mobile = false }: SidebarProps) => {
   );
 
   return (
-    <aside className="surface flex h-full flex-col rounded-[2rem] p-5">
+    <aside className={classNames('surface flex h-full flex-col rounded-[2.25rem] p-5 sm:p-6', !mobile && 'lg:min-h-[calc(100vh-4rem)]')}>
       <div className="space-y-4">
-        <div className="space-y-1">
-          <p className="eyebrow text-xs font-semibold uppercase tracking-[0.32em]">
+        <div className="space-y-3">
+          <Badge className="highlight-pill w-fit rounded-full px-3 py-1 text-[10px] tracking-[0.28em]">
             Metricoin
-          </p>
-          <h1 className="font-display text-2xl font-semibold text-[var(--text-primary)]">
+          </Badge>
+          <h1 className="font-display text-[1.95rem] font-semibold leading-tight text-[var(--text-primary)]">
             Institutional-grade market view
           </h1>
+          <p className="max-w-xs text-sm leading-6 text-[var(--text-muted)]">
+            A refined crypto workspace for live pricing, portfolio intelligence, and fast decision support.
+          </p>
         </div>
 
         <Button
@@ -74,7 +77,7 @@ export const Sidebar = ({ mobile = false }: SidebarProps) => {
               Pinned for fast review
             </p>
           </div>
-          <Star className="h-4.5 w-4.5 text-amber-300" />
+          <Star className="h-4.5 w-4.5 text-[var(--highlight-text)]" />
         </div>
         <div className="space-y-2">
           {favoriteAssets.map((asset) => (

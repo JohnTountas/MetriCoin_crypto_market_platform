@@ -20,6 +20,7 @@ import {
 
 type AssetAnalyticsPanelProps = {
   assetId: string;
+  trackLiveData?: boolean;
 };
 
 const chartModeOptions: Array<{
@@ -31,17 +32,21 @@ const chartModeOptions: Array<{
   { value: 'candles', icon: CandlestickChart, label: 'Candlestick chart' },
 ];
 
-export const AssetAnalyticsPanel = ({ assetId }: AssetAnalyticsPanelProps) => {
+export const AssetAnalyticsPanel = ({
+  assetId,
+  trackLiveData = true,
+}: AssetAnalyticsPanelProps) => {
   const activeTimeframe = useMarketStore((state) => state.activeTimeframe);
   const setActiveTimeframe = useMarketStore((state) => state.setActiveTimeframe);
   const assetLookup = useMarketStore((state) => state.assetLookup);
   const snapshot = useMarketStore((state) => state.snapshots[assetId]);
   const [chartMode, setChartMode] = useState<'area' | 'candles'>('area');
   const { resolvedTheme } = useTheme();
-  const candlesQuery = useAssetPriceHistory(assetId, activeTimeframe);
   const asset = assetLookup[assetId] ?? getFallbackAssetMeta(assetId);
+  const hasLiveMarketData = trackLiveData && Boolean(assetLookup[assetId]);
+  const candlesQuery = useAssetPriceHistory(assetId, activeTimeframe, hasLiveMarketData);
 
-  useLiveAssetSnapshot(assetId);
+  useLiveAssetSnapshot(assetId, hasLiveMarketData);
 
   return (
     <Card className="surface p-5">
@@ -91,7 +96,29 @@ export const AssetAnalyticsPanel = ({ assetId }: AssetAnalyticsPanelProps) => {
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.45fr)_360px]">
         <div className="surface-muted rounded-[1.75rem] p-4">
-          {candlesQuery.isLoading ? (
+          {!hasLiveMarketData ? (
+            <div className="flex h-[360px] items-center justify-center rounded-[1.5rem] border border-dashed border-[var(--border-strong)] px-6 text-center">
+              <div className="max-w-sm space-y-3">
+                <p className="text-sm font-semibold text-[var(--text-primary)]">
+                  Live market data is unavailable for this asset.
+                </p>
+                <p className="text-sm leading-6 text-[var(--text-muted)]">
+                  Your ledger entries still work here, but charts and streaming quotes depend on current provider coverage.
+                </p>
+              </div>
+            </div>
+          ) : candlesQuery.isError ? (
+            <div className="flex h-[360px] items-center justify-center rounded-[1.5rem] border border-dashed border-[var(--border-strong)] px-6 text-center">
+              <div className="max-w-sm space-y-3">
+                <p className="text-sm font-semibold text-[var(--text-primary)]">
+                  Chart data is temporarily unavailable.
+                </p>
+                <p className="text-sm leading-6 text-[var(--text-muted)]">
+                  Live positions and transaction history are still available while the chart query recovers.
+                </p>
+              </div>
+            </div>
+          ) : candlesQuery.isLoading ? (
             <Skeleton className="h-[360px] rounded-[1.5rem]" />
           ) : (
             <AssetPriceChart
@@ -108,7 +135,7 @@ export const AssetAnalyticsPanel = ({ assetId }: AssetAnalyticsPanelProps) => {
               <div>
                 <p className="text-sm text-[var(--text-faint)]">Spot price</p>
                 <p className="mt-2 text-3xl font-semibold text-[var(--text-primary)]">
-                  {snapshot ? formatPrice(snapshot.price) : 'Loading...'}
+                  {snapshot ? formatPrice(snapshot.price) : hasLiveMarketData ? 'Loading...' : 'Unavailable'}
                 </p>
               </div>
               <div className="surface-subtle rounded-2xl p-3 text-[var(--text-primary)]">

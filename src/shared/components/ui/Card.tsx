@@ -12,7 +12,7 @@ export const Card = ({ children, className, elevated = false, ...props }: CardPr
   <div
     className={classNames(
       'surface rounded-3xl',
-      elevated ? 'shadow-panel' : 'shadow-none',
+      elevated && 'shadow-panel',
       className,
     )}
     {...props}

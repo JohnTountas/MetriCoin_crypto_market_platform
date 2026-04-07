@@ -68,7 +68,7 @@ export const WatchlistGrid = () => {
                 size="sm"
                 variant="secondary"
               >
-                <Star className="h-4 w-4 fill-amber-300 text-amber-300" />
+                <Star className="h-4 w-4 fill-[var(--highlight-text)] text-[var(--highlight-text)]" />
               </Button>
 
               <div className="flex min-w-0 items-start gap-3.5 pr-12">
