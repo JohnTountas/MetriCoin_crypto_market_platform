@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:stack": "node tools/dev-stack.mjs",
     "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
     "preview": "vite preview",
+    "server": "node server/index.mjs",
+    "server:dev": "node --watch server/index.mjs",
     "lint": "eslint . --ext ts,tsx --max-warnings 0",
     "type-check": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json",
     "format": "prettier --write .",

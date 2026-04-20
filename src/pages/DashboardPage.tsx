@@ -5,7 +5,7 @@ import { PortfolioPositionsGrid, PortfolioTransactionHistory } from '@/entities/
 import { AssetAnalyticsPanel } from '@/features/asset-details';
 import { DashboardHero, PortfolioSummaryGrid } from '@/features/dashboard';
 import { AlertsPanel, WatchlistGrid } from '@/features/watchlist';
-import { usePortfolioOverview } from '@/hooks/portfolio';
+import { usePortfolioOverview } from '@/hooks/portfolio/usePortfolioOverview';
 
 const DashboardPage = () => {
   const selectedAssetId = useMarketStore((state) => state.selectedAssetId);

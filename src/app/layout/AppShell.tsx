@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { useAppStore } from '@/app';
-import { useTheme } from '@/hooks/app';
-import { useTrackedAssets, useMarketSnapshots, useMarketTickerStream } from '@/hooks/market';
-import { usePriceAlertMonitor } from '@/hooks/portfolio';
+import { useOperationalTelemetry, useServerNotifications, useTheme } from '@/hooks/app';
+import { useMarketSnapshots, useMarketTickerStream, useTrackedAssets } from '@/hooks/market';
+import { usePriceAlertMonitor, useServerAlertSync } from '@/hooks/portfolio';
 import { AppToastViewport, GlobalCommandPalette } from '@/shared';
 
 import { Sidebar, TickerStrip, Topbar } from '.';
@@ -19,6 +19,9 @@ export const AppShell = () => {
   useMarketSnapshots();
   useMarketTickerStream();
   usePriceAlertMonitor();
+  useServerAlertSync();
+  useServerNotifications();
+  useOperationalTelemetry();
 
   useEffect(() => {
     setMobileNavOpen(false);

@@ -7,7 +7,7 @@ import { usePortfolioStore } from '@/entities/portfolio';
 import { PortfolioPositionsGrid, PortfolioTransactionForm, PortfolioTransactionHistory } from '@/entities/portfolio';
 import { AssetAnalyticsPanel } from '@/features/asset-details';
 import { AlertsPanel } from '@/features/watchlist';
-import { usePortfolioOverview } from '@/hooks/portfolio';
+import { usePortfolioOverview } from '@/hooks/portfolio/usePortfolioOverview';
 import { DEFAULT_ASSET_ID, getFallbackAssetMeta, resolveAssetDetailsAssetId } from '@/shared';
 
 const AssetDetailsPage = () => {

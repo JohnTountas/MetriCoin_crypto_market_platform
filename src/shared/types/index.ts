@@ -11,8 +11,18 @@ export type {
   Timeframe,
 } from './market';
 export type {
+  NotificationChannel,
+  NotificationSettings,
+  NotificationWebhookStatus,
+  OperationsHealth,
+  ServerNotification,
+  TelemetryEvent,
+  TelemetrySummary,
+} from './operations';
+export type {
   AlertDirection,
   CalculatorSettings,
+  PortfolioPerformancePoint,
   PortfolioSummary,
   PortfolioTransaction,
   PositionMetrics,

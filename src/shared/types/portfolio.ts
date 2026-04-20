@@ -25,6 +25,13 @@ export type PositionMetrics = {
   allocationPercent: number;
 };
 
+export type PortfolioPerformancePoint = {
+  time: number;
+  value: number;
+  investedCapital: number;
+  unrealizedPnL: number;
+};
+
 export type PortfolioSummary = {
   investedCapital: number;
   currentValue: number;

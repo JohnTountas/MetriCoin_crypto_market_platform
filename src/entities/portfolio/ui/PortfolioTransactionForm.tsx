@@ -231,6 +231,7 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Asset
           <AssetSelect
+            ariaLabel="Transaction asset selector"
             assets={assets}
             onChange={(nextAssetId) =>
               form.setValue('assetId', nextAssetId, {

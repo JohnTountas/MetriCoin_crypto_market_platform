@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { classNames } from '@/shared/utils';
 import type { AssetMeta } from '@/shared/types';
+import { classNames } from '@/shared/utils';
 
 type AssetIconProps = {
   asset: AssetMeta;

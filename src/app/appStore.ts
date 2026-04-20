@@ -11,6 +11,10 @@ type AppState = {
   mobileNavOpen: boolean;
   toasts: Toast[];
   setThemePreference: (themePreference: ThemePreference) => void;
+  restoreWorkspacePreferences: (preferences: {
+    themePreference: ThemePreference;
+    favoriteAssetIds: string[];
+  }) => void;
   toggleFavoriteAsset: (assetId: string) => void;
   setCommandPaletteOpen: (isCommandPaletteOpen: boolean) => void;
   setMobileNavOpen: (isMobileNavOpen: boolean) => void;
@@ -27,6 +31,11 @@ export const useAppStore = create<AppState>()(
       mobileNavOpen: false,
       toasts: [],
       setThemePreference: (themePreference) => set({ themePreference }),
+      restoreWorkspacePreferences: ({ themePreference, favoriteAssetIds }) =>
+        set({
+          themePreference,
+          favoriteAssetIds: Array.from(new Set(favoriteAssetIds)),
+        }),
       toggleFavoriteAsset: (assetId) =>
         set((state) => ({
           favoriteAssetIds: state.favoriteAssetIds.includes(assetId)

@@ -1,19 +1,19 @@
 import { requestJson, runtimeConfig } from '@/api/core';
 import {
   ASSET_LOOKUP,
-  TRACKED_ASSETS,
   TIMEFRAME_OPTIONS,
+  TRACKED_ASSETS,
 } from '@/shared/constants';
-import type { AssetMeta, AssetTimeSeries, MarketCandle, MarketSnapshot } from '@/shared/types';
+import type { AssetTimeSeries, MarketCandle, MarketSnapshot } from '@/shared/types';
 
-import { createCoinbaseMarketStream } from './coinbaseMarketStream';
-import type { MarketDataProvider, MarketStreamHandlers } from './marketDataProvider';
 import {
   coinbaseCandleSchema,
   coinbaseProductsSchema,
   coinbaseProductStatsSchema,
   coinbaseTickerResponseSchema,
 } from './coinbaseMarketSchemas';
+import { createCoinbaseMarketStream } from './coinbaseMarketStream';
+import type { MarketDataProvider, MarketStreamHandlers } from './marketDataProvider';
 
 type CoinbaseProduct = {
   id: string;

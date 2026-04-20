@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { useAppStore } from '@/app';
 import { useMarketStore } from '@/entities/market';
-import { usePortfolioStore } from '@/entities/portfolio';
+import { usePortfolioStore } from '@/entities/portfolio/model';
 import { getFallbackAssetMeta } from '@/shared/constants';
 import { formatPrice } from '@/shared/utils';
 

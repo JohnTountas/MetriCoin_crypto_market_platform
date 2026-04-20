@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BellRing, RotateCcw, Trash2 } from 'lucide-react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useAppStore } from '@/app';
@@ -85,15 +85,21 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
   });
 
   const filteredAlerts = sortPriceAlerts(alerts, snapshots);
-  const triggerSummary = calculatePriceTriggerSummary(filteredAlerts, snapshots);
+  const triggerSummary = calculatePriceTriggerSummary(
+    filteredAlerts,
+    snapshots,
+  );
   const triggeredAlerts = filteredAlerts.filter((alert) => alert.triggered);
   const selectedFormAssetId = form.watch('assetId');
   const selectedDirection = form.watch('direction');
   const watchedTargetPrice = Number(form.watch('targetPrice') ?? 0);
-  const selectedTargetPrice = Number.isFinite(watchedTargetPrice) ? watchedTargetPrice : 0;
+  const selectedTargetPrice = Number.isFinite(watchedTargetPrice)
+    ? watchedTargetPrice
+    : 0;
   const { errors } = form.formState;
   const selectedAsset =
-    assetLookup[selectedFormAssetId] ?? getFallbackAssetMeta(selectedFormAssetId);
+    assetLookup[selectedFormAssetId] ??
+    getFallbackAssetMeta(selectedFormAssetId);
   const selectedSnapshot = snapshots[selectedFormAssetId];
   const selectedTriggerMetrics = getPriceTriggerMetrics(
     {
@@ -107,15 +113,22 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
     },
     selectedSnapshot,
   );
+  const resetTriggerForm = useCallback(
+    (nextAssetId: string, nextDirection: 'above' | 'below') => {
+      form.reset(
+        buildPriceAlertDefaults(
+          nextAssetId,
+          useMarketStore.getState().snapshots,
+          nextDirection,
+        ),
+      );
+    },
+    [form],
+  );
 
   useEffect(() => {
-    form.reset(
-      buildPriceAlertDefaults(
-        initialAssetId,
-        useMarketStore.getState().snapshots,
-      ),
-    );
-  }, [form, initialAssetId]);
+    resetTriggerForm(initialAssetId, 'above');
+  }, [initialAssetId, resetTriggerForm]);
 
   return (
     <Card className="surface p-5">
@@ -201,7 +214,8 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
           const trimmedLabel = values.label?.trim();
           const normalizedLabel =
             trimmedLabel === '' ? undefined : trimmedLabel;
-          const asset = assetLookup[values.assetId] ?? getFallbackAssetMeta(values.assetId);
+          const asset =
+            assetLookup[values.assetId] ?? getFallbackAssetMeta(values.assetId);
 
           addAlert({
             ...values,
@@ -212,35 +226,28 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
             title: 'Trigger created',
             description: `${asset.symbol} will notify when price moves ${values.direction} ${formatPrice(values.targetPrice)}.`,
           });
-          form.reset(
-            buildPriceAlertDefaults(
-              values.assetId,
-              snapshots,
-              values.direction,
-            ),
-          );
+          resetTriggerForm(values.assetId, values.direction);
         })}
       >
-        <input
-          type="hidden"
-          {...form.register('assetId')}
-        />
+        <input type="hidden" {...form.register('assetId')} />
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Asset
           <AssetSelect
+            ariaLabel="Alert asset selector"
             assets={assets}
             onChange={(nextAssetId) =>
               form.setValue('assetId', nextAssetId, {
                 shouldDirty: true,
                 shouldValidate: true,
-              })}
+              })
+            }
             value={selectedFormAssetId}
           />
           <p className="text-xs text-[var(--text-faint)]">
             Choose the market you want to monitor.
           </p>
           {errors.assetId?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.assetId.message}</p>
+            <p className="text-xs text-stone-600">{errors.assetId.message}</p>
           ) : null}
         </label>
 
@@ -251,24 +258,22 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
             <option value="below">Crosses below</option>
           </Select>
           {errors.direction?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.direction.message}</p>
+            <p className="text-xs text-stone-600">{errors.direction.message}</p>
           ) : null}
         </label>
 
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Trigger price
-          <Input
-            step="0.01"
-            type="number"
-            {...form.register('targetPrice')}
-          />
+          <Input step="0.01" type="number" {...form.register('targetPrice')} />
           <p className="text-xs text-[var(--text-faint)]">
             {selectedSnapshot
               ? `Live spot ${formatPrice(selectedSnapshot.price)}`
               : 'Waiting for live market data'}
           </p>
           {errors.targetPrice?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.targetPrice.message}</p>
+            <p className="text-xs text-stone-600">
+              {errors.targetPrice.message}
+            </p>
           ) : null}
         </label>
 
@@ -283,11 +288,11 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
             Internal note for quick context
           </p>
           {errors.label?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.label.message}</p>
+            <p className="text-stone-600] text-xs">{errors.label.message}</p>
           ) : null}
         </label>
 
-        <div className="surface-subtle md:col-span-2 grid gap-4 rounded-2xl p-4 sm:grid-cols-2">
+        <div className="surface-subtle grid gap-4 rounded-2xl p-5 sm:grid-cols-2 md:col-span-2">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">
               Selected market
@@ -306,7 +311,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
             <p className="mt-1 text-lg font-semibold text-[var(--text-primary)]">
               {formatDistancePercent(selectedTriggerMetrics.distancePercent)}
             </p>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">
+            <p className="mt-1 text-sm text-stone-600">
               {selectedTriggerMetrics.currentPrice
                 ? `${formatPrice(selectedTargetPrice)} vs ${formatPrice(selectedTriggerMetrics.currentPrice)}`
                 : 'Will update once a live quote arrives'}
@@ -314,8 +319,23 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
           </div>
         </div>
 
-        <div className="md:col-span-2">
-          <Button type="submit">Create trigger</Button>
+        <div className="gap-15 flex gap-20 md:col-span-2">
+          <Button
+            className="transform-gpu hover:scale-[1.06] hover:shadow-[var(--shadow-floating)]"
+            type="submit"
+          >
+            Create trigger
+          </Button>
+          <Button
+            className="transform-gpu hover:scale-[1.06] hover:shadow-[var(--shadow-floating)]"
+            onClick={() =>
+              resetTriggerForm(selectedFormAssetId, selectedDirection)
+            }
+            type="button"
+            variant="secondary"
+          >
+            Clear Fields
+          </Button>
         </div>
       </form>
 
@@ -326,30 +346,33 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
               No triggers yet
             </p>
             <p className="mt-2 text-sm leading-6 text-[var(--text-muted)]">
-              Create a simple above or below level and Metricoin will monitor it against the live market stream.
+              Create a simple above or below level and Metricoin will monitor it
+              against the live market stream.
             </p>
           </div>
         ) : null}
 
         {filteredAlerts.map((alert) => {
-          const asset = assetLookup[alert.assetId] ?? getFallbackAssetMeta(alert.assetId);
-          const metrics = getPriceTriggerMetrics(alert, snapshots[alert.assetId]);
+          const asset =
+            assetLookup[alert.assetId] ?? getFallbackAssetMeta(alert.assetId);
+          const metrics = getPriceTriggerMetrics(
+            alert,
+            snapshots[alert.assetId],
+          );
           const statusTimestamp = alert.triggeredAt ?? alert.createdAt;
 
           return (
             <div
               className={classNames(
                 'surface-subtle flex flex-col gap-4 rounded-2xl p-4',
-                alert.triggered && 'border-[var(--positive-border)] bg-[var(--positive-bg)]',
+                alert.triggered &&
+                  'border-[var(--positive-border)] bg-[var(--positive-bg)]',
               )}
               key={alert.id}
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <AssetIcon
-                    asset={asset}
-                    size="md"
-                  />
+                  <AssetIcon asset={asset} size="md" />
                   <div className="space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p
@@ -360,7 +383,9 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                             : 'text-[var(--text-primary)]',
                         )}
                       >
-                        {asset.name} {alert.direction === 'above' ? 'above' : 'below'} {formatPrice(alert.targetPrice)}
+                        {asset.name}{' '}
+                        {alert.direction === 'above' ? 'above' : 'below'}{' '}
+                        {formatPrice(alert.targetPrice)}
                       </p>
                       <Badge tone={alert.triggered ? 'positive' : 'default'}>
                         {alert.triggered ? 'Triggered' : 'Live'}
@@ -384,7 +409,9 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                     Spot
                   </p>
                   <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
-                    {metrics.currentPrice ? formatPrice(metrics.currentPrice) : '--'}
+                    {metrics.currentPrice
+                      ? formatPrice(metrics.currentPrice)
+                      : '--'}
                   </p>
                 </div>
                 <div>
@@ -412,7 +439,8 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                     {formatTimestamp(statusTimestamp, true)}
                   </p>
                   <p className="mt-1 text-xs text-[var(--text-muted)]">
-                    {alert.triggered ? 'Triggered' : 'Created'} {formatTimestamp(statusTimestamp)}
+                    {alert.triggered ? 'Triggered' : 'Created'}{' '}
+                    {formatTimestamp(statusTimestamp)}
                   </p>
                 </div>
               </div>

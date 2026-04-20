@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import { PreferencesPanel } from '@/features';
+import { OperationsPanel, PreferencesPanel } from '@/features';
 
 const SettingsPage = () => (
   <div className="space-y-6">
@@ -9,6 +9,7 @@ const SettingsPage = () => (
     </Helmet>
 
     <PreferencesPanel />
+    <OperationsPanel />
   </div>
 );
 

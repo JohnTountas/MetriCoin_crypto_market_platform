@@ -1,22 +1,26 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Download, RefreshCcw, Trash2 } from 'lucide-react';
-import { useEffect } from 'react';
+import { Download, RefreshCcw, Trash2, Upload } from 'lucide-react';
+import { type ChangeEvent, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useAppStore } from '@/app';
-import { portfolioSettingsSchema, type PortfolioSettingsFormValues, usePortfolioStore } from '@/entities/portfolio';
+import { createWorkspaceSnapshot, useAppStore, workspaceSnapshotSchema } from '@/app';
+import { type PortfolioSettingsFormValues, portfolioSettingsSchema, usePortfolioStore } from '@/entities/portfolio';
 import { useTheme } from '@/hooks/app';
 import { Button, Card, Input, SectionHeading } from '@/shared';
 
 export const PreferencesPanel = () => {
   const settings = usePortfolioStore((state) => state.settings);
   const setSettings = usePortfolioStore((state) => state.setSettings);
+  const restoreWorkspaceSnapshot = usePortfolioStore((state) => state.restoreWorkspaceSnapshot);
   const restoreSamplePortfolio = usePortfolioStore((state) => state.restoreSamplePortfolio);
   const clearPortfolioData = usePortfolioStore((state) => state.clearPortfolioData);
   const transactions = usePortfolioStore((state) => state.transactions);
   const alerts = usePortfolioStore((state) => state.alerts);
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
+  const restoreWorkspacePreferences = useAppStore((state) => state.restoreWorkspacePreferences);
+  const pushToast = useAppStore((state) => state.pushToast);
   const { themePreference, setThemePreference } = useTheme();
+  const importInputRef = useRef<HTMLInputElement | null>(null);
 
   const form = useForm<PortfolioSettingsFormValues>({
     resolver: zodResolver(portfolioSettingsSchema),
@@ -32,6 +36,57 @@ export const PreferencesPanel = () => {
       estimatedSlippageRate: settings.estimatedSlippageRate,
     });
   }, [form, settings.estimatedFeeRate, settings.estimatedSlippageRate]);
+
+  const handleSnapshotImport = async (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+
+    if (!selectedFile) {
+      return;
+    }
+
+    try {
+      const fileText = await selectedFile.text();
+      const parsedJson = JSON.parse(fileText) as unknown;
+      const parsedSnapshot = workspaceSnapshotSchema.safeParse(parsedJson);
+
+      if (!parsedSnapshot.success) {
+        pushToast({
+          tone: 'error',
+          title: 'Import failed',
+          description: 'Metricoin could not validate that backup file.',
+        });
+        return;
+      }
+
+      restoreWorkspaceSnapshot({
+        settings: parsedSnapshot.data.settings,
+        transactions: parsedSnapshot.data.transactions,
+        alerts: parsedSnapshot.data.alerts,
+      });
+      restoreWorkspacePreferences({
+        themePreference: parsedSnapshot.data.themePreference,
+        favoriteAssetIds: parsedSnapshot.data.favoriteAssetIds,
+      });
+      pushToast({
+        tone: 'success',
+        title: 'Workspace restored',
+        description:
+          `Imported ${parsedSnapshot.data.transactions.length} transaction` +
+          `${parsedSnapshot.data.transactions.length === 1 ? '' : 's'}, ` +
+          `${parsedSnapshot.data.alerts.length} alert${parsedSnapshot.data.alerts.length === 1 ? '' : 's'}, ` +
+          `and ${parsedSnapshot.data.favoriteAssetIds.length} favorite` +
+          `${parsedSnapshot.data.favoriteAssetIds.length === 1 ? '' : 's'}.`,
+      });
+    } catch {
+      pushToast({
+        tone: 'error',
+        title: 'Import failed',
+        description: 'The selected file is not valid JSON.',
+      });
+    } finally {
+      event.target.value = '';
+    }
+  };
 
   return (
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
@@ -100,7 +155,7 @@ export const PreferencesPanel = () => {
         <SectionHeading
           eyebrow="Operations"
           title="Workspace actions"
-          description="Seed demo data, clear the portfolio, or export a snapshot for sharing and backup."
+          description="Seed demo data, clear the portfolio, or move a versioned workspace backup between machines."
         />
 
         <div className="mt-6 space-y-4">
@@ -109,6 +164,14 @@ export const PreferencesPanel = () => {
             <p className="mt-1">Alerts: {alerts.length}</p>
             <p className="mt-1">Favorites: {favoriteAssetIds.length}</p>
           </div>
+
+          <input
+            accept="application/json,.json"
+            className="hidden"
+            onChange={handleSnapshotImport}
+            ref={importInputRef}
+            type="file"
+          />
 
           <Button
             fullWidth
@@ -122,13 +185,13 @@ export const PreferencesPanel = () => {
           <Button
             fullWidth
             onClick={() => {
-              const snapshot = {
-                exportedAt: new Date().toISOString(),
+              const snapshot = createWorkspaceSnapshot({
+                themePreference,
+                favoriteAssetIds,
                 settings,
                 transactions,
                 alerts,
-                favoriteAssetIds,
-              };
+              });
               const blob = new Blob([JSON.stringify(snapshot, null, 2)], {
                 type: 'application/json',
               });
@@ -147,12 +210,25 @@ export const PreferencesPanel = () => {
 
           <Button
             fullWidth
+            onClick={() => importInputRef.current?.click()}
+            variant="secondary"
+          >
+            <Upload className="h-4 w-4" />
+            Import snapshot
+          </Button>
+
+          <Button
+            fullWidth
             onClick={() => clearPortfolioData()}
             variant="danger"
           >
             <Trash2 className="h-4 w-4" />
             Clear local portfolio
           </Button>
+
+          <p className="text-xs leading-6 text-[var(--text-faint)]">
+            Snapshot import replaces local transactions, alerts, favorites, theme, and calculator assumptions using a validated versioned backup file.
+          </p>
         </div>
       </Card>
     </div>

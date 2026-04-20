@@ -2,8 +2,8 @@ import { AlertCircle, Bell, CheckCircle2, TriangleAlert } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
 import { useAppStore } from '@/app';
-import { classNames } from '@/shared/utils';
 import { Button, Card } from '@/shared/components/ui';
+import { classNames } from '@/shared/utils';
 
 const toastToneIconMap = {
   info: Bell,

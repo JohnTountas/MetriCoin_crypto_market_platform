@@ -1,4 +1,9 @@
 export { calculateOpenPositions, calculatePortfolioSummary } from './portfolioCalculations';
+export {
+  parsePortfolioTransactionsCsv,
+  type PortfolioCsvImportResult,
+  validateImportedTransactions,
+} from './portfolioCsvImport';
 export { defaultPortfolioSettings, samplePriceAlerts, sampleTransactions } from './portfolioFixtures';
 export {
   type PortfolioSettingsFormValues,
@@ -8,6 +13,7 @@ export {
   priceAlertFormSchema,
   type PriceAlertFormValues,
 } from './portfolioFormSchemas';
+export { calculatePortfolioPerformancePoints } from './portfolioPerformance';
 export { usePortfolioStore } from './portfolioStore';
 export {
   calculateTransactionActivitySummary,

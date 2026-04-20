@@ -6,13 +6,13 @@ import { useTheme } from '@/hooks/app';
 import { useAssetPriceHistory, useLiveAssetSnapshot } from '@/hooks/market';
 import {
   AssetIcon,
+  AssetPriceChart,
   Card,
   classNames,
   formatCompactNumber,
-  getFallbackAssetMeta,
   formatPrice,
   formatTimestamp,
-  AssetPriceChart,
+  getFallbackAssetMeta,
   SegmentedControl,
   Skeleton,
   TIMEFRAME_OPTIONS,
@@ -23,11 +23,11 @@ type AssetAnalyticsPanelProps = {
   trackLiveData?: boolean;
 };
 
-const chartModeOptions: Array<{
+const chartModeOptions: {
   value: 'area' | 'candles';
   icon: typeof LineChart;
   label: string;
-}> = [
+}[] = [
   { value: 'area', icon: LineChart, label: 'Area chart' },
   { value: 'candles', icon: CandlestickChart, label: 'Candlestick chart' },
 ];

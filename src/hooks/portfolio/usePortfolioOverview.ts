@@ -1,5 +1,9 @@
 import { useMarketStore } from '@/entities/market';
-import { calculateOpenPositions, calculatePortfolioSummary, usePortfolioStore } from '@/entities/portfolio';
+import {
+  calculateOpenPositions,
+  calculatePortfolioSummary,
+  usePortfolioStore,
+} from '@/entities/portfolio/model';
 
 export const usePortfolioOverview = () => {
   const snapshots = useMarketStore((state) => state.snapshots);

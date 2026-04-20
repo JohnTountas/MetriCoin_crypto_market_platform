@@ -1,4 +1,4 @@
-import { Command, Menu, MoonStar, Radio, SunMedium } from 'lucide-react';
+import { Menu, MoonStar, Radio, Search, SunMedium } from 'lucide-react';
 
 import { useAppStore } from '@/app';
 import { useMarketStore } from '@/entities/market';
@@ -87,11 +87,12 @@ export const Topbar = () => {
           onClick={() => setCommandPaletteOpen(true)}
           variant="secondary"
         >
-          <Command className="h-4.5 w-4.5" />
+          <Search className="h-4.5 w-4.5" />
           Quick search
         </Button>
         <div className="control-group inline-flex rounded-2xl p-1">
           <button
+            aria-label="Switch to light theme"
             className={classNames(
               'control-option rounded-2xl px-3 py-2 text-sm',
               themePreference === 'light' && 'control-option-active',
@@ -102,6 +103,7 @@ export const Topbar = () => {
             <SunMedium className="h-4.5 w-4.5" />
           </button>
           <button
+            aria-label="Switch to dark theme"
             className={classNames(
               'control-option rounded-2xl px-3 py-2 text-sm',
               themePreference === 'dark' && 'control-option-active',

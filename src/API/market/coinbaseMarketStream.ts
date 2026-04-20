@@ -1,8 +1,8 @@
 import { runtimeConfig } from '@/api/core';
 import type { MarketTickerMessage } from '@/shared/types';
 
-import type { MarketStream, MarketStreamHandlers } from './marketDataProvider';
 import { coinbaseWsErrorSchema, coinbaseWsTickerMessageSchema } from './coinbaseMarketSchemas';
+import type { MarketStream, MarketStreamHandlers } from './marketDataProvider';
 
 export const createCoinbaseMarketStream = (
   assetIds: string[],

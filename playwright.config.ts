@@ -8,7 +8,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'cmd /c "set VITE_USE_MOCK_DATA=true&& npm run build && npm run preview -- --host 127.0.0.1 --port 4173"',
+    command: 'cmd /c "set VITE_USE_MOCK_DATA=true&& npm run build && node tools/playwright-stack.mjs"',
     port: 4173,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

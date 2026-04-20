@@ -15,6 +15,7 @@ type PortfolioState = {
   settings: CalculatorSettings;
   editingTransactionId?: string;
   addTransaction: (transactionInput: Omit<PortfolioTransaction, 'id'>) => void;
+  importTransactions: (transactions: Omit<PortfolioTransaction, 'id'>[]) => void;
   updateTransaction: (transactionId: string, transactionInput: Omit<PortfolioTransaction, 'id'>) => void;
   deleteTransaction: (transactionId: string) => void;
   setEditingTransactionId: (transactionId?: string) => void;
@@ -24,6 +25,11 @@ type PortfolioState = {
   rearmAlert: (alertId: string) => void;
   resetAlerts: () => void;
   setSettings: (settingsPatch: Partial<CalculatorSettings>) => void;
+  restoreWorkspaceSnapshot: (snapshot: {
+    settings: CalculatorSettings;
+    transactions: PortfolioTransaction[];
+    alerts: PriceAlert[];
+  }) => void;
   restoreSamplePortfolio: () => void;
   clearPortfolioData: () => void;
 };
@@ -42,6 +48,17 @@ export const usePortfolioStore = create<PortfolioState>()(
               ...transactionInput,
               id: crypto.randomUUID(),
             },
+            ...state.transactions,
+          ],
+          editingTransactionId: undefined,
+        })),
+      importTransactions: (transactionInputs) =>
+        set((state) => ({
+          transactions: [
+            ...transactionInputs.map((transactionInput) => ({
+              ...transactionInput,
+              id: crypto.randomUUID(),
+            })),
             ...state.transactions,
           ],
           editingTransactionId: undefined,
@@ -120,6 +137,13 @@ export const usePortfolioStore = create<PortfolioState>()(
             ...settingsPatch,
           },
         })),
+      restoreWorkspaceSnapshot: ({ settings, transactions, alerts }) =>
+        set({
+          settings,
+          transactions: [...transactions],
+          alerts: [...alerts],
+          editingTransactionId: undefined,
+        }),
       restoreSamplePortfolio: () =>
         set({
           transactions: sampleTransactions,

@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -18,21 +18,10 @@ const assets: AssetMeta[] = [
 const assetLookup = buildAssetLookup(assets);
 
 const selectAsset = async (assetName: string) => {
-  const assetLabel = screen.getByText('Asset').closest('label');
-
-  if (!assetLabel) {
-    throw new Error('Asset label not found.');
-  }
-
-  const triggerButton = within(assetLabel).getByRole('button');
+  const triggerButton = screen.getByRole('button', { name: /asset selector/i });
   await userEvent.click(triggerButton);
 
-  const optionButton = screen.getByText(assetName).closest('button');
-
-  if (!optionButton) {
-    throw new Error(`Asset option "${assetName}" not found.`);
-  }
-
+  const optionButton = screen.getByRole('button', { name: new RegExp(assetName, 'i') });
   await userEvent.click(optionButton);
 };
 

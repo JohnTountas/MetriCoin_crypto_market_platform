@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import { createAssetMeta } from '@/shared/constants';
-import { resolveAssetDetailsAssetId } from '@/shared/utils';
 import type { MarketSnapshot, PortfolioTransaction, PriceAlert } from '@/shared/types';
+import { resolveAssetDetailsAssetId } from '@/shared/utils';
 
 const assetLookup = {
   'BTC-USD': createAssetMeta({ id: 'BTC-USD', symbol: 'BTC', name: 'Bitcoin' }),

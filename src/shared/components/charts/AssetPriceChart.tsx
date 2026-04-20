@@ -84,12 +84,94 @@ export const AssetPriceChart = ({
   const isDark = theme === 'dark';
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) {
+      return;
+    }
 
-    const chartPalette = getChartPalette(isDark);
     const chart = createChart(containerRef.current, {
       autoSize: true,
       height,
+      layout: {
+        background: { type: ColorType.Solid, color: 'transparent' },
+        textColor: readCssVar('--chart-text', '#aab6c5'),
+        fontFamily: 'Inter, sans-serif',
+      },
+      grid: {
+        vertLines: { color: readCssVar('--chart-grid', 'rgba(148, 163, 184, 0.03)') },
+        horzLines: { color: readCssVar('--chart-grid', 'rgba(148, 163, 184, 0.03)') },
+      },
+      rightPriceScale: {
+        borderVisible: false,
+      },
+      timeScale: {
+        borderVisible: false,
+        timeVisible: true,
+      },
+      crosshair: {
+        mode: CrosshairMode.Normal,
+        vertLine: {
+          color: readCssVar('--chart-crosshair', 'rgba(93, 127, 143, 0.18)'),
+          style: LineStyle.Dashed,
+        },
+        horzLine: {
+          color: readCssVar('--chart-crosshair-soft', 'rgba(93, 127, 143, 0.12)'),
+          style: LineStyle.Dashed,
+        },
+      },
+    });
+
+    const baselineSeries = chart.addBaselineSeries({
+      ...getBaselinePalette(true),
+      baseValue: { type: 'price', price: 0 },
+      baseLineVisible: true,
+      baseLineStyle: LineStyle.Dashed,
+      baseLineWidth: 1,
+      lineWidth: 2,
+      priceLineVisible: false,
+      crosshairMarkerVisible: false,
+    });
+
+    const candleSeries = chart.addCandlestickSeries({
+      upColor: readCssVar('--chart-positive', '#7eb89b'),
+      downColor: readCssVar('--chart-negative', '#c9929f'),
+      borderVisible: false,
+      wickUpColor: readCssVar('--chart-positive', '#7eb89b'),
+      wickDownColor: readCssVar('--chart-negative', '#c9929f'),
+      priceLineVisible: false,
+    });
+
+    chartRef.current = chart;
+    baselineSeriesRef.current = baselineSeries;
+    candleSeriesRef.current = candleSeries;
+
+    // Theme changes should restyle the existing chart, not destroy it. Reusing
+    // the same instance avoids resize races in lightweight-charts.
+    const resizeObserver = new ResizeObserver(() => {
+      chartRef.current?.timeScale().fitContent();
+    });
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+      chart.remove();
+      chartRef.current = null;
+      baselineSeriesRef.current = null;
+      candleSeriesRef.current = null;
+    };
+  }, [height]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    const baselineSeries = baselineSeriesRef.current;
+    const candleSeries = candleSeriesRef.current;
+
+    if (!chart || !baselineSeries || !candleSeries) {
+      return;
+    }
+
+    const chartPalette = getChartPalette(isDark);
+
+    chart.applyOptions({
       layout: {
         background: { type: ColorType.Solid, color: 'transparent' },
         textColor: chartPalette.textColor,
@@ -98,13 +180,6 @@ export const AssetPriceChart = ({
       grid: {
         vertLines: { color: chartPalette.gridColor },
         horzLines: { color: chartPalette.gridColor },
-      },
-      rightPriceScale: {
-        borderVisible: false,
-      },
-      timeScale: {
-        borderVisible: false,
-        timeVisible: true,
       },
       crosshair: {
         mode: CrosshairMode.Normal,
@@ -117,11 +192,21 @@ export const AssetPriceChart = ({
           style: LineStyle.Dashed,
         },
       },
+      rightPriceScale: {
+        borderVisible: false,
+      },
+      timeScale: {
+        borderVisible: false,
+        timeVisible: true,
+      },
     });
 
-    const baselineSeries = chart.addBaselineSeries({
+    baselineSeries.applyOptions({
       ...getBaselinePalette(isDark),
-      baseValue: { type: 'price', price: 0 },
+      baseValue: {
+        type: 'price',
+        price: candles[0]?.open ?? 0,
+      },
       baseLineVisible: true,
       baseLineStyle: LineStyle.Dashed,
       baseLineWidth: 1,
@@ -130,7 +215,7 @@ export const AssetPriceChart = ({
       crosshairMarkerVisible: false,
     });
 
-    const candleSeries = chart.addCandlestickSeries({
+    candleSeries.applyOptions({
       upColor: chartPalette.positiveColor,
       downColor: chartPalette.negativeColor,
       borderVisible: false,
@@ -138,25 +223,18 @@ export const AssetPriceChart = ({
       wickDownColor: chartPalette.negativeColor,
       priceLineVisible: false,
     });
-
-    chartRef.current = chart;
-    baselineSeriesRef.current = baselineSeries;
-    candleSeriesRef.current = candleSeries;
-
-    const resizeObserver = new ResizeObserver(() => chart.timeScale().fitContent());
-    resizeObserver.observe(containerRef.current);
-
-    return () => {
-      resizeObserver.disconnect();
-      chart.remove();
-      chartRef.current = null;
-      baselineSeriesRef.current = null;
-      candleSeriesRef.current = null;
-    };
-  }, [height, isDark, theme]);
+  }, [candles, isDark]);
 
   useEffect(() => {
-    if (!baselineSeriesRef.current || !candleSeriesRef.current || candles.length === 0) return;
+    if (!baselineSeriesRef.current || !candleSeriesRef.current) {
+      return;
+    }
+
+    if (candles.length === 0) {
+      baselineSeriesRef.current.setData([]);
+      candleSeriesRef.current.setData([]);
+      return;
+    }
 
     const firstCandle = candles[0];
     const referencePrice = firstCandle.open;

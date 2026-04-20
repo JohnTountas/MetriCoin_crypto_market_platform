@@ -17,7 +17,7 @@ const hashValue = (value: string) =>
 export const getAssetAccent = (symbol: string) => ACCENT_OPTIONS[hashValue(symbol) % ACCENT_OPTIONS.length];
 
 const getQuantityPrecision = (baseIncrement?: string) => {
-  if (!baseIncrement || !baseIncrement.includes('.')) {
+  if (!baseIncrement?.includes('.')) {
     return 0;
   }
 
@@ -94,13 +94,13 @@ const TRACKED_ASSET_CATALOG = [
   { symbol: 'FLR', name: 'Flare', iconUrl: 'https://coin-images.coingecko.com/coins/images/28624/large/FLR-icon200x200.png?1696527609', circulatingSupply: 85382652615.63507, baseIncrement: '1' },
   { symbol: 'FIL', name: 'Filecoin', iconUrl: 'https://coin-images.coingecko.com/coins/images/12817/large/filecoin.png?1696512609', circulatingSupply: 763627918.0, baseIncrement: '0.001' },
   { symbol: 'VET', name: 'VeChain', iconUrl: 'https://coin-images.coingecko.com/coins/images/1167/large/VET.png?1742383283', circulatingSupply: 85985041177.0, baseIncrement: '1' },
-] satisfies Array<{
+] satisfies {
   symbol: string;
   name: string;
   iconUrl: string;
   circulatingSupply: number;
   baseIncrement: string;
-}>;
+}[];
 
 const createTrackedAsset = ({
   symbol,

@@ -13,6 +13,7 @@ type AssetSelectProps = {
   onChange: (value: string) => void;
   className?: string;
   disabled?: boolean;
+  ariaLabel?: string;
 };
 
 export const AssetSelect = ({
@@ -21,6 +22,7 @@ export const AssetSelect = ({
   onChange,
   className,
   disabled = false,
+  ariaLabel,
 }: AssetSelectProps) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -66,6 +68,7 @@ export const AssetSelect = ({
       ref={containerRef}
     >
       <button
+        aria-label={ariaLabel}
         aria-expanded={open}
         className="surface-input flex h-14 w-full items-center justify-between rounded-2xl px-4 text-left text-sm text-[var(--text-primary)] outline-none transition focus:border-[var(--focus-border)] focus:ring-4 focus:ring-[var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-70"
         disabled={disabled}

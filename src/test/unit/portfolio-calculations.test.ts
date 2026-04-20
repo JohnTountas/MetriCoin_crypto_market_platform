@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { calculatePortfolioSummary, calculateOpenPositions } from '@/entities/portfolio';
+import { calculateOpenPositions,calculatePortfolioSummary } from '@/entities/portfolio';
 import type { CalculatorSettings, MarketSnapshot, PortfolioTransaction } from '@/shared';
 
 const settings: CalculatorSettings = {

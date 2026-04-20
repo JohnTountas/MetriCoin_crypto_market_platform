@@ -1,8 +1,8 @@
 import { useMarketStore } from '@/entities/market';
-import { getAssetChartGradient, getFallbackAssetMeta } from '@/shared/constants';
-import { formatCurrency } from '@/shared/utils';
 import { AssetIcon } from '@/shared/components/ui';
+import { getAssetChartGradient, getFallbackAssetMeta } from '@/shared/constants';
 import type { PositionMetrics } from '@/shared/types';
+import { formatCurrency } from '@/shared/utils';
 
 type PortfolioAllocationChartProps = {
   positions: PositionMetrics[];
