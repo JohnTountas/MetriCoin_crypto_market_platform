@@ -1,3 +1,5 @@
+// AssetIcon gives every market and portfolio surface a consistent identity treatment.
+// It degrades gracefully to a text badge so missing images do not damage the layout.
 import { useState } from 'react';
 
 import type { AssetMeta } from '@/shared/types';

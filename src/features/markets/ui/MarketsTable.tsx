@@ -1,3 +1,5 @@
+// MarketsTable is the browseable universe view for tracked assets and their live context.
+// It stays table-driven so scaling the asset list does not require rethinking page structure.
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

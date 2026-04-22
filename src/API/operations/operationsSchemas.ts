@@ -1,3 +1,5 @@
+// Browser-to-ops-server contracts live here. When settings or monitoring views drift,
+// these schemas are the quickest place to confirm both sides still agree on the payload shape.
 import { z } from 'zod';
 
 const telemetryMetadataSchema = z.record(z.union([z.string(), z.number(), z.boolean(), z.null()]));

@@ -1,3 +1,5 @@
+// Keyboard-first search overlay for jumping between tracked assets quickly.
+// Centralizing it here keeps navigation shortcuts consistent across every route.
 import { Command, Search, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

@@ -1,3 +1,5 @@
+// useLiveAssetSnapshot keeps a detail page fresh even when the broader market stream is quiet.
+// It complements the stream by refetching a single asset on a slower, cheaper cadence.
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 

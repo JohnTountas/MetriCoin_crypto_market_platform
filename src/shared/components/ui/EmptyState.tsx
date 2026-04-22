@@ -1,3 +1,5 @@
+// Shared empty-state component for moments when the user has no data to work with yet.
+// Using one pattern keeps first-run and edge-case screens feeling intentional.
 import type { ReactNode } from 'react';
 
 import { Card } from '@/shared/components/ui/Card';

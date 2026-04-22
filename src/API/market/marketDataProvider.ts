@@ -1,3 +1,5 @@
+// The provider contract keeps the rest of the app agnostic to where market data comes from.
+// New providers should implement this shape so hooks and stores can stay unchanged.
 import { runtimeConfig } from '@/api/core';
 import type {
   AssetMeta,

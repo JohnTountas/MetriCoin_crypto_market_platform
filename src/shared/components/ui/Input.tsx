@@ -1,3 +1,5 @@
+// Shared input wrapper that keeps focus treatment and sizing aligned across forms.
+// Even simple wrappers like this reduce form drift as more workflows are added.
 import { forwardRef, type InputHTMLAttributes } from 'react';
 
 import { classNames } from '@/shared/utils';

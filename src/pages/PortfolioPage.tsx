@@ -1,3 +1,5 @@
+// PortfolioPage is the full local-first workspace for holdings, allocation, imports, and history.
+// It stitches together several portfolio features but keeps the underlying domain logic elsewhere.
 import { Helmet } from 'react-helmet-async';
 
 import {

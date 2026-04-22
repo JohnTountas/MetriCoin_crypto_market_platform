@@ -1,3 +1,5 @@
+// Bootstraps overview snapshots into the market store before the live stream takes over.
+// This prevents the app from feeling empty while websocket updates are still warming up.
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 

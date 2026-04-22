@@ -1,3 +1,5 @@
+// Route definitions are lazy by default so page bundles stay isolated as the app grows.
+// If navigation or route-level loading breaks, this table is the source of truth.
 import type { ComponentType } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 

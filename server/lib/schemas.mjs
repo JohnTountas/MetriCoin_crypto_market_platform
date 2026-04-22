@@ -1,3 +1,5 @@
+// These schemas define the ops server's persisted state and request contracts.
+// They act as the backend guardrail against malformed client writes and stale runtime data.
 import { z } from 'zod';
 
 const isoTimestampSchema = z

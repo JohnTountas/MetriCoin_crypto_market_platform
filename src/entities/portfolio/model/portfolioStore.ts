@@ -1,3 +1,5 @@
+// portfolioStore is the client-side source of truth for transactions, alerts, and assumptions.
+// Persisted writes stay here so features can read a stable domain model instead of duplicating state.
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

@@ -1,3 +1,5 @@
+// This shared KPI grid keeps the top portfolio metrics consistent across dashboard-style views.
+// Any change to summary language or emphasis should usually happen here before being copied elsewhere.
 import { BadgeDollarSign, Gauge, ShieldCheck, Sparkles } from 'lucide-react';
 
 import {

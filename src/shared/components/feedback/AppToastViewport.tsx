@@ -1,3 +1,5 @@
+// Global toast outlet for lightweight app feedback that should survive route changes.
+// Auto-dismiss scheduling lives here so features can focus on when to notify, not how.
 import { AlertCircle, Bell, CheckCircle2, TriangleAlert } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 

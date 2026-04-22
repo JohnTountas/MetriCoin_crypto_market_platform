@@ -1,3 +1,5 @@
+// Shared button primitive that centralizes interaction styling and semantic variants.
+// Most action surfaces should build on this so state and spacing stay consistent.
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 import { classNames } from '@/shared/utils';

@@ -1,3 +1,5 @@
+// The transaction form handles both create and edit flows while protecting ledger integrity.
+// If manual portfolio entry starts behaving strangely, this is the first form to inspect.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';

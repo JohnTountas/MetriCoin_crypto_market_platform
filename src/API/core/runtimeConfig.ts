@@ -1,3 +1,5 @@
+// Centralizes every client-side runtime switch so features do not read environment variables
+// directly. Keeping config here makes provider swaps and local overrides much safer.
 import type { MarketProviderMode } from '@/shared/types';
 
 const readEnvironmentVariable = (key: keyof ImportMetaEnv) => {

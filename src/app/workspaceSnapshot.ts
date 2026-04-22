@@ -1,3 +1,5 @@
+// Workspace snapshots are the portability contract for user-owned local state.
+// Versioning and validation live here so imports stay safe as the product evolves.
 import { z } from 'zod';
 
 import type {

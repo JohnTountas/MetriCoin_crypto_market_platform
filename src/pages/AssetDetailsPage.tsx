@@ -1,3 +1,5 @@
+// AssetDetailsPage is the route-level orchestrator for a single asset's market and portfolio context.
+// It resolves flexible asset ids so links from different sources still land in a useful state.
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';

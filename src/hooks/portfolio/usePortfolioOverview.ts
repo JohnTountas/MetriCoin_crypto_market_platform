@@ -1,3 +1,5 @@
+// Aggregates the derived portfolio view model that most pages need in one call.
+// Centralizing these derived reads keeps KPI screens consistent as the product expands.
 import { useMarketStore } from '@/entities/market';
 import {
   calculateOpenPositions,

@@ -1,3 +1,5 @@
+// Lightweight SVG allocation chart for open positions and their relative weight.
+// Keeping this chart custom makes it deterministic, dependency-light, and easy to debug.
 import { useMarketStore } from '@/entities/market';
 import { AssetIcon } from '@/shared/components/ui';
 import { getAssetChartGradient, getFallbackAssetMeta } from '@/shared/constants';

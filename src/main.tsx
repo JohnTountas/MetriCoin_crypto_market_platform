@@ -1,3 +1,5 @@
+// Browser bootstrap entry point for the React application.
+// This file should stay tiny so startup failures are easy to isolate.
 import '@/app/styles.css';
 
 import { StrictMode } from 'react';

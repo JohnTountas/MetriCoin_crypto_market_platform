@@ -1,3 +1,5 @@
+// Client-side alert evaluation gives the user immediate feedback from live snapshots.
+// The ops server can mirror alerts too, but this hook keeps the in-browser experience responsive.
 import { useEffect } from 'react';
 
 import { useAppStore } from '@/app';

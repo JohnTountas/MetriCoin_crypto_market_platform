@@ -1,3 +1,5 @@
+// Small reusable shortcut hook so features can opt into keyboard behavior without copy-pasting
+// event listeners. Keeping it generic also makes testing keyboard flows simpler.
 import { useEffect } from 'react';
 
 export const useKeyboardShortcut = (

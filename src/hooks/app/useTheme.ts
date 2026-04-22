@@ -1,3 +1,5 @@
+// useTheme resolves stored preference, system preference, and document state into one small API.
+// Theme bugs usually come from this boundary rather than from individual components.
 import { useEffect, useMemo, useState } from 'react';
 
 import { useAppStore } from '@/app';

@@ -1,3 +1,5 @@
+// Server-side price lookups are isolated here so the alert engine can stay focused on delivery logic.
+// If backend alerts are firing at the wrong time, verify the provider response path in this module first.
 const COINBASE_REST_URL = 'https://api.exchange.coinbase.com';
 
 export const fetchSpotPrice = async (assetId) => {

@@ -1,3 +1,5 @@
+// These schemas define the payload shapes Metricoin is willing to trust from Coinbase.
+// Tight validation here keeps provider quirks from leaking into stores and UI components.
 import { z } from 'zod';
 
 export const coinbaseTickerResponseSchema = z.object({

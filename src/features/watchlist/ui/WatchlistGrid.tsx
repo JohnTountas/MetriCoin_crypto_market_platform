@@ -1,3 +1,5 @@
+// WatchlistGrid is the high-signal favorites surface for fast market monitoring.
+// It intentionally reuses shared state so pinned assets stay consistent across the whole app.
 import { Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

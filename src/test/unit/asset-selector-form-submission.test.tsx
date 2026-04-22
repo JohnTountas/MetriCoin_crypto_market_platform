@@ -93,4 +93,21 @@ describe('asset selector form submission', () => {
 
     expect(usePortfolioStore.getState().alerts[0]?.assetId).toBe('ETH-USD');
   });
+
+  it('clears the trigger form and leaves the trigger price empty', async () => {
+    render(<AlertsPanel />);
+
+    await selectAsset('Ethereum');
+    await userEvent.selectOptions(screen.getByLabelText(/Direction/i), 'below');
+    await userEvent.clear(screen.getByLabelText(/Trigger price/i));
+    await userEvent.type(screen.getByLabelText(/Trigger price/i), '123456');
+    await userEvent.type(screen.getByLabelText(/Label/i), 'Reset me');
+
+    await userEvent.click(screen.getByRole('button', { name: /Clear form/i }));
+
+    expect(screen.getByRole('button', { name: /asset selector/i })).toHaveTextContent('Bitcoin');
+    expect(screen.getByLabelText(/Direction/i)).toHaveValue('above');
+    expect((screen.getByLabelText(/Trigger price/i) as HTMLInputElement).value).toBe('');
+    expect(screen.getByLabelText(/Label/i)).toHaveValue('');
+  });
 });

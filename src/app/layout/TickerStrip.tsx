@@ -1,3 +1,5 @@
+// TickerStrip is the fast-scanning market ribbon that keeps navigation close to live prices.
+// It stays intentionally lightweight so stream updates can repaint without touching heavier panels.
 import { Link } from 'react-router-dom';
 
 import { useMarketStore } from '@/entities/market';

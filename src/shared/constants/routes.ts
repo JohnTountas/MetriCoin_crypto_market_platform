@@ -1,3 +1,5 @@
+// Central route map plus navigation metadata for the main product surfaces.
+// Keeping paths here makes refactors safer than scattering string literals through the UI.
 export const ROUTES = {
   dashboard: '/',
   markets: '/markets',
@@ -16,4 +18,3 @@ export const NAV_ITEMS = [
   { label: 'Watchlist', path: ROUTES.watchlist },
   { label: 'Settings', path: ROUTES.settings },
 ];
-

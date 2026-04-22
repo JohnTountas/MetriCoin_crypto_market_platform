@@ -1,3 +1,5 @@
+// AssetAnalyticsPanel combines charting, live quote data, and market context for one asset.
+// It is the main place to debug mismatches between route selection and asset-level market state.
 import { CandlestickChart, LineChart, Scale, TimerReset } from 'lucide-react';
 import { useState } from 'react';
 

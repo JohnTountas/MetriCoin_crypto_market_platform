@@ -1,3 +1,5 @@
+// The root App stays intentionally thin so routing and provider concerns remain easy to swap,
+// test, and reason about independently.
 import { RouterProvider } from 'react-router-dom';
 
 import { AppProviders } from '@/app/providers';

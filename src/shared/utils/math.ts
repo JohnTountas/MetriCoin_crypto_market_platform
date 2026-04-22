@@ -1,3 +1,5 @@
+// Numeric helpers wrap Decimal usage for the places that need reliable rounding and percentages.
+// Shared finance-friendly math utilities reduce the risk of subtle formatting drift.
 import Decimal from 'decimal.js';
 
 export const toDecimal = (value: Decimal.Value) => new Decimal(value);
@@ -19,4 +21,3 @@ export const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
 export const roundCurrency = (value: number) => toNumber(value, 2);
-

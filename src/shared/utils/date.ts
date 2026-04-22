@@ -1,3 +1,5 @@
+// Central date formatting helpers keep timestamps readable and consistent across the UI.
+// If display rules change later, one edit here can update every surface that depends on them.
 export const formatLocalDateTime = (value: string | number) =>
   new Intl.DateTimeFormat('en-US', {
     month: 'short',
@@ -14,4 +16,3 @@ export const formatShortTime = (value: string | number) =>
   }).format(typeof value === 'string' ? new Date(value) : value);
 
 export const toIsoNow = () => new Date().toISOString();
-

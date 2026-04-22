@@ -1,3 +1,5 @@
+// SegmentedControl is the compact selector for mutually exclusive view modes and timeframes.
+// It keeps the interaction lightweight while still reading clearly on dense dashboards.
 import { classNames } from '@/shared/utils';
 
 type SegmentedControlOption<T extends string> = {

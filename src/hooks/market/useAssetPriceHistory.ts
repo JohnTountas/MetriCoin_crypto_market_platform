@@ -1,3 +1,5 @@
+// Thin query hook for historical candle data so chart consumers share one cache shape.
+// Keeping this wrapper small makes provider changes easier to roll through the charting layer.
 import { useQuery } from '@tanstack/react-query';
 
 import { activeMarketDataProvider } from '@/api/market';

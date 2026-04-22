@@ -1,3 +1,5 @@
+// This panel owns the user-facing CSV import flow into the validated portfolio ledger.
+// It is the safest place to extend import behavior without weakening ledger guardrails.
 import { FileUp } from 'lucide-react';
 import { type ChangeEvent, useRef, useState } from 'react';
 

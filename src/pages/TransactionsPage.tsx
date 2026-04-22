@@ -1,3 +1,5 @@
+// TransactionsPage is the dedicated ledger maintenance route for users working trade-by-trade.
+// Splitting it from the broader portfolio page keeps editing workflows easier to focus on.
 import { Helmet } from 'react-helmet-async';
 
 import {

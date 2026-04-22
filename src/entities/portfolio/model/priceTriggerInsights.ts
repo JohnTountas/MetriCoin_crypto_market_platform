@@ -1,3 +1,5 @@
+// Price trigger helpers turn raw alerts plus snapshots into sortable, UI-friendly insights.
+// The watchlist and dashboard both rely on these derived rules staying predictable.
 import type { MarketSnapshot, PriceAlert } from '@/shared/types';
 
 export type PriceTriggerMetrics = {

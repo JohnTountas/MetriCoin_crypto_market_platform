@@ -1,3 +1,5 @@
+// Route-level loading skeleton used while lazy pages or critical data are still warming up.
+// It keeps navigation transitions feeling intentional instead of blank.
 import { Skeleton } from '@/shared/components/ui';
 
 export const PageLoadingSkeleton = () => (

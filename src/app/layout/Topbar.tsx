@@ -1,3 +1,5 @@
+// Topbar surfaces app-wide status, quick search, and theme controls in one predictable place.
+// It is also a good debugging checkpoint for stream health and selected asset context.
 import { Menu, MoonStar, Radio, Search, SunMedium } from 'lucide-react';
 
 import { useAppStore } from '@/app';

@@ -1,3 +1,5 @@
+// Demo fixtures give the app a useful first-run state instead of an empty shell.
+// They also provide stable sample data while building and reviewing portfolio UI.
 import type { CalculatorSettings, PortfolioTransaction, PriceAlert } from '@/shared/types';
 
 export const sampleTransactions: PortfolioTransaction[] = [

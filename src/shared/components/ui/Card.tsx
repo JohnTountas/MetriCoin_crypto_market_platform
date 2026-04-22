@@ -1,3 +1,5 @@
+// Card is the default surface primitive for Metricoin panels and grouped content.
+// Reusing one wrapper keeps spacing and visual depth easier to maintain at scale.
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 
 import { classNames } from '@/shared/utils';

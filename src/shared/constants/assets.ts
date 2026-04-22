@@ -1,3 +1,5 @@
+// This file is the canonical asset catalog plus the helper functions built around it.
+// If asset metadata, defaults, or chart accents drift, start here before changing UI code.
 import type { AssetMeta, Timeframe } from '@/shared/types';
 
 const ACCENT_OPTIONS = [

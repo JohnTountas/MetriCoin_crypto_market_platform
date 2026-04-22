@@ -1,3 +1,5 @@
+// OperationsPanel is the browser-side window into ops server health, telemetry, and alert delivery.
+// When server-backed features feel inconsistent, this panel should make the failure mode visible.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import { Activity, BellRing, Bug, Save, ServerCog, Siren } from 'lucide-react';

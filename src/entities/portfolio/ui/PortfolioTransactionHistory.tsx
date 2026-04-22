@@ -1,3 +1,5 @@
+// Transaction history is the audit-friendly view of the local ledger plus its maintenance actions.
+// Editing and delete behavior stays here so the rest of the portfolio UI can remain read-focused.
 import { Pencil, Trash2 } from 'lucide-react';
 
 import { useAppStore } from '@/app';

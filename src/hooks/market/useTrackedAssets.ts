@@ -1,3 +1,5 @@
+// Loads the tracked asset catalog and falls back to the built-in list when the provider cannot help.
+// That fallback keeps the rest of the app usable even when discovery calls fail.
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 

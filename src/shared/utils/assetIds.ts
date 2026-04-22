@@ -1,3 +1,5 @@
+// Asset id helpers normalize route params and loosely formatted symbols into known product ids.
+// This keeps navigation resilient when links come from user data instead of the market catalog.
 import { DEFAULT_ASSET_ID } from '@/shared/constants';
 import type { AssetMeta, MarketSnapshot, PortfolioTransaction, PriceAlert } from '@/shared/types';
 

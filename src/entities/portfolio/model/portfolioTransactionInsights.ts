@@ -1,3 +1,5 @@
+// Transaction insight helpers keep ledger sorting, summaries, and sell validation in one place.
+// That shared logic prevents page components from inventing slightly different ledger rules.
 import Decimal from 'decimal.js';
 
 import type { PortfolioTransaction } from '@/shared/types';

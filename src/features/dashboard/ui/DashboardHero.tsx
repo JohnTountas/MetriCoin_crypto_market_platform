@@ -1,3 +1,5 @@
+// DashboardHero frames the product around the selected asset and the current portfolio snapshot.
+// It is meant to answer "what matters right now?" before the user scans the rest of the page.
 import { ArrowRight, Radar, Wallet } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

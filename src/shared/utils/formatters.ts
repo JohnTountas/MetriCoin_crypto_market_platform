@@ -1,3 +1,5 @@
+// Presentation formatters keep money, quantity, and timestamp display rules in one place.
+// That keeps visual output consistent and avoids hand-rolled formatting scattered through features.
 import { ASSET_LOOKUP } from '@/shared/constants';
 import { formatLocalDateTime, formatShortTime } from '@/shared/utils/date';
 

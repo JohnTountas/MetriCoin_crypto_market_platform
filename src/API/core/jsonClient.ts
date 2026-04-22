@@ -1,3 +1,5 @@
+// Shared fetch wrapper that keeps JSON parsing, HTTP error handling, and optional schema
+// validation consistent across the app. If many API calls fail the same way, debug here first.
 import type { ZodSchema } from 'zod';
 
 export class ApiError extends Error {

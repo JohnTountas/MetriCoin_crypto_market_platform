@@ -1,3 +1,5 @@
+// marketStore is the normalized cache for tracked assets, live snapshots, and stream status.
+// Keeping market state centralized makes provider issues easier to debug without chasing props.
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

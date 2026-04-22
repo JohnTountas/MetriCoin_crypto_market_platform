@@ -1,3 +1,5 @@
+// DashboardPage composes the highest-signal portfolio and market surfaces into one overview route.
+// It should stay orchestration-focused so feature complexity does not pile up at the page layer.
 import { Helmet } from 'react-helmet-async';
 
 import { useMarketStore } from '@/entities/market';

@@ -1,3 +1,5 @@
+// This summary row turns raw ledger activity into a fast executive read of portfolio behavior.
+// It is intentionally compact so route pages can reuse the same transaction story everywhere.
 import { ArrowDownCircle, ArrowUpCircle, ReceiptText, WalletCards } from 'lucide-react';
 
 import { formatCurrency, formatSignedCurrency, formatTimestamp, StatCard } from '@/shared';

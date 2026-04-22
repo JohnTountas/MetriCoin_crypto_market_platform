@@ -1,3 +1,5 @@
+// AppProviders is the one place where global React providers are composed.
+// Centralizing provider setup here keeps bootstrapping simple and avoids provider drift.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { PropsWithChildren } from 'react';

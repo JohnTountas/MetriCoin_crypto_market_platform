@@ -1,3 +1,5 @@
+// MarketsPage is the route shell for scanning the tracked universe and entering asset detail flows.
+// It stays thin on purpose so market behavior can evolve inside the feature layer.
 import { Helmet } from 'react-helmet-async';
 
 import { MarketsTable } from '@/features';

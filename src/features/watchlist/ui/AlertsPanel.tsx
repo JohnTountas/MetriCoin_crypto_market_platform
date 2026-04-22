@@ -1,3 +1,5 @@
+// AlertsPanel is the authoring and review surface for price triggers.
+// It balances quick entry with enough derived context to make alert debugging straightforward.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BellRing, RotateCcw, Trash2 } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
@@ -92,27 +94,46 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
   const triggeredAlerts = filteredAlerts.filter((alert) => alert.triggered);
   const selectedFormAssetId = form.watch('assetId');
   const selectedDirection = form.watch('direction');
-  const watchedTargetPrice = Number(form.watch('targetPrice') ?? 0);
-  const selectedTargetPrice = Number.isFinite(watchedTargetPrice)
-    ? watchedTargetPrice
-    : 0;
+  const watchedTargetPrice = form.watch('targetPrice') as
+    | number
+    | string
+    | undefined;
+  const parsedTargetPrice =
+    typeof watchedTargetPrice === 'number'
+      ? watchedTargetPrice
+      : typeof watchedTargetPrice === 'string' &&
+          watchedTargetPrice.trim() !== ''
+        ? Number(watchedTargetPrice)
+        : undefined;
+  const selectedTargetPrice =
+    parsedTargetPrice !== undefined && Number.isFinite(parsedTargetPrice)
+      ? parsedTargetPrice
+      : undefined;
   const { errors } = form.formState;
   const selectedAsset =
     assetLookup[selectedFormAssetId] ??
     getFallbackAssetMeta(selectedFormAssetId);
   const selectedSnapshot = snapshots[selectedFormAssetId];
-  const selectedTriggerMetrics = getPriceTriggerMetrics(
-    {
-      id: 'draft-trigger',
-      assetId: selectedFormAssetId,
-      direction: selectedDirection,
-      targetPrice: selectedTargetPrice,
-      label: undefined,
-      triggered: false,
-      createdAt: new Date().toISOString(),
-    },
-    selectedSnapshot,
-  );
+  const selectedTriggerMetrics =
+    selectedTargetPrice !== undefined
+      ? getPriceTriggerMetrics(
+          {
+            id: 'draft-trigger',
+            assetId: selectedFormAssetId,
+            direction: selectedDirection,
+            targetPrice: selectedTargetPrice,
+            label: undefined,
+            triggered: false,
+            createdAt: new Date().toISOString(),
+          },
+          selectedSnapshot,
+        )
+      : {
+          currentPrice: selectedSnapshot?.price,
+          crossed: false,
+          distanceValue: undefined,
+          distancePercent: undefined,
+        };
   const resetTriggerForm = useCallback(
     (nextAssetId: string, nextDirection: 'above' | 'below') => {
       form.reset(
@@ -125,6 +146,14 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
     },
     [form],
   );
+  const clearTriggerForm = useCallback(() => {
+    form.reset({
+      assetId: initialAssetId,
+      direction: 'above',
+      targetPrice: '' as never,
+      label: '',
+    });
+  }, [form, initialAssetId]);
 
   useEffect(() => {
     resetTriggerForm(initialAssetId, 'above');
@@ -309,12 +338,17 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
               Distance to trigger
             </p>
             <p className="mt-1 text-lg font-semibold text-[var(--text-primary)]">
-              {formatDistancePercent(selectedTriggerMetrics.distancePercent)}
+              {selectedTargetPrice !== undefined
+                ? formatDistancePercent(selectedTriggerMetrics.distancePercent)
+                : 'Enter a trigger price'}
             </p>
             <p className="mt-1 text-sm text-stone-600">
-              {selectedTriggerMetrics.currentPrice
+              {selectedTriggerMetrics.currentPrice &&
+              selectedTargetPrice !== undefined
                 ? `${formatPrice(selectedTargetPrice)} vs ${formatPrice(selectedTriggerMetrics.currentPrice)}`
-                : 'Will update once a live quote arrives'}
+                : selectedTriggerMetrics.currentPrice
+                  ? 'Enter a trigger price to compare against the live quote'
+                  : 'Will update once a live quote arrives'}
             </p>
           </div>
         </div>
@@ -328,13 +362,11 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
           </Button>
           <Button
             className="transform-gpu hover:scale-[1.06] hover:shadow-[var(--shadow-floating)]"
-            onClick={() =>
-              resetTriggerForm(selectedFormAssetId, selectedDirection)
-            }
+            onClick={clearTriggerForm}
             type="button"
             variant="secondary"
           >
-            Clear Fields
+            Clear form
           </Button>
         </div>
       </form>

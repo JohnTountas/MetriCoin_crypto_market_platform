@@ -1,3 +1,5 @@
+// StatCard is the reusable summary block for KPIs across dashboard and portfolio views.
+// Centralizing it keeps metric emphasis and spacing consistent as new stats are added.
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 

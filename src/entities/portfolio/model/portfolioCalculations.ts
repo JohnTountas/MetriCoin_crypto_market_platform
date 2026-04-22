@@ -1,3 +1,5 @@
+// This module owns the core open-position and summary math for the portfolio experience.
+// Financial calculations stay here so pricing logic remains testable and consistent across screens.
 import Decimal from 'decimal.js';
 
 import type { MarketSnapshot } from '@/shared/types';

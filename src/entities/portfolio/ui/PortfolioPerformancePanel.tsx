@@ -1,3 +1,5 @@
+// PortfolioPerformancePanel presents the reconstructed history view plus its headline metrics.
+// It keeps timeframe changes close to the data they affect so the feature stays easy to reason about.
 import { useState } from 'react';
 
 import { useTheme } from '@/hooks/app';

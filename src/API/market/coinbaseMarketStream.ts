@@ -1,3 +1,5 @@
+// Owns the live websocket lifecycle for ticker updates, including batching and reconnect logic.
+// Stream instability usually surfaces here before it becomes a stale-price bug elsewhere.
 import { runtimeConfig } from '@/api/core';
 import type { MarketTickerMessage } from '@/shared/types';
 

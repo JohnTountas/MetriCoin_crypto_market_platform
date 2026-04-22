@@ -1,3 +1,5 @@
+// appStore keeps UI-only global state such as theme, favorites, mobile nav, and toasts.
+// Domain data lives elsewhere so this store does not slowly become a dumping ground.
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

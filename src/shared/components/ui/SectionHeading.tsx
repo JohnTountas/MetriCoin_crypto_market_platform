@@ -1,3 +1,5 @@
+// SectionHeading standardizes the title, eyebrow, and optional action pattern used across panels.
+// Keeping headings consistent makes larger pages easier to scan and reorganize.
 import type { ReactNode } from 'react';
 
 import { classNames } from '@/shared/utils';

@@ -1,3 +1,5 @@
+// Styled native select wrapper for forms that need the browser's built-in accessibility.
+// Using the native element here keeps validation and keyboard behavior predictable.
 import { forwardRef, type SelectHTMLAttributes } from 'react';
 
 import { classNames } from '@/shared/utils';

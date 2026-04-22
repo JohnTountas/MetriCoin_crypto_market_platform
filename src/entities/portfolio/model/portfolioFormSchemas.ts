@@ -1,3 +1,5 @@
+// Form schemas are the validation boundary for portfolio writes coming from the UI.
+// Keeping them together makes field-level rule changes easier to audit and test.
 import { z } from 'zod';
 
 export const portfolioTransactionFormSchema = z.object({

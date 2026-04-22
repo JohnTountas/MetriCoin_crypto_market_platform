@@ -1,3 +1,5 @@
+// PreferencesPanel owns user-controlled assumptions, theme preferences, and workspace utilities.
+// It keeps local-first user settings together so backup and restore behavior stays predictable.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Download, RefreshCcw, Trash2, Upload } from 'lucide-react';
 import { type ChangeEvent, useEffect, useRef } from 'react';

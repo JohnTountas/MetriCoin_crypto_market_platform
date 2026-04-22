@@ -1,3 +1,5 @@
+// Small tone-based status primitive used across health, alerts, and summary surfaces.
+// Centralizing badge styling keeps semantic colors from drifting over time.
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 
 import { classNames } from '@/shared/utils';

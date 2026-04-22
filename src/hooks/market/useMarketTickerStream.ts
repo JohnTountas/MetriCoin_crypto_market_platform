@@ -1,3 +1,5 @@
+// Wires provider stream events into the market store and user-facing status toasts.
+// If live pricing feels stale or noisy, this hook is the best place to trace the event flow.
 import { startTransition, useEffect, useRef } from 'react';
 
 import { activeMarketDataProvider } from '@/api/market';

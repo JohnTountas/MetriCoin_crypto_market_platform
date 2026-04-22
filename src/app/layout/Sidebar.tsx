@@ -1,3 +1,5 @@
+// Sidebar owns primary navigation plus the pinned favorites rail.
+// Keeping this separate from page content makes navigation changes easier to scale safely.
 import { Star } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 

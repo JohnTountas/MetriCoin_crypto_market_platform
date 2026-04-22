@@ -1,4 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
+// NotFoundPage is the catch-all route for invalid navigation paths.
+// Even simple fallback pages are worth keeping explicit so routing behavior stays intentional.
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 

@@ -1,3 +1,5 @@
+// AppShell is the long-lived composition root for shared chrome and background hooks.
+// If a cross-page behavior breaks, start here to verify the shell is still wiring it in.
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 

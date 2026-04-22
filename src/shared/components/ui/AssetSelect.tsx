@@ -1,3 +1,5 @@
+// Custom asset picker that keeps selection UI consistent with the rest of the product language.
+// It wraps just enough interaction logic so feature forms stay focused on domain behavior.
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 

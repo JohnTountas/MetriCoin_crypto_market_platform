@@ -1,3 +1,5 @@
+// This grid is the main visual summary of open holdings and their live performance.
+// It stays presentational so portfolio math can keep living in the model layer.
 import { ArrowDownRight, ArrowUpRight, Wallet } from 'lucide-react';
 
 import { useMarketStore } from '@/entities/market';

@@ -1,3 +1,5 @@
+// Mock market data gives the app a fast, dependency-light mode for demos, tests, and UI work.
+// It mirrors the live provider contract closely so feature behavior stays comparable.
 import { ASSET_LOOKUP, TIMEFRAME_OPTIONS, TRACKED_ASSETS } from '@/shared/constants';
 import type {
   AssetTimeSeries,
