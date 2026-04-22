@@ -16,8 +16,9 @@ export const AppProviders = ({ children }: PropsWithChildren) => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       {children}
-      {import.meta.env.DEV ? <ReactQueryDevtools initialIsOpen={false} /> : null}
+      {import.meta.env.DEV ? (
+        <ReactQueryDevtools initialIsOpen={false} />
+      ) : null}
     </QueryClientProvider>
   </HelmetProvider>
 );
-
