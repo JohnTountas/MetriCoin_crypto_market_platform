@@ -492,7 +492,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                     variant="secondary"
                   >
                     <RotateCcw className="h-4 w-4" />
-                    Re-arm
+                    Re-Arm
                   </Button>
                 ) : null}
                 <Button
