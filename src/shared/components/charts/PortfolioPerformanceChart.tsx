@@ -45,6 +45,7 @@ export const PortfolioPerformanceChart = ({
       autoSize: true,
       height,
       layout: {
+        attributionLogo: false,
         background: { type: ColorType.Solid, color: 'transparent' },
         textColor: readCssVar('--chart-text', '#aab6c5'),
         fontFamily: 'Inter, sans-serif',
@@ -109,6 +110,7 @@ export const PortfolioPerformanceChart = ({
 
     chart.applyOptions({
       layout: {
+        attributionLogo: false,
         background: { type: ColorType.Solid, color: 'transparent' },
         textColor: readCssVar('--chart-text', isDark ? '#aab6c5' : '#5b6d81'),
         fontFamily: 'Inter, sans-serif',

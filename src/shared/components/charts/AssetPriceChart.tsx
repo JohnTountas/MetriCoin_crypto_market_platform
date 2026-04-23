@@ -92,6 +92,7 @@ export const AssetPriceChart = ({
       autoSize: true,
       height,
       layout: {
+        attributionLogo: false,
         background: { type: ColorType.Solid, color: 'transparent' },
         textColor: readCssVar('--chart-text', '#aab6c5'),
         fontFamily: 'Inter, sans-serif',
@@ -173,6 +174,7 @@ export const AssetPriceChart = ({
 
     chart.applyOptions({
       layout: {
+        attributionLogo: false,
         background: { type: ColorType.Solid, color: 'transparent' },
         textColor: chartPalette.textColor,
         fontFamily: 'Inter, sans-serif',

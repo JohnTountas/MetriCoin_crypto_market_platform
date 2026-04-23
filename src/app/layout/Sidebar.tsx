@@ -1,11 +1,11 @@
 // Sidebar owns primary navigation plus the pinned favorites rail.
 // Keeping this separate from page content makes navigation changes easier to scale safely.
 import { Star } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { useAppStore } from '@/app';
 import { useMarketStore } from '@/entities/market';
-import { AssetIcon, Badge, classNames, NAV_ITEMS } from '@/shared';
+import { AssetIcon, Badge, classNames, NAV_ITEMS, ROUTES } from '@/shared';
 
 type SidebarProps = {
   mobile?: boolean;
@@ -13,11 +13,23 @@ type SidebarProps = {
 
 export const Sidebar = ({ mobile = false }: SidebarProps) => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
+  const setMobileNavOpen = useAppStore((state) => state.setMobileNavOpen);
   const assets = useMarketStore((state) => state.assets);
+  const navigate = useNavigate();
 
   const favoriteAssets = assets.filter((asset) =>
     favoriteAssetIds.includes(asset.id),
   );
+  const handleHomeClick = () => {
+    setMobileNavOpen(false);
+    navigate(ROUTES.dashboard);
+
+    // The badge doubles as a lightweight "back to the top" action, so users
+    // get home navigation and scroll reset from the same control.
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  };
 
   return (
     <aside
@@ -27,9 +39,16 @@ export const Sidebar = ({ mobile = false }: SidebarProps) => {
       )}
     >
       <div className="space-y-3">
-        <Badge className="highlight-pill w-fit rounded-full px-3 py-1 text-[10px] tracking-[0.28em]">
-          Metricoin
-        </Badge>
+        <button
+          aria-label="Go to dashboard and scroll to top"
+          className="mx-auto w-fit rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus-border)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)]"
+          onClick={handleHomeClick}
+          type="button"
+        >
+          <Badge className="highlight-pill flex w-fit cursor-pointer rounded-full px-3 py-1 text-[10px] tracking-[0.28em] transition-transform duration-200 hover:-translate-y-px">
+            Metricoin
+          </Badge>
+        </button>
         <h1 className="font-display text-[1.95rem] font-semibold leading-tight text-[var(--text-primary)]">
           Institutional-grade market view
         </h1>

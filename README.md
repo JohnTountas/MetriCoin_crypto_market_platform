@@ -141,6 +141,20 @@ This process exists to support operational features that are awkward or unreliab
 - optional webhook-based alert forwarding
 - operational health visibility
 
+By default, the local ops server listens on `http://127.0.0.1:4174`.
+
+The root path `http://127.0.0.1:4174/` returns a small JSON service index with server status, the main health-check URL, and the available API routes. That makes the server friendlier to verify in a browser while keeping the real operational endpoints under `/api`.
+
+### Ops server endpoints
+
+- `GET http://127.0.0.1:4174/api/health` returns server health, active alert count, notification count, telemetry count, and polling status
+- `GET http://127.0.0.1:4174/api/notifications` returns the latest server-side notifications
+- `GET http://127.0.0.1:4174/api/notification-settings` returns the persisted notification delivery settings
+- `GET http://127.0.0.1:4174/api/telemetry/summary` returns telemetry totals, recent activity, and recent errors
+- `POST http://127.0.0.1:4174/api/alerts/sync` mirrors client-side alerts to the ops server
+- `POST http://127.0.0.1:4174/api/notification-settings` updates server-side notification preferences
+- `POST http://127.0.0.1:4174/api/telemetry/events` records analytics or error events
+
 The repository also includes helper scripts that launch the app stack together for normal development and for Playwright-based end-to-end testing.
 
 ## Persistence Strategy

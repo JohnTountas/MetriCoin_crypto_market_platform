@@ -47,7 +47,9 @@ describe('DashboardHero', () => {
     );
 
     expect(
-      screen.getByText(/Premium crypto market intelligence with live portfolio math/i),
+      screen.getByRole('heading', {
+        name: /Premium crypto market intelligence/i,
+      }),
     ).toBeInTheDocument();
     expect(screen.getByText(/\$88,500\.00/i)).toBeInTheDocument();
     expect(screen.getByText(/\$61,400\.00/i)).toBeInTheDocument();
