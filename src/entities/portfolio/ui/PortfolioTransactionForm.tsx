@@ -1,4 +1,4 @@
-// The transaction form handles both create and edit flows while protecting ledger integrity.
+// PortfolioTransactionForm handles both create and edit flows while protecting ledger integrity.
 // If manual portfolio entry starts behaving strangely, this is the first form to inspect.
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
@@ -35,11 +35,22 @@ type PortfolioTransactionFormProps = {
 };
 
 type PortfolioTransactionFormDefaultsOverrides = Partial<
-  Pick<PortfolioTransactionFormValues, 'price' | 'fee' | 'assetId' | 'side' | 'quantity' | 'note'>
+  Pick<
+    PortfolioTransactionFormValues,
+    'price' | 'fee' | 'assetId' | 'side' | 'quantity' | 'note'
+  >
 >;
 
+/**
+ * formatDateTimeInputValue trims an ISO timestamp down to the precision expected by datetime-local inputs.
+ * This keeps edit mode stable because the native control does not accept seconds or timezone markers.
+ */
 const formatDateTimeInputValue = (value: string) => value.slice(0, 16);
 
+/**
+ * buildTransactionFormDefaults seeds the form with realistic values for faster data entry.
+ * The optional overrides let edit and post-submit flows preserve the fields users usually want to reuse.
+ */
 const buildTransactionFormDefaults = (
   initialAssetId: string,
   overrides: PortfolioTransactionFormDefaultsOverrides = {},
@@ -53,18 +64,32 @@ const buildTransactionFormDefaults = (
   note: overrides.note ?? '',
 });
 
-export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormProps) => {
+/**
+ * PortfolioTransactionForm captures ledger writes and blocks edits that would break sell history.
+ * The responsive layout keeps all financial context visible even when the form collapses to one column.
+ */
+export const PortfolioTransactionForm = ({
+  assetId,
+}: PortfolioTransactionFormProps) => {
   const assets = useMarketStore((state) => state.assets);
   const assetLookup = useMarketStore((state) => state.assetLookup);
   const snapshots = useMarketStore((state) => state.snapshots);
   const transactions = usePortfolioStore((state) => state.transactions);
-  const editingTransactionId = usePortfolioStore((state) => state.editingTransactionId);
+  const editingTransactionId = usePortfolioStore(
+    (state) => state.editingTransactionId,
+  );
   const addTransaction = usePortfolioStore((state) => state.addTransaction);
-  const updateTransaction = usePortfolioStore((state) => state.updateTransaction);
-  const setEditingTransactionId = usePortfolioStore((state) => state.setEditingTransactionId);
+  const updateTransaction = usePortfolioStore(
+    (state) => state.updateTransaction,
+  );
+  const setEditingTransactionId = usePortfolioStore(
+    (state) => state.setEditingTransactionId,
+  );
   const pushToast = useAppStore((state) => state.pushToast);
 
-  const editingTransaction = transactions.find((transaction) => transaction.id === editingTransactionId);
+  const editingTransaction = transactions.find(
+    (transaction) => transaction.id === editingTransactionId,
+  );
   const initialAssetId = assetId ?? DEFAULT_ASSET_ID;
 
   const form = useForm<PortfolioTransactionFormValues>({
@@ -76,11 +101,15 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
   const watchedQuantity = Number(form.watch('quantity') ?? 0);
   const watchedPrice = Number(form.watch('price') ?? 0);
   const watchedFee = Number(form.watch('fee') ?? 0);
-  const selectedQuantity = Number.isFinite(watchedQuantity) ? watchedQuantity : 0;
+  const selectedQuantity = Number.isFinite(watchedQuantity)
+    ? watchedQuantity
+    : 0;
   const selectedPrice = Number.isFinite(watchedPrice) ? watchedPrice : 0;
   const selectedFee = Number.isFinite(watchedFee) ? watchedFee : 0;
   const selectedExecutedAt = form.watch('executedAt');
-  const selectedAsset = assetLookup[selectedFormAssetId] ?? getFallbackAssetMeta(selectedFormAssetId);
+  const selectedAsset =
+    assetLookup[selectedFormAssetId] ??
+    getFallbackAssetMeta(selectedFormAssetId);
   const selectedAssetIsTracked = Boolean(assetLookup[selectedFormAssetId]);
   const selectedSnapshot = snapshots[selectedFormAssetId];
   const availableToSell =
@@ -132,7 +161,7 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
   ]);
 
   return (
-    <Card className="surface p-5">
+    <Card className="surface p-4 sm:p-5">
       <SectionHeading
         eyebrow="Execution"
         title={editingTransaction ? 'Edit transaction' : 'Add transaction'}
@@ -144,8 +173,7 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
         onSubmit={form.handleSubmit((values) => {
           const executedAtDate = new Date(values.executedAt);
           const trimmedNote = values.note?.trim();
-          const normalizedNote =
-            trimmedNote === '' ? undefined : trimmedNote;
+          const normalizedNote = trimmedNote === '' ? undefined : trimmedNote;
 
           if (Number.isNaN(executedAtDate.getTime())) {
             form.setError('executedAt', {
@@ -160,7 +188,8 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
             note: normalizedNote,
             executedAt: executedAtDate.toISOString(),
           };
-          const draftTransactionId = editingTransactionId ?? 'draft-transaction';
+          const draftTransactionId =
+            editingTransactionId ?? 'draft-transaction';
           const candidateTransaction = {
             ...payload,
             id: draftTransactionId,
@@ -199,7 +228,8 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
           }
 
           const savedAsset =
-            assetLookup[payload.assetId] ?? getFallbackAssetMeta(payload.assetId);
+            assetLookup[payload.assetId] ??
+            getFallbackAssetMeta(payload.assetId);
 
           if (editingTransactionId) {
             updateTransaction(editingTransactionId, payload);
@@ -226,10 +256,7 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
           );
         })}
       >
-        <input
-          type="hidden"
-          {...form.register('assetId')}
-        />
+        <input type="hidden" {...form.register('assetId')} />
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Asset
           <AssetSelect
@@ -239,7 +266,8 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
               form.setValue('assetId', nextAssetId, {
                 shouldDirty: true,
                 shouldValidate: true,
-              })}
+              })
+            }
             value={selectedFormAssetId}
           />
           <p className="text-xs text-[var(--text-faint)]">
@@ -248,7 +276,9 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
               : 'Choose the coin this fill belongs to.'}
           </p>
           {errors.assetId?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.assetId.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.assetId.message}
+            </p>
           ) : null}
         </label>
 
@@ -259,17 +289,15 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
             <option value="sell">Sell</option>
           </Select>
           {errors.side?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.side.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.side.message}
+            </p>
           ) : null}
         </label>
 
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Quantity
-          <Input
-            step="0.0001"
-            type="number"
-            {...form.register('quantity')}
-          />
+          <Input step="0.0001" type="number" {...form.register('quantity')} />
           <p
             className={classNames(
               'text-xs',
@@ -285,50 +313,48 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
                 : `Using default precision for ${selectedAsset.symbol} until market metadata is available.`}
           </p>
           {errors.quantity?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.quantity.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.quantity.message}
+            </p>
           ) : null}
         </label>
 
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Execution price
-          <Input
-            step="0.01"
-            type="number"
-            {...form.register('price')}
-          />
+          <Input step="0.01" type="number" {...form.register('price')} />
           <p className="text-xs text-[var(--text-faint)]">
             {selectedSnapshot
               ? `Live spot ${formatPrice(selectedSnapshot.price)}`
               : 'Live spot price will appear when market data is available.'}
           </p>
           {errors.price?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.price.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.price.message}
+            </p>
           ) : null}
         </label>
 
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Fee paid
-          <Input
-            step="0.01"
-            type="number"
-            {...form.register('fee')}
-          />
+          <Input step="0.01" type="number" {...form.register('fee')} />
           {errors.fee?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.fee.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.fee.message}
+            </p>
           ) : null}
         </label>
 
         <label className="space-y-2 text-sm text-[var(--text-secondary)]">
           Executed at
-          <Input
-            type="datetime-local"
-            {...form.register('executedAt')}
-          />
+          <Input type="datetime-local" {...form.register('executedAt')} />
           {errors.executedAt?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.executedAt.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.executedAt.message}
+            </p>
           ) : (
             <p className="text-xs text-[var(--text-faint)]">
-              Ledger validation uses this timestamp to preserve the order of buys and sells.
+              Ledger validation uses this timestamp to preserve the order of
+              buys and sells.
             </p>
           )}
         </label>
@@ -341,13 +367,17 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
             {...form.register('note')}
           />
           {errors.note?.message ? (
-            <p className="text-xs text-[var(--negative-text)]">{errors.note.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.note.message}
+            </p>
           ) : (
-            <p className="text-xs text-[var(--text-faint)]">Optional and capped at 160 characters.</p>
+            <p className="text-xs text-[var(--text-faint)]">
+              Optional and capped at 160 characters.
+            </p>
           )}
         </label>
 
-        <div className="surface-subtle md:col-span-2 grid gap-4 rounded-2xl p-4 sm:grid-cols-2">
+        <div className="surface-subtle grid gap-4 rounded-2xl p-4 sm:grid-cols-2 md:col-span-2">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">
               Notional
@@ -375,8 +405,9 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
           </div>
         </div>
 
-        <div className="md:col-span-2 flex flex-wrap gap-3">
+        <div className="flex flex-col gap-3 xs:flex-row xs:flex-wrap md:col-span-2">
           <Button
+            className="w-full xs:w-auto"
             disabled={sellQuantityExceeded}
             type="submit"
           >
@@ -384,6 +415,7 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
           </Button>
           {editingTransaction ? (
             <Button
+              className="w-full xs:w-auto"
               onClick={() => setEditingTransactionId(undefined)}
               variant="secondary"
             >
@@ -395,4 +427,3 @@ export const PortfolioTransactionForm = ({ assetId }: PortfolioTransactionFormPr
     </Card>
   );
 };
-

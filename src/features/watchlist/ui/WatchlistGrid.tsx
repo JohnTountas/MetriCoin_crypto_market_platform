@@ -24,6 +24,10 @@ const TWO_LINE_CLAMP_STYLE = {
   overflow: 'hidden',
 };
 
+/**
+ * WatchlistGrid shows a tighter set of favorite assets with the same live market context used elsewhere.
+ * The cards stay roomy on tablets and phones so the dense quote data still feels easy to scan.
+ */
 export const WatchlistGrid = () => {
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
   const toggleFavoriteAsset = useAppStore((state) => state.toggleFavoriteAsset);
@@ -44,7 +48,7 @@ export const WatchlistGrid = () => {
   }
 
   return (
-    <Card className="surface p-5">
+    <Card className="surface p-4 sm:p-5">
       <SectionHeading
         eyebrow="Watchlist"
         title="Favorite markets"
@@ -56,7 +60,7 @@ export const WatchlistGrid = () => {
           const snapshot = snapshots[asset.id];
           return (
             <Link
-              className="surface-hover relative overflow-hidden rounded-[1.75rem] p-5 transition-transform duration-200 hover:-translate-y-0.5"
+              className="surface-hover relative overflow-hidden rounded-[1.75rem] p-4 transition-transform duration-200 hover:-translate-y-0.5 sm:p-5"
               key={asset.id}
               to={`/markets/${asset.id}`}
             >
@@ -73,7 +77,7 @@ export const WatchlistGrid = () => {
                 <Star className="h-4 w-4 fill-[var(--highlight-text)] text-[var(--highlight-text)]" />
               </Button>
 
-              <div className="flex min-w-0 items-start gap-3.5 pr-12">
+              <div className="flex min-w-0 items-start gap-3.5 pr-11 xs:pr-12">
                 <div className="pt-0.5">
                   <AssetIcon asset={asset} size="md" />
                 </div>
@@ -107,7 +111,7 @@ export const WatchlistGrid = () => {
                   </p>
                 </div>
 
-                <div className="surface-muted mt-5 grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-3 rounded-[1.25rem] p-4">
+                <div className="surface-muted mt-5 grid grid-cols-[repeat(auto-fit,minmax(min(100%,8rem),1fr))] gap-3 rounded-[1.25rem] p-4">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--text-faint)]">
                       24h change

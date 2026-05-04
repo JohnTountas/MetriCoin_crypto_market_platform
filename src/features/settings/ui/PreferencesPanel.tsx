@@ -5,21 +5,41 @@ import { Download, RefreshCcw, Trash2, Upload } from 'lucide-react';
 import { type ChangeEvent, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { createWorkspaceSnapshot, useAppStore, workspaceSnapshotSchema } from '@/app';
-import { type PortfolioSettingsFormValues, portfolioSettingsSchema, usePortfolioStore } from '@/entities/portfolio';
+import {
+  createWorkspaceSnapshot,
+  useAppStore,
+  workspaceSnapshotSchema,
+} from '@/app';
+import {
+  type PortfolioSettingsFormValues,
+  portfolioSettingsSchema,
+  usePortfolioStore,
+} from '@/entities/portfolio';
 import { useTheme } from '@/hooks/app';
 import { Button, Card, Input, SectionHeading } from '@/shared';
 
+/**
+ * PreferencesPanel groups local assumptions, theme preferences, and backup actions.
+ * It keeps user-owned workspace settings easy to review without mixing them into ops tooling.
+ */
 export const PreferencesPanel = () => {
   const settings = usePortfolioStore((state) => state.settings);
   const setSettings = usePortfolioStore((state) => state.setSettings);
-  const restoreWorkspaceSnapshot = usePortfolioStore((state) => state.restoreWorkspaceSnapshot);
-  const restoreSamplePortfolio = usePortfolioStore((state) => state.restoreSamplePortfolio);
-  const clearPortfolioData = usePortfolioStore((state) => state.clearPortfolioData);
+  const restoreWorkspaceSnapshot = usePortfolioStore(
+    (state) => state.restoreWorkspaceSnapshot,
+  );
+  const restoreSamplePortfolio = usePortfolioStore(
+    (state) => state.restoreSamplePortfolio,
+  );
+  const clearPortfolioData = usePortfolioStore(
+    (state) => state.clearPortfolioData,
+  );
   const transactions = usePortfolioStore((state) => state.transactions);
   const alerts = usePortfolioStore((state) => state.alerts);
   const favoriteAssetIds = useAppStore((state) => state.favoriteAssetIds);
-  const restoreWorkspacePreferences = useAppStore((state) => state.restoreWorkspacePreferences);
+  const restoreWorkspacePreferences = useAppStore(
+    (state) => state.restoreWorkspacePreferences,
+  );
   const pushToast = useAppStore((state) => state.pushToast);
   const { themePreference, setThemePreference } = useTheme();
   const importInputRef = useRef<HTMLInputElement | null>(null);
@@ -39,6 +59,10 @@ export const PreferencesPanel = () => {
     });
   }, [form, settings.estimatedFeeRate, settings.estimatedSlippageRate]);
 
+  /**
+   * handleSnapshotImport validates a backup before it replaces local workspace data.
+   * The validation step keeps older or malformed files from silently corrupting the browser state.
+   */
   const handleSnapshotImport = async (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
 
@@ -91,8 +115,8 @@ export const PreferencesPanel = () => {
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
-      <Card className="surface p-5">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)] 2xl:grid-cols-[minmax(0,1fr)_380px]">
+      <Card className="surface p-4 sm:p-5">
         <SectionHeading
           eyebrow="Preferences"
           title="Portfolio assumptions"
@@ -128,7 +152,9 @@ export const PreferencesPanel = () => {
 
         <div className="mt-8 space-y-4">
           <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">Theme</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--text-faint)]">
+              Theme
+            </p>
             <div className="flex flex-wrap gap-3">
               <Button
                 onClick={() => setThemePreference('dark')}
@@ -153,7 +179,7 @@ export const PreferencesPanel = () => {
         </div>
       </Card>
 
-      <Card className="surface p-5">
+      <Card className="surface p-4 sm:p-5">
         <SectionHeading
           eyebrow="Operations"
           title="Workspace actions"
@@ -229,12 +255,12 @@ export const PreferencesPanel = () => {
           </Button>
 
           <p className="text-xs leading-6 text-[var(--text-faint)]">
-            Snapshot import replaces local transactions, alerts, favorites, theme, and calculator assumptions using a validated versioned backup file.
+            Snapshot import replaces local transactions, alerts, favorites,
+            theme, and calculator assumptions using a validated versioned backup
+            file.
           </p>
         </div>
       </Card>
     </div>
   );
 };
-
-

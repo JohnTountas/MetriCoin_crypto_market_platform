@@ -18,8 +18,7 @@ export const useOperationalTelemetry = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Browser-level failures are easy to miss in localStorage-only apps, so
-    // we forward them to the ops server whenever it is available.
+    // Browser-level failures are forwards to the ops server whenever it is available.
     const handleWindowError = (event: ErrorEvent) => {
       void sendTelemetryEvent({
         type: 'error',
@@ -55,7 +54,10 @@ export const useOperationalTelemetry = () => {
 
     return () => {
       window.removeEventListener('error', handleWindowError);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      window.removeEventListener(
+        'unhandledrejection',
+        handleUnhandledRejection,
+      );
     };
   }, []);
 

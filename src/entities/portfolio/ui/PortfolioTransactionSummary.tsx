@@ -1,10 +1,23 @@
 // This summary row turns raw ledger activity into a fast executive read of portfolio behavior.
 // It is intentionally compact so route pages can reuse the same transaction story everywhere.
-import { ArrowDownCircle, ArrowUpCircle, ReceiptText, WalletCards } from 'lucide-react';
+import {
+  ArrowDownCircle,
+  ArrowUpCircle,
+  ReceiptText,
+  WalletCards,
+} from 'lucide-react';
 
-import { formatCurrency, formatSignedCurrency, formatTimestamp, StatCard } from '@/shared';
+import {
+  formatCurrency,
+  formatSignedCurrency,
+  formatTimestamp,
+  StatCard,
+} from '@/shared';
 
-import { calculateTransactionActivitySummary, usePortfolioStore } from '../model';
+import {
+  calculateTransactionActivitySummary,
+  usePortfolioStore,
+} from '../model';
 
 export const PortfolioTransactionSummary = () => {
   const transactions = usePortfolioStore((state) => state.transactions);
@@ -17,7 +30,7 @@ export const PortfolioTransactionSummary = () => {
         : 'neutral';
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <StatCard
         detail={
           summary.totalTransactions === 0

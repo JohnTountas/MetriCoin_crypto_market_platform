@@ -42,12 +42,12 @@ const DashboardPage = () => {
 
       <AssetAnalyticsPanel assetId={selectedAssetId} />
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_420px]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)] xl:grid-cols-[minmax(0,1.1fr)_420px]">
         <PortfolioPositionsGrid positions={positions} />
         <AlertsPanel assetId={selectedAssetId} />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_420px]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)] xl:grid-cols-[minmax(0,1.1fr)_420px]">
         <PortfolioTransactionHistory compact limit={5} />
         <WatchlistGrid />
       </div>

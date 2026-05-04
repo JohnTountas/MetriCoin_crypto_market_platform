@@ -1,5 +1,5 @@
 // Topbar surfaces app-wide status, quick search, and theme controls in one predictable place.
-// It is also a good debugging checkpoint for stream health and selected asset context.
+// It also acts as a quick debugging checkpoint for stream health and selected asset context.
 import { Menu, MoonStar, Radio, Search, SunMedium } from 'lucide-react';
 
 import { useAppStore } from '@/app';
@@ -23,6 +23,10 @@ const connectionStatusToneMap = {
   idle: 'default',
 } as const;
 
+/**
+ * Topbar keeps the selected market context, stream status, and quick actions easy to reach.
+ * On smaller screens it stacks gracefully so the controls stay usable without crowding the title block.
+ */
 export const Topbar = () => {
   const setMobileNavOpen = useAppStore((state) => state.setMobileNavOpen);
   const setCommandPaletteOpen = useAppStore(
@@ -41,7 +45,7 @@ export const Topbar = () => {
     connectionStatus === 'connecting' || connectionStatus === 'reconnecting';
 
   return (
-    <div className="surface flex flex-col gap-4 rounded-[2.25rem] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+    <div className="surface flex flex-col gap-4 rounded-[2rem] px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex min-w-0 items-start gap-3">
         <Button
           className="lg:hidden"
@@ -58,7 +62,7 @@ export const Topbar = () => {
               Live execution context
             </p>
             <div className="mt-1 flex flex-wrap items-center gap-2 sm:gap-3">
-              <h2 className="basis-full font-display text-xl font-semibold leading-tight text-[var(--text-primary)] sm:basis-auto sm:text-2xl">
+              <h2 className="basis-full font-display text-lg font-semibold leading-tight text-[var(--text-primary)] xs:text-xl sm:basis-auto sm:text-2xl">
                 Metricoin market dashboard
               </h2>
               <Badge
@@ -83,7 +87,7 @@ export const Topbar = () => {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 sm:justify-end">
+      <div className="flex w-full flex-wrap items-center gap-3 lg:w-auto lg:justify-end">
         <Button
           className="w-full justify-between xs:w-auto"
           onClick={() => setCommandPaletteOpen(true)}
@@ -92,7 +96,7 @@ export const Topbar = () => {
           <Search className="h-4.5 w-4.5" />
           Quick search
         </Button>
-        <div className="control-group inline-flex rounded-2xl p-1">
+        <div className="control-group inline-flex w-full justify-center rounded-2xl p-1 xs:w-auto">
           <button
             aria-label="Switch to light theme"
             className={classNames(

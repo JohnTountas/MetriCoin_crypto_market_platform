@@ -34,6 +34,10 @@ type AlertsPanelProps = {
   assetId?: string;
 };
 
+/**
+ * getSuggestedTargetPrice seeds draft triggers close to the live quote.
+ * The small buffer makes the default feel practical instead of random when users open the form.
+ */
 const getSuggestedTargetPrice = (
   assetId: string,
   direction: 'above' | 'below',
@@ -51,6 +55,10 @@ const getSuggestedTargetPrice = (
   return Number((livePrice * multiplier).toFixed(precision));
 };
 
+/**
+ * buildPriceAlertDefaults keeps alert drafts consistent across create, reset, and route-change flows.
+ * It always derives the target from the latest snapshot so the first suggestion feels current.
+ */
 const buildPriceAlertDefaults = (
   assetId: string,
   snapshots: Record<string, { price: number }>,
@@ -62,6 +70,10 @@ const buildPriceAlertDefaults = (
   label: '',
 });
 
+/**
+ * formatDistancePercent keeps distance copy human and easy to scan in cards and form previews.
+ * It rounds more tightly for nearby levels because those small differences matter during setup.
+ */
 const formatDistancePercent = (value?: number) => {
   if (value === undefined) {
     return 'Awaiting live price';
@@ -70,6 +82,10 @@ const formatDistancePercent = (value?: number) => {
   return `${value.toFixed(Math.abs(value) >= 10 ? 1 : 2)}% away`;
 };
 
+/**
+ * AlertsPanel lets users create, review, and re-arm price triggers without leaving the current workspace.
+ * The layout keeps the form, derived context, and trigger list readable from mobile up to desktop.
+ */
 export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
   const alerts = usePortfolioStore((state) => state.alerts);
   const addAlert = usePortfolioStore((state) => state.addAlert);
@@ -160,11 +176,12 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
   }, [initialAssetId, resetTriggerForm]);
 
   return (
-    <Card className="surface p-5">
+    <Card className="surface p-4 sm:p-5">
       <SectionHeading
         action={
           triggeredAlerts.length > 0 ? (
             <Button
+              className="w-full sm:w-auto"
               onClick={() => {
                 triggeredAlerts.forEach((alert) => rearmStoredAlert(alert.id));
                 pushToast({
@@ -186,7 +203,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
         description="Create clean above or below price rules and let the live market stream notify you when levels break."
       />
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+      <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <div className="surface-subtle rounded-2xl p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">
             Live
@@ -276,7 +293,9 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
             Choose the market you want to monitor.
           </p>
           {errors.assetId?.message ? (
-            <p className="text-xs text-stone-600">{errors.assetId.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.assetId.message}
+            </p>
           ) : null}
         </label>
 
@@ -287,7 +306,9 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
             <option value="below">Crosses below</option>
           </Select>
           {errors.direction?.message ? (
-            <p className="text-xs text-stone-600">{errors.direction.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.direction.message}
+            </p>
           ) : null}
         </label>
 
@@ -300,7 +321,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
               : 'Waiting for live market data'}
           </p>
           {errors.targetPrice?.message ? (
-            <p className="text-xs text-stone-600">
+            <p className="text-xs text-[var(--negative-text)]">
               {errors.targetPrice.message}
             </p>
           ) : null}
@@ -317,7 +338,9 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
             Internal note for quick context
           </p>
           {errors.label?.message ? (
-            <p className="text-stone-600] text-xs">{errors.label.message}</p>
+            <p className="text-xs text-[var(--negative-text)]">
+              {errors.label.message}
+            </p>
           ) : null}
         </label>
 
@@ -342,7 +365,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                 ? formatDistancePercent(selectedTriggerMetrics.distancePercent)
                 : 'Enter a trigger price'}
             </p>
-            <p className="mt-1 text-sm text-stone-600">
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
               {selectedTriggerMetrics.currentPrice &&
               selectedTargetPrice !== undefined
                 ? `${formatPrice(selectedTargetPrice)} vs ${formatPrice(selectedTriggerMetrics.currentPrice)}`
@@ -353,15 +376,15 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
           </div>
         </div>
 
-        <div className="gap-15 flex gap-20 md:col-span-2">
+        <div className="flex flex-col gap-3 xs:flex-row xs:flex-wrap md:col-span-2">
           <Button
-            className="transform-gpu hover:scale-[1.06] hover:shadow-[var(--shadow-floating)]"
+            className="w-full transform-gpu hover:scale-[1.02] hover:shadow-[var(--shadow-floating)] xs:w-auto"
             type="submit"
           >
             Create trigger
           </Button>
           <Button
-            className="transform-gpu hover:scale-[1.06] hover:shadow-[var(--shadow-floating)]"
+            className="w-full transform-gpu hover:scale-[1.02] hover:shadow-[var(--shadow-floating)] xs:w-auto"
             onClick={clearTriggerForm}
             type="button"
             variant="secondary"
@@ -402,7 +425,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
               )}
               key={alert.id}
             >
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-col gap-3 xs:flex-row xs:items-start xs:justify-between">
                 <div className="flex items-start gap-3">
                   <AssetIcon asset={asset} size="md" />
                   <div className="space-y-1">
@@ -429,7 +452,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                   </div>
                 </div>
                 {!alert.triggered ? (
-                  <div className="tone-accent flex h-10 w-10 items-center justify-center rounded-2xl border">
+                  <div className="tone-accent flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border">
                     <BellRing className="h-4.5 w-4.5" />
                   </div>
                 ) : null}
@@ -477,9 +500,10 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2 xs:flex-row xs:flex-wrap">
                 {alert.triggered ? (
                   <Button
+                    className="w-full xs:w-auto"
                     onClick={() => {
                       rearmStoredAlert(alert.id);
                       pushToast({
@@ -496,6 +520,7 @@ export const AlertsPanel = ({ assetId }: AlertsPanelProps) => {
                   </Button>
                 ) : null}
                 <Button
+                  className="w-full xs:w-auto"
                   onClick={() => {
                     deleteAlert(alert.id);
                     pushToast({

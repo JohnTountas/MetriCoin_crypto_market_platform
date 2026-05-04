@@ -16,7 +16,7 @@ const TransactionsPage = () => (
 
     <PortfolioTransactionSummary />
 
-    <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+    <div className="grid gap-6 lg:grid-cols-[minmax(300px,360px)_minmax(0,1fr)] xl:grid-cols-[420px_minmax(0,1fr)]">
       <PortfolioTransactionForm />
       <PortfolioTransactionHistory />
     </div>

@@ -16,6 +16,10 @@ type StatCardProps = {
   className?: string;
 };
 
+/**
+ * StatCard packages one KPI, its supporting detail, and an optional tone marker into a reusable block.
+ * The card keeps copy wrapping predictable so four-up metric rows still behave on narrower screens.
+ */
 export const StatCard = ({
   label,
   value,
@@ -25,14 +29,18 @@ export const StatCard = ({
   icon,
   className,
 }: StatCardProps) => (
-  <Card className={classNames('surface p-5', className)}>
+  <Card className={classNames('surface p-4 sm:p-5', className)}>
     <div className="flex items-start justify-between gap-4">
-      <div className="space-y-4">
+      <div className="min-w-0 space-y-4">
         <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">{label}</p>
-          <h3 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)]">{value}</h3>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">
+            {label}
+          </p>
+          <h3 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
+            {value}
+          </h3>
         </div>
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
           {delta ? (
             <span
               className={classNames(
@@ -42,12 +50,18 @@ export const StatCard = ({
                 tone === 'neutral' && 'tone-default',
               )}
             >
-              {tone === 'positive' ? <ArrowUpRight className="h-3.5 w-3.5" /> : null}
-              {tone === 'negative' ? <ArrowDownRight className="h-3.5 w-3.5" /> : null}
+              {tone === 'positive' ? (
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              ) : null}
+              {tone === 'negative' ? (
+                <ArrowDownRight className="h-3.5 w-3.5" />
+              ) : null}
               {delta}
             </span>
           ) : null}
-          {detail ? <span className="text-[var(--text-faint)]">{detail}</span> : null}
+          {detail ? (
+            <span className="text-[var(--text-faint)]">{detail}</span>
+          ) : null}
         </div>
       </div>
       {icon ? (
@@ -58,4 +72,3 @@ export const StatCard = ({
     </div>
   </Card>
 );
-

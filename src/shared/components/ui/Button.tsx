@@ -14,11 +14,11 @@ type ButtonProps = PropsWithChildren<
 
 const variantClasses: Record<NonNullable<ButtonProps['variant']>, string> = {
   primary:
-    'bg-[var(--accent-strong)] text-[var(--accent-strong-text)] shadow-[var(--shadow-accent)] hover:-translate-y-px hover:bg-[var(--accent-strong-hover)] disabled:bg-[var(--accent-bg)] disabled:text-[var(--text-muted)]',
+    'border border-[var(--accent-border)] bg-[var(--accent-strong)] text-[var(--accent-strong-text)] shadow-[var(--shadow-accent)] hover:-translate-y-px hover:bg-[var(--accent-strong-hover)] disabled:border-transparent disabled:bg-[var(--accent-bg)] disabled:text-[var(--text-muted)]',
   secondary:
     'border border-[var(--border)] bg-[var(--panel-strong)] text-[var(--text-secondary)] shadow-[var(--shadow-soft)] hover:-translate-y-px hover:border-[var(--border-strong)] hover:bg-[var(--panel-hover)] hover:text-[var(--text-primary)] disabled:opacity-50',
   ghost:
-    'text-[var(--text-muted)] hover:bg-[var(--panel-subtle)] hover:text-[var(--text-primary)]',
+    'border border-transparent text-[var(--text-muted)] hover:border-[var(--border)] hover:bg-[var(--panel-subtle)] hover:text-[var(--text-primary)]',
   danger:
     'border border-[var(--negative-border)] bg-[var(--negative-bg)] text-[var(--negative-text)] shadow-[var(--shadow-soft)] hover:opacity-90 disabled:opacity-50',
 };

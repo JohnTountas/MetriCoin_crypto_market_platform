@@ -14,7 +14,8 @@ import { usePortfolioOverview } from '@/hooks/portfolio/usePortfolioOverview';
 import { Card, PortfolioAllocationChart, SectionHeading } from '@/shared';
 
 const PortfolioPage = () => {
-  const { summary, positions, bestPerformer, worstPerformer } = usePortfolioOverview();
+  const { summary, positions, bestPerformer, worstPerformer } =
+    usePortfolioOverview();
 
   return (
     <div className="space-y-6">
@@ -30,9 +31,9 @@ const PortfolioPage = () => {
 
       <PortfolioPerformancePanel />
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_420px]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)] xl:grid-cols-[minmax(0,1.1fr)_420px]">
         <PortfolioPositionsGrid positions={positions} />
-        <Card className="surface p-5">
+        <Card className="surface p-4 sm:p-5">
           <SectionHeading
             eyebrow="Allocation"
             title="Live portfolio mix"
@@ -44,7 +45,7 @@ const PortfolioPage = () => {
         </Card>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[420px_minmax(0,1fr)]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(300px,360px)_minmax(0,1fr)] xl:grid-cols-[420px_minmax(0,1fr)]">
         <div className="space-y-6">
           <PortfolioCsvImportPanel />
           <PortfolioTransactionForm />
@@ -56,4 +57,3 @@ const PortfolioPage = () => {
 };
 
 export default PortfolioPage;
-

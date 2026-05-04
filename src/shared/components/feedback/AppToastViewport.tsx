@@ -21,6 +21,10 @@ const toastToneStyleMap = {
   error: 'tone-negative',
 };
 
+/**
+ * AppToastViewport renders transient app feedback above the current route without interrupting navigation.
+ * The viewport hugs the screen edges on phones so the cards do not cover too much of the content.
+ */
 export const AppToastViewport = () => {
   const toasts = useAppStore((state) => state.toasts);
   const dismissToast = useAppStore((state) => state.dismissToast);
@@ -38,7 +42,7 @@ export const AppToastViewport = () => {
   }, [dismissToast, toasts]);
 
   return (
-    <div className="pointer-events-none fixed bottom-5 right-5 z-50 flex w-[min(92vw,380px)] flex-col gap-3">
+    <div className="pointer-events-none fixed bottom-3 right-3 z-50 flex w-[min(94vw,380px)] flex-col gap-3 sm:bottom-5 sm:right-5 sm:w-[min(92vw,380px)]">
       {toasts.map((toast) => {
         const Icon = toastToneIconMap[toast.tone];
         return (
@@ -58,9 +62,13 @@ export const AppToastViewport = () => {
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
-                    <h4 className="text-sm font-semibold text-[var(--text-primary)]">{toast.title}</h4>
+                    <h4 className="text-sm font-semibold text-[var(--text-primary)]">
+                      {toast.title}
+                    </h4>
                     {toast.description ? (
-                      <p className="text-sm leading-6 text-[var(--text-muted)]">{toast.description}</p>
+                      <p className="text-sm leading-6 text-[var(--text-muted)]">
+                        {toast.description}
+                      </p>
                     ) : null}
                   </div>
                   <Button
@@ -80,5 +88,3 @@ export const AppToastViewport = () => {
     </div>
   );
 };
-
-

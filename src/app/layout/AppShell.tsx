@@ -1,5 +1,5 @@
-// AppShell is the long-lived composition root for shared chrome and background hooks.
-// If a cross-page behavior breaks, start here to verify the shell is still wiring it in.
+// AppShell composes the long-lived chrome, background hooks, and route outlet.
+// If shared behavior breaks across pages, this shell is the first place to inspect.
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
@@ -19,6 +19,10 @@ import { AppToastViewport, GlobalCommandPalette } from '@/shared';
 
 import { Sidebar, TickerStrip, Topbar } from '.';
 
+/**
+ * AppShell keeps navigation, streaming hooks, overlays, and route content in one stable frame.
+ * It closes the mobile drawer on route changes so smaller screens do not stay trapped behind it.
+ */
 export const AppShell = () => {
   const location = useLocation();
   const mobileNavOpen = useAppStore((state) => state.mobileNavOpen);
@@ -39,19 +43,19 @@ export const AppShell = () => {
   }, [location.pathname, setMobileNavOpen]);
 
   return (
-    <div className="mx-auto max-w-[1820px] px-4 pb-8 pt-4 sm:px-6 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-12 lg:pt-8">
-      <div className="grid items-start gap-6 lg:grid-cols-[300px_minmax(0,1fr)] xl:gap-7">
-        <div className="hidden lg:sticky lg:top-8 lg:block lg:self-start">
+    <div className="mx-auto max-w-[1820px] px-3 pb-6 pt-3 sm:px-5 sm:pb-8 sm:pt-5 lg:px-8 lg:pb-10 lg:pt-7">
+      <div className="grid items-start gap-4 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-6 xl:gap-7">
+        <div className="hidden lg:sticky lg:top-6 lg:block lg:self-start xl:top-8">
           <Sidebar />
         </div>
 
-        <div className="flex min-h-[calc(100vh-4rem)] flex-col gap-6 xl:min-h-[calc(100vh-6rem)] xl:gap-7">
+        <div className="flex min-h-[calc(100vh-2.75rem)] flex-col gap-4 sm:min-h-[calc(100vh-4rem)] sm:gap-5 xl:min-h-[calc(100vh-6rem)] xl:gap-7">
           <Topbar />
           <TickerStrip />
           <main className="flex-1 space-y-6 xl:space-y-7">
             <Outlet />
           </main>
-          <div className="self-end border-t border-[var(--border)] pr-1 pt-4 text-right">
+          <div className="border-t border-[var(--border)] pt-4 text-center sm:self-end sm:pr-1 sm:text-right">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-slate-500">
               Design and Development
             </p>
@@ -66,7 +70,7 @@ export const AppShell = () => {
               </a>
               <span className="text-slate-500">
                 {' '}
-                · Copyright {currentYear}. All rights reserved.
+                | Copyright {currentYear}. All rights reserved.
               </span>
             </p>
           </div>
@@ -74,14 +78,14 @@ export const AppShell = () => {
       </div>
 
       {mobileNavOpen ? (
-        <div className="surface-overlay fixed inset-0 z-40 flex p-4 backdrop-blur-md lg:hidden">
+        <div className="surface-overlay fixed inset-0 z-40 flex items-start p-3 backdrop-blur-md sm:p-4 lg:hidden">
           <button
             aria-label="Close navigation"
             className="absolute inset-0"
             onClick={() => setMobileNavOpen(false)}
             type="button"
           />
-          <div className="relative z-10 h-full w-full max-w-sm">
+          <div className="relative z-10 ml-auto w-full max-w-md animate-slide-up">
             <Sidebar mobile />
           </div>
         </div>

@@ -23,12 +23,18 @@ export const PortfolioSummaryGrid = ({
   bestPerformer,
   worstPerformer,
 }: PortfolioSummaryGridProps) => {
-  const bestPerformerSymbol = bestPerformer ? getFallbackAssetMeta(bestPerformer.assetId).symbol : undefined;
-  const worstPerformerSymbol = worstPerformer ? getFallbackAssetMeta(worstPerformer.assetId).symbol : undefined;
-  const worstPerformerBreakEvenPrice = worstPerformer ? formatPrice(worstPerformer.breakEvenPrice) : undefined;
+  const bestPerformerSymbol = bestPerformer
+    ? getFallbackAssetMeta(bestPerformer.assetId).symbol
+    : undefined;
+  const worstPerformerSymbol = worstPerformer
+    ? getFallbackAssetMeta(worstPerformer.assetId).symbol
+    : undefined;
+  const worstPerformerBreakEvenPrice = worstPerformer
+    ? formatPrice(worstPerformer.breakEvenPrice)
+    : undefined;
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       <StatCard
         detail="Live position mark"
         icon={<BadgeDollarSign className="h-5 w-5" />}
@@ -45,7 +51,11 @@ export const PortfolioSummaryGrid = ({
         value={formatCurrency(summary.unrealizedPnL)}
       />
       <StatCard
-        detail={bestPerformerSymbol ? `${bestPerformerSymbol} best performer` : 'Awaiting holdings'}
+        detail={
+          bestPerformerSymbol
+            ? `${bestPerformerSymbol} best performer`
+            : 'Awaiting holdings'
+        }
         icon={<Gauge className="h-5 w-5" />}
         label="Break-even value"
         tone="neutral"

@@ -18,6 +18,10 @@ import {
 } from '@/shared';
 import type { PortfolioPerformancePoint, Timeframe } from '@/shared/types';
 
+/**
+ * buildPerformanceSummary reduces a chart series into the headline numbers shown above it.
+ * Keeping this derivation local makes the panel easier to debug when the chart and stats disagree.
+ */
 const buildPerformanceSummary = (points: PortfolioPerformancePoint[]) => {
   const firstPoint = points[0];
   const lastPoint = points[points.length - 1];
@@ -26,7 +30,8 @@ const buildPerformanceSummary = (points: PortfolioPerformancePoint[]) => {
     0,
   );
   const changeValue = lastPoint.value - firstPoint.value;
-  const changePercent = firstPoint.value === 0 ? 0 : (changeValue / firstPoint.value) * 100;
+  const changePercent =
+    firstPoint.value === 0 ? 0 : (changeValue / firstPoint.value) * 100;
 
   return {
     currentValue: lastPoint.value,
@@ -40,7 +45,8 @@ const buildPerformanceSummary = (points: PortfolioPerformancePoint[]) => {
 export const PortfolioPerformancePanel = () => {
   const [activeTimeframe, setActiveTimeframe] = useState<Timeframe>('30D');
   const { resolvedTheme } = useTheme();
-  const { points, assetCount, hasErrors, isLoading } = usePortfolioPerformanceHistory(activeTimeframe);
+  const { points, assetCount, hasErrors, isLoading } =
+    usePortfolioPerformanceHistory(activeTimeframe);
 
   if (points.length === 0 && !isLoading) {
     return (
@@ -51,15 +57,19 @@ export const PortfolioPerformancePanel = () => {
     );
   }
 
-  const summary = points.length > 0 ? buildPerformanceSummary(points) : undefined;
+  const summary =
+    points.length > 0 ? buildPerformanceSummary(points) : undefined;
 
   return (
-    <Card className="surface p-5">
+    <Card className="surface p-4 sm:p-5">
       <SectionHeading
         action={
           <SegmentedControl
             onChange={setActiveTimeframe}
-            options={TIMEFRAME_OPTIONS.map((option) => ({ label: option.label, value: option.label }))}
+            options={TIMEFRAME_OPTIONS.map((option) => ({
+              label: option.label,
+              value: option.label,
+            }))}
             value={activeTimeframe}
           />
         }
@@ -69,7 +79,7 @@ export const PortfolioPerformancePanel = () => {
       />
 
       {summary ? (
-        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="surface-subtle rounded-2xl p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">
               Current value
@@ -93,7 +103,9 @@ export const PortfolioPerformancePanel = () => {
             <p className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">
               {formatSignedCurrency(summary.changeValue)}
             </p>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">{formatPercent(summary.changePercent)}</p>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              {formatPercent(summary.changePercent)}
+            </p>
           </div>
           <div className="surface-subtle rounded-2xl p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--text-faint)]">
@@ -102,24 +114,25 @@ export const PortfolioPerformancePanel = () => {
             <p className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">
               {formatCurrency(summary.peakValue)}
             </p>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">{assetCount} assets priced in this range</p>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              {assetCount} assets priced in this range
+            </p>
           </div>
         </div>
       ) : null}
 
-      <div className="mt-6 surface-muted rounded-[1.75rem] p-4">
+      <div className="surface-muted mt-6 rounded-[1.75rem] p-4">
         {isLoading ? <Skeleton className="h-[320px] rounded-[1.5rem]" /> : null}
         {!isLoading && points.length > 0 ? (
-          <PortfolioPerformanceChart
-            points={points}
-            theme={resolvedTheme}
-          />
+          <PortfolioPerformanceChart points={points} theme={resolvedTheme} />
         ) : null}
       </div>
 
       {hasErrors ? (
         <p className="mt-4 text-sm leading-6 text-[var(--warning-text)]">
-          Some assets do not have complete historical candle coverage, so Metricoin falls back to trade prices until live history becomes available.
+          Some assets do not have complete historical candle coverage, so
+          Metricoin falls back to trade prices until live history becomes
+          available.
         </p>
       ) : null}
     </Card>

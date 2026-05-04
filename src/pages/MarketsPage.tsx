@@ -15,7 +15,7 @@ const MarketsPage = () => (
       />
     </Helmet>
 
-    <Card className="surface p-6">
+    <Card className="surface p-5 sm:p-6">
       <SectionHeading
         eyebrow="Markets"
         title="Scalable market coverage"
